@@ -1,0 +1,540 @@
+
+<!DOCTYPE html>
+<html xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-image="none"
+      data-preloader="disable" data-theme="default" data-theme-colors="default" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Quản lý voucher</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description"/>
+    <meta content="Themesbrand" name="author"/>
+    <link rel="shortcut icon" href="images/shoes.png">
+    <!-- Thêm Line Awesome CDN -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/line-awesome/1.3.0/line-awesome/css/line-awesome.min.css">
+    <!-- Thêm Material Design Icons CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font/css/materialdesignicons.min.css" rel="stylesheet">
+    <!-- Thêm Feather Icon CND -->
+    <script src="https://unpkg.com/feather-icons"></script>
+    <!-- Thêm Remix Icon -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+    <!-- Thêm link tới Boxicons CDN -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <!-- jsvectormap css -->
+    <link href="css/jsvectormap.min.css" rel="stylesheet" type="text/css"/>
+
+    <!--Swiper slider css-->
+    <link href="css/swiper-bundle.min.css" rel="stylesheet" type="text/css"/>
+
+    <!-- Layout config Js -->
+    <script src="js/layout.js"></script>
+    <!-- Bootstrap Css -->
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    n<!-- Icons Css -->
+    <link href="css/icons.min.css" rel="stylesheet" type="text/css"/>
+    <!-- App Css-->
+    <link href="css/app.min.css" rel="stylesheet" type="text/css"/>
+    <!-- custom Css-->
+    <link href="css/custom.min.css" rel="stylesheet" type="text/css"/>
+
+</head>
+<body>
+<!-- Begin page -->
+<div id="layout-wrapper">
+
+    <header id="page-topbar">
+        <div class="layout-width">
+            <div class="navbar-header">
+                <div class="d-flex">
+                    <!-- LOGO -->
+                    <div class="navbar-brand-box horizontal-logo">
+                        <a href="/trangchuadmin" class="logo logo-dark">
+                        <span class="logo-sm">
+                            <img src="images/shoes.png" alt="" height="22">
+                        </span>
+                            <span class="logo-lg">
+                            <h1 class="mt-3" style="color: #abb9e8">Sneaker Beehouse</h1>
+                        </span>
+                        </a>
+
+                        <a href="/trangchuadmin" class="logo logo-light">
+                        <span class="logo-sm">
+                            <img src="images/shoes.png" alt="" height="22">
+                        </span>
+                            <span class="logo-lg">
+                            <h1 class="mt-3" style="color: #abb9e8">Sneaker Beehouse</h1>
+                        </span>
+                        </a>
+                    </div>
+
+                    <button type="button"
+                            class="btn btn-sm px-3 fs-16 header-item vertical-menu-btn topnav-hamburger material-shadow-none"
+                            id="topnav-hamburger-icon">
+                    <span class="hamburger-icon">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </span>
+                    </button>
+                </div>
+
+                <div class="d-flex align-items-center">
+                    <div class="dropdown ms-sm-3 header-item topbar-user" th:if="${#authentication.name != 'anonymousUser'}">
+                        <button type="button" class="btn material-shadow-none" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="d-flex align-items-center">
+                            <img class="rounded-circle header-profile-user" src="images/users/avatar-1.jpg" alt="Header Avatar">
+                            <span class="text-start ms-xl-2">
+                                <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text" th:text="${#authentication.principal.displayName}"></span>
+                                <span class="d-none d-xl-block ms-1 fs-12 user-name-sub-text" th:text="${#authentication.principal.role == 'ROLE_ADMIN' ? 'Admin' : (#authentication.principal.role == 'ROLE_MANAGER' ? 'Quản lý' : 'Nhân viên')}">Trưởng nhóm</span>
+                            </span>
+                        </span>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-end" th:if="${#authentication.name != 'anonymousUser'}">
+                            <!-- item-->
+                            <h6 class="dropdown-header" >Xin chào <span th:text="${#authentication.principal.displayName}"></span></h6>
+                            <a class="dropdown-item" href="/thongtinadmin"><i class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Thông tin cá nhân</span></a>
+                            <a class="dropdown-item" href="/tinnhanadmin"><i class="mdi mdi-message-text-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Tin nhắn</span></a>
+                            <a class="dropdown-item" href="/trogiupadmin"><i class="mdi mdi-lifebuoy text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Trợ giúp</span></a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="/caidatadmin"><span class="badge bg-success-subtle text-success mt-1 float-end">New</span><i class="mdi mdi-cog-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Cài đặt</span></a>
+                            <a class="dropdown-item" href="/khoamanhinhadmin"><i class="mdi mdi-lock text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Khóa màn hình</span></a>
+                            <a class="dropdown-item" href="/logout"><i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> <span class="align-middle" data-key="t-logout">Đăng xuất</span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ========== App Menu ========== -->
+    <div class="app-menu navbar-menu">
+        <!-- LOGO -->
+        <div class="navbar-brand-box">
+            <!-- Dark Logo-->
+            <a href="/trangchuadmin" class="logo logo-dark">
+                    <span class="logo-sm">
+                        <img src="images/shoes.png" alt="" height="22">
+                    </span>
+                <span class="logo-lg">
+                       <h1 class="mt-3" style="color: #abb9e8">Sneaker Beehouse</h1>
+                    </span>
+            </a>
+            <!-- Light Logo-->
+            <a href="/trangchuadmin" class="logo logo-light">
+                    <span class="logo-sm">
+                        <img src="images/shoes.png" alt="" height="22">
+                    </span>
+                <span class="logo-lg">
+                        <h1 class="mt-3" style="color: #abb9e8">Sneaker Beehouse</h1>
+                    </span>
+            </a>
+            <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover"
+                    id="vertical-hover">
+                <i class="ri-record-circle-line"></i>
+            </button>
+        </div>
+        <div id="scrollbar">
+            <div class="container-fluid">
+
+
+                <div id="two-column-menu">
+                </div>
+                <ul class="navbar-nav" id="navbar-nav">
+                    <li class="menu-title"><span data-key="t-menu">Menu</span></li>
+                    <li class="nav-item" sec:authorize="hasRole('MANAGER')">
+                        <a class="nav-link menu-link" href="#sidebarDashboards" data-bs-toggle="collapse" role="button"
+                           aria-expanded="false" aria-controls="sidebarDashboards">
+                            <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Thống kê</span>
+                        </a>
+                        <div class="collapse menu-dropdown" id="sidebarDashboards">
+                            <ul class="nav nav-sm flex-column">
+
+
+                                <li class="nav-item">
+                                    <a href="/trangchuadmin" class="nav-link" data-key="t-ecommerce"> Doanh thu </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li> <!-- end Dashboard Menu -->
+                    <li class="nav-item" sec:authorize="hasRole('MANAGER')">
+                        <a class="nav-link menu-link" href="#sidebarApps" data-bs-toggle="collapse" role="button"
+                           aria-expanded="false" aria-controls="sidebarApps">
+                            <i class="ri-apps-2-line"></i> <span data-key="t-apps">Quản lý</span>
+                        </a>
+                        <div class="collapse menu-dropdown" id="sidebarApps">
+                            <ul class="nav nav-sm flex-column">
+                                <li class="nav-item">
+                                    <a href="#sidebarCalendar" class="nav-link" data-bs-toggle="collapse" role="button"
+                                       aria-expanded="false" aria-controls="sidebarCalendar" data-key="t-calender">
+                                        Quản lý thuộc tính
+                                    </a>
+                                    <div class="collapse menu-dropdown" id="sidebarCalendar">
+                                        <ul class="nav nav-sm flex-column">
+                                            <li class="nav-item">
+                                                <a href="/qlkichthuoc" class="nav-link" data-key="t-main-calender"> Kích
+                                                    thước</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="/qlmausac" class="nav-link" data-key="t-month-grid"> Màu
+                                                    sắc </a>
+                                            </li>
+                                            <li class="nav-item">
+
+                                                <a href="/qlthuonghieu" class="nav-link"> Thương hiệu </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="/qlxuatxu" class="nav-link"> Xuất xứ</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/qlsanpham" class="nav-link" data-key="t-sanpham">Quản lý sản phẩm</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/qlvoucher" class="nav-link" data-key="t-voucher"> Quản lý voucher </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/qlkhuyenmai" class="nav-link" data-key="t-khuyenmai"> Quản lý chương trình
+                                        khuyến mãi </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <li class="nav-item" sec:authorize="hasAnyRole('MANAGER','STAFF')">
+                        <a class="nav-link menu-link" href="/don-hang/hien-thi" >
+                            <i class="ri-store-line"></i> <span data-key="t-layouts">Bán hàng</span>
+                        </a>
+
+                    </li> <!-- end Dashboard Menu -->
+                    <li class="nav-item" sec:authorize="hasAnyRole('MANAGER','STAFF')">
+                        <a class="nav-link menu-link" href="/donhangadmin" >
+                            <i class="ri-file-text-line"></i> <span data-key="t-layouts">Đơn hàng</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-link" href="#sidebarAuth" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAuth">
+                            <i class="ri-account-circle-line"></i> <span data-key="t-auth">Tài khoản</span>
+                        </a>
+                        <div class="collapse menu-dropdown" id="sidebarAuth">
+                            <ul class="nav nav-sm flex-column">
+                                <li class="nav-item" sec:authorize="hasAnyRole('MANAGER','ADMIN')">
+                                    <a href="/qlnhanvien" class="nav-link" data-key="t-nhanvien"> Nhân viên </a>
+                                </li>
+                                <li class="nav-item" sec:authorize="hasAnyRole('MANAGER','STAFF')">
+                                    <a href="/qlkhachhang" class="nav-link" data-key="t-khachang"> Khách hàng </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <!-- Sidebar -->
+        </div>
+
+        <div class="sidebar-background"></div>
+    </div>
+    <!-- Left Sidebar End -->
+    <!-- Vertical Overlay-->
+    <div class="vertical-overlay"></div>
+
+    <!-- ============================================================== -->
+    <!-- Start right Content here -->
+    <!-- ============================================================== -->
+    <div class="main-content">
+        <div class="page-content">
+            <div class="container-fluid">
+                <!-- COde  tại đây -->
+                <!-- Modal thông báo -->
+                <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1055;">
+                    <!-- Toast for Success -->
+                    <div th:if="${message}" id="toastSuccess" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div class="d-flex">
+                            <div class="toast-body">
+                                <p th:text="${message}">Thông báo thành công!</p>
+                            </div>
+                            <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                    </div>
+                    <!-- Toast for Error -->
+                    <div th:if="${errorMessage}" id="toastError" class="toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div class="d-flex">
+                            <div class="toast-body">
+                                <p th:text="${errorMessage}">Thông báo lỗi!</p>
+                            </div>
+                            <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header text-center">
+                        <h1 class="">Quản lý voucher</h1>
+                    </div>
+
+                    <div class="card-body">
+                        <form th:action="@{/qlvoucher}" method="get" class="p-4 border rounded shadow-sm bg-light">
+                            <div class="row">
+                                <div class="col-6">
+                                    <label class="form-label">Tìm kiếm</label>
+                                    <input type="text" class="form-control" name="keyword" placeholder="Mã, tên, loại voucher" th:value="${keyword}">
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label">Trạng thái</label>
+                                    <select name="trangThai" class="form-control">
+                                        <option th:selected="${trangThai == null}" value="">Tất cả</option>
+                                        <option th:selected="${trangThai == 0}" value="0">Ngừng hoạt đông</option>
+                                        <option th:selected="${trangThai == 1}" value="1">Đang hoạt đông</option>
+                                        <option th:selected="${trangThai == 2}" value="2">Chờ kích hoạt</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-6">
+                                    <label class="form-label">Ngày bắt đầu</label>
+                                    <input class="form-control" type="date" name="ngayBatDau" th:value="${ngayBatDau}">
+                                </div>
+
+                                <div class="col-6">
+                                    <label class="form-label">Ngày kết thúc</label>
+                                    <input class="form-control" type="date" name="ngayKetThuc" th:value="${ngayKetThuc}">
+                                </div>
+                            </div>
+                            <div class="text-center mt-2">
+                                <button class="btn btn-sm btn-search m-2"
+                                        type="submit"><i class="ri-search-line"></i> Tìm kiếm
+                                </button>
+                                <a href="/qlvoucher" class="btn btn-refresh btn-sm m-2" ><i class="ri-restart-line"></i> Làm mới</a>
+                            </div>
+                        </form>
+                        <a th:href="@{/qlvoucher/create}">
+                            <button class="btn btn-add btn-sm m-2"><i class="ri-add-line"></i> Thêm</button>
+                        </a>
+
+
+                        <!--                        <form th:action="@{/qlvoucher}" method="get" class="form-inline">-->
+                        <!--                            <input type="text" name="keyword" th:value="${param.keyword}" class="form-control" placeholder="tìm kiếm">-->
+                        <!--                            <input type="date" name="ngayBatDau" th:value="${param.ngayBatDau}" class="form-control" placeholder="Ngày bắt đầu">-->
+                        <!--                            <input type="date" name="ngayKetThuc" th:value="${param.ngayKetThuc}" class="form-control" placeholder="Ngày kết thúc">-->
+                        <!--                            <select name="trangThai" class="form-control">-->
+                        <!--                                <option th:selected="${param.trangThai == null}" value="">Tất cả</option>-->
+                        <!--                                <option th:selected="${param.trangThai == 0}" value="0">Hết hạn</option>-->
+                        <!--                                <option th:selected="${param.trangThai == 1}" value="1">Đang hoạt đông</option>-->
+                        <!--                                <option th:selected="${param.trangThai == 2}" value="2">Chờ kích hoạt</option>-->
+                        <!--                                &lt;!&ndash; Thêm các trạng thái khác &ndash;&gt;-->
+                        <!--                            </select>-->
+                        <!--                            <button type="submit" class="btn btn-primary">Lọc</button>-->
+                        <!--                        </form>-->
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th> Mã voucher</th>
+                                <th>Tên voucher</th>
+                                <th>Loại voucher</th>
+                                <th>Ngày bắt đầu</th>
+                                <th>Ngày kết thúc</th>
+                                <th>Hành động</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="i, stat : ${data}">
+                                <td th:text="${stat.index + 1}"></td>
+                                <td th:text="${i.maVoucher}"></td>
+                                <td th:text="${i.tenVoucher}"></td>
+                                <td th:text="${i.loaiVoucher}"></td>
+                                <td th:text="${#dates.format(i.ngayBatDau, 'dd/MM/yyyy')}"></td>
+                                <td th:text="${#dates.format(i.ngayKetThuc,'dd/MM/yyyy')}"></td>
+                                <td><a th:href="@{/qlvoucher-edit/{id}(id=${i.id})}" class="btn btn-sm btn-edit"><i
+                                        class="ri-edit-line"></i> Sửa</a>
+                                    <button
+                                            type="button"
+                                            class="btn btn-info btn-sm"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#customerDetailModal"
+                                            th:attr="data-id=${i.id},
+                                            data-mavc=${i.maVoucher},
+                                            data-tenvc=${i.tenVoucher},
+                                            data-loaivc=${i.loaiVoucher},
+                                            data-mota=${i.moTa},
+                                            data-soluong=${i.soLuong},
+                                            data-giatri=${i.loaiVoucher == 'Giảm giá %' ? i.giaTri + ' %' : #numbers.formatDecimal(i.giaTri, 0, 'POINT', 0, 'POINT')},
+                                            data-ngaybatdau=${#dates.format(i.ngayBatDau, 'dd/MM/yyyy')},
+                                            data-ngayketthuc=${#dates.format(i.ngayKetThuc,'dd/MM/yyyy')},
+                                            data-ngaytao=${#dates.format(i.ngayTao,'dd/MM/yyyy')},
+                                            data-nguoitao=${i.nguoiTao},
+                                            data-ngaysua=${#dates.format(i.ngaySua, 'dd/MM/yyyy')},
+                                            data-nguoisua=${i.nguoiSua},
+                                            data-dontoithieu=${#numbers.formatDecimal(i.donToiThieu, 0, 'POINT', 0,'POINT')},
+                                            data-trangthai=${i.trangThai == 0 ? 'Không hoạt động' : (i.trangThai == 1 ? 'Hoạt động' : 'Chờ kích hoạt')}">
+                                        <i class="ri-eye-line"></i> Xem chi tiết
+                                    </button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div class="modal fade" id="customerDetailModal" tabindex="-1" aria-labelledby="customerDetailModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="customerDetailModalLabel">Chi tiết voucher</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p><strong>Id:</strong> <span id="detailId"></span></p>
+                                        <p><strong>Mã voucher:</strong> <span id="detailMaVoucher"></span></p>
+                                        <p><strong>Tên voucher:</strong> <span id="detailTenVoucher"></span></p>
+                                        <p><strong>Loại voucher:</strong> <span id="detailLoaiVoucher"></span></p>
+                                        <p><strong>Mô tả:</strong> <span id="detailMoTa"></span></p>
+                                        <p><strong>Số lượng:</strong> <span id="detailSoLuong"></span></p>
+                                        <p><strong>Giá trị:</strong> <span id="detailGiaTri"></span></p>
+                                        <p><strong>Ngày bắt đầu:</strong> <span id="detailNgayBatDau"></span></p>
+                                        <p><strong>Ngày kết thúc:</strong> <span id="detailNgayKetThuc"></span></p>
+                                        <p><strong>Ngày tạo:</strong> <span id="detailNgayTao"></span></p>
+                                        <p><strong>Người tạo:</strong> <span id="detailNguoiTao"></span></p>
+                                        <p><strong>Ngày sửa:</strong> <span id="detailNgaySua"></span></p>
+                                        <p><strong>Nguời sửa:</strong> <span id="detailNguoiSua"></span></p>
+                                        <p><strong>Đơn tối thiểu:</strong> <span id="detailDonToiThieu"></span></p>
+                                        <p><strong>Trạng thái:</strong> <span id="detailTrangThai"></span></p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function () {
+                                const customerDetailModal = document.getElementById('customerDetailModal');
+
+                                customerDetailModal.addEventListener('show.bs.modal', function (event) {
+                                    const button = event.relatedTarget; // Button that triggered the modal
+                                    const id = button.getAttribute('data-id');
+                                    const maVC = button.getAttribute('data-mavc');
+                                    const tenVC = button.getAttribute('data-tenvc');
+                                    const loaiVC = button.getAttribute('data-loaivc');
+                                    const moTa = button.getAttribute('data-mota');
+                                    const soLuong = button.getAttribute('data-soluong');
+                                    const giaTri = button.getAttribute('data-giatri');
+                                    const ngayBatDau = button.getAttribute('data-ngaybatdau');
+                                    const ngayKetThuc = button.getAttribute('data-ngayketthuc');
+                                    const ngayTao = button.getAttribute('data-ngaytao');
+                                    const nguoiTao = button.getAttribute('data-nguoitao');
+                                    const ngaySua = button.getAttribute('data-ngaysua');
+                                    const nguoiSua = button.getAttribute('data-nguoisua');
+                                    const donToiThieu = button.getAttribute('data-dontoithieu')
+                                    const trangThai = button.getAttribute('data-trangthai');
+                                    // Update the modal's content
+                                    document.getElementById('detailId').textContent = id;
+                                    document.getElementById('detailMaVoucher').textContent = maVC;
+                                    document.getElementById('detailTenVoucher').textContent = tenVC;
+                                    document.getElementById('detailLoaiVoucher').textContent = loaiVC;
+                                    document.getElementById('detailMoTa').textContent = moTa;
+                                    document.getElementById('detailSoLuong').textContent = soLuong;
+                                    document.getElementById('detailGiaTri').textContent = giaTri;
+                                    document.getElementById('detailNgayBatDau').textContent = ngayBatDau;
+                                    document.getElementById('detailNgayKetThuc').textContent = ngayKetThuc;
+                                    document.getElementById('detailNgayTao').textContent = ngayTao;
+                                    document.getElementById('detailNguoiTao').textContent = nguoiTao;
+                                    document.getElementById('detailNgaySua').textContent = ngaySua;
+                                    document.getElementById('detailNguoiSua').textContent = nguoiSua;
+                                    document.getElementById('detailDonToiThieu').textContent = donToiThieu;
+                                    document.getElementById('detailTrangThai').textContent = trangThai;
+                                });
+                            });
+                        </script>
+                    </div><th:block th:if="${data.totalPages > 1}">
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination justify-content-center">
+                            <!-- Previous button -->
+                            <li class="page-item" th:classappend="${!data.hasPrevious()} ? 'disabled'">
+                                <a class="page-link"
+                                   th:href="@{/qlvoucher(page=${data.number - 1}, keyword=${param.keyword}, ngayBatDau=${param.ngayBatDau},ngayKetThuc=${param.ngayKetThuc},trangThai=${param.trangThai})}">&lt;</a>
+                            </li>
+                            <!-- Page numbers -->
+                            <li class="page-item" th:each="page : ${#numbers.sequence(0, data.totalPages - 1)}"
+                                th:classappend="${page == data.number} ? 'active'">
+                                <a class="page-link"
+                                   th:href="@{/qlvoucher(page=${page}, keyword=${param.keyword}, ngayBatDau=${param.ngayBatDau}, ngayKetThuc=${param.ngayKetThuc}, trangThai=${param.trangThai})}"
+                                   th:text="${page + 1}">1</a>
+                            </li>
+                            <!-- Next button -->
+                            <li class="page-item" th:classappend="${!data.hasNext()} ? 'disabled'">
+                                <a class="page-link"
+                                   th:href="@{/qlvoucher(page=${data.number + 1}, keyword=${param.keyword}, ngayBatDau=${param.ngayBatDau},ngayKetThuc=${param.ngayKetThuc},trangThai=${param.trangThai})}">&gt;</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </th:block>
+                </div>
+            </div>
+            <!-- container-fluid -->
+        </div>
+        <!-- End Page-content -->
+
+        <footer class="footer">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <script>document.write(new Date().getFullYear())</script>
+                        © Velzon.
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="text-sm-end d-none d-sm-block">
+                            Design & Develop by Themesbrand
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <!-- end main content-->
+
+</div>
+<!-- END layout-wrapper -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const toastSuccessElement = document.getElementById('toastSuccess');
+        const toastErrorElement = document.getElementById('toastError');
+
+        if (toastSuccessElement) {
+            const toastSuccess = new bootstrap.Toast(toastSuccessElement, {
+                autohide: true,
+                delay: 5000 // 5 seconds
+            });
+            toastSuccess.show();
+        }
+
+        if (toastErrorElement) {
+            const toastError = new bootstrap.Toast(toastErrorElement, {
+                autohide: true,
+                delay: 5000 // 5 seconds
+            });
+            toastError.show();
+        }
+    });
+</script>
+<script src="js/bootstrap.bundle.min.js"></script>
+<script src="js/simplebar.min.js"></script>
+<script src="js/waves.min.js"></script>
+<script src="js/feather.min.js"></script>
+<script src="js/lord-icon-2.1.0.js"></script>
+<script src="js/plugins.js"></script>
+
+<!-- apexcharts -->
+<script src="js/apexcharts.min.js"></script>
+
+<!-- Vector map-->
+<script src="js/jsvectormap.min.js"></script>
+<script src="js/world-merc.js"></script>
+
+<!--Swiper slider js-->
+<script src="js/swiper-bundle.min.js"></script>
+
+<!-- Dashboard init -->
+<script src="js/dashboard-ecommerce.init.js"></script>
+
+<!-- App js -->
+<script src="js/app.js"></script>
+</body>
+
+</html>

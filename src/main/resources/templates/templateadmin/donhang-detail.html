@@ -1,0 +1,1422 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en"
+      data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-image="none" data-preloader="disable"
+      data-theme="default" data-theme-colors="default">
+<head>
+    <meta charset="UTF-8">
+    <title>Quản lý đơn hàng</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description"/>
+    <meta content="Themesbrand" name="author"/>
+    <link rel="shortcut icon" href="../images/shoes.png">
+    <!-- Thêm Line Awesome CDN -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/line-awesome/1.3.0/line-awesome/css/line-awesome.min.css">
+    <!-- Thêm Material Design Icons CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font/css/materialdesignicons.min.css" rel="stylesheet">
+    <!-- Thêm Feather Icon CND -->
+    <script src="https://unpkg.com/feather-icons"></script>
+    <!-- Thêm Remix Icon -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+    <!-- Thêm link tới Boxicons CDN -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <!-- jsvectormap css -->
+    <link href="../css/jsvectormap.min.css" rel="stylesheet" type="text/css"/>
+
+    <!--Swiper slider css-->
+    <link href="../css/swiper-bundle.min.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Layout config Js -->
+    <script src="../js/layout.js"></script>
+    <!-- Bootstrap Css -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    n<!-- Icons Css -->
+    <link href="../css/icons.min.css" rel="stylesheet" type="text/css"/>
+    <!-- App Css-->
+    <link href="../css/app.min.css" rel="stylesheet" type="text/css"/>
+    <!-- custom Css-->
+    <link href="../css/custom.min.css" rel="stylesheet" type="text/css"/>
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <style>
+        .custom-btn {
+            padding: 4px 8px; /* Giảm kích thước padding */
+            font-size: 12px; /* Thu nhỏ cỡ chữ */
+            line-height: 1;  /* Tăng độ gọn gàng */
+        }
+
+        .circle {
+            width: 80px; /* Tăng kích thước hình tròn */
+            height: 80px; /* Tăng kích thước hình tròn */
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden; /* Ẩn phần hình ảnh thừa nếu lớn hơn hình tròn */
+            margin-bottom: 10px;
+        }
+
+        .circle-img {
+            width: 50%; /* Kích thước hình ảnh bên trong */
+            height: 50%; /* Căn chỉnh hình ảnh bên trong */
+            object-fit: cover; /* Căn chỉnh hình ảnh để không bị méo */
+        }
+
+        .bg-success {
+            background-color: #7bb6ea !important; /* Màu xanh */
+        }
+
+        .bg-danger {
+            background-color: #e5818b !important; /* Màu đỏ */
+        }
+
+        /* Container chính */
+        .timeline-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px auto;
+            max-width: 900px;
+            position: relative;
+        }
+
+        /* Timeline chính */
+        .timeline {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            position: relative;
+        }
+
+        /* Đường nối timeline - sẽ có đường nối uốn cong cho từng bước */
+        .timeline-line {
+            position: absolute;
+            top: 25px; /* Đảm bảo đường nối nằm dưới các icon */
+            left: 0;
+            right: 0;
+            z-index: 0;
+            height: 4px;
+            background-color: #007bff;
+            width: 100%;
+        }
+
+        /* Timeline step */
+        .timeline-step {
+            position: relative;
+            text-align: center;
+            flex: 1;
+            z-index: 1; /* Đặt trên đường nối */
+        }
+
+        /* Đường nối giữa các bước */
+        .timeline-step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 30px;
+            left: 50%;
+            width: 100%;
+            height: 4px;
+            background-color: #66c4e2;
+            z-index: -1;
+
+        }
+
+        /* Icon của từng bước */
+        .timeline-icon {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            background-color: #1ab5e5; /* Màu xanh dương */
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 10px auto;
+            font-size: 1.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Nội dung dưới icon */
+        .timeline-content {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .timeline-content p {
+            font-weight: bold;
+            color: #000;
+            margin: 0;
+        }
+
+        .timeline-content span {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+
+        /* Trạng thái khi hủy (màu đỏ) */
+        .timeline-step.cancelled .timeline-icon {
+            background-color: red;
+        }
+
+        /* Chỉ dành cho trạng thái active */
+        .timeline-step.active .timeline-icon {
+            background-color: #28a745; /* Màu xanh lá cây cho active */
+        }
+
+
+    </style>
+</head>
+<body>
+<!-- Begin page -->
+<div id="layout-wrapper">
+
+    <header id="page-topbar">
+        <div class="layout-width">
+            <div class="navbar-header">
+                <div class="d-flex">
+                    <!-- LOGO -->
+                    <div class="navbar-brand-box horizontal-logo">
+                        <a href="/trangchuadmin" class="logo logo-dark">
+                        <span class="logo-sm">
+                            <img src="../images/shoes.png" alt="" height="22">
+                        </span>
+                            <span class="logo-lg">
+                            <h1 class="mt-3" style="color: #abb9e8">Sneaker Beehouse</h1>
+                        </span>
+                        </a>
+
+                        <a href="/trangchuadmin" class="logo logo-light">
+                        <span class="logo-sm">
+                            <img src="../images/shoes.png" alt="" height="22">
+                        </span>
+                            <span class="logo-lg">
+                            <h1 class="mt-3" style="color: #abb9e8">Sneaker Beehouse</h1>
+                        </span>
+                        </a>
+                    </div>
+
+                    <button type="button"
+                            class="btn btn-sm px-3 fs-16 header-item vertical-menu-btn topnav-hamburger material-shadow-none"
+                            id="topnav-hamburger-icon">
+                    <span class="hamburger-icon">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </span>
+                    </button>
+                </div>
+
+                <div class="d-flex align-items-center">
+                    <div class="dropdown ms-sm-3 header-item topbar-user"
+                         th:if="${#authentication.name != 'anonymousUser'}">
+                        <button type="button" class="btn material-shadow-none" id="page-header-user-dropdown"
+                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="d-flex align-items-center">
+                            <img class="rounded-circle header-profile-user" src="../images/users/avatar-1.jpg"
+                                 alt="Header Avatar">
+                            <span class="text-start ms-xl-2">
+                                <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text"
+                                      th:text="${#authentication.principal.displayName}"></span>
+                                <span class="d-none d-xl-block ms-1 fs-12 user-name-sub-text"
+                                      th:text="${#authentication.principal.role == 'ROLE_ADMIN' ? 'Admin' : (#authentication.principal.role == 'ROLE_MANAGER' ? 'Quản lý' : 'Nhân viên')}">Trưởng nhóm</span>
+                            </span>
+                        </span>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-end" th:if="${#authentication.name != 'anonymousUser'}">
+                            <!-- item-->
+                            <h6 class="dropdown-header">Xin chào <span
+                                    th:text="${#authentication.principal.displayName}"></span></h6>
+                            <a class="dropdown-item" href="/thongtinadmin"><i
+                                    class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i> <span
+                                    class="align-middle">Thông tin cá nhân</span></a>
+                            <a class="dropdown-item" href="/tinnhanadmin"><i
+                                    class="mdi mdi-message-text-outline text-muted fs-16 align-middle me-1"></i> <span
+                                    class="align-middle">Tin nhắn</span></a>
+                            <a class="dropdown-item" href="/trogiupadmin"><i
+                                    class="mdi mdi-lifebuoy text-muted fs-16 align-middle me-1"></i> <span
+                                    class="align-middle">Trợ giúp</span></a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="/caidatadmin"><span
+                                    class="badge bg-success-subtle text-success mt-1 float-end">New</span><i
+                                    class="mdi mdi-cog-outline text-muted fs-16 align-middle me-1"></i> <span
+                                    class="align-middle">Cài đặt</span></a>
+                            <a class="dropdown-item" href="/khoamanhinhadmin"><i
+                                    class="mdi mdi-lock text-muted fs-16 align-middle me-1"></i> <span
+                                    class="align-middle">Khóa màn hình</span></a>
+                            <a class="dropdown-item" href="/logout"><i
+                                    class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> <span
+                                    class="align-middle" data-key="t-logout">Đăng xuất</span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- ========== App Menu ========== -->
+    <div class="app-menu navbar-menu">
+        <!-- LOGO -->
+        <div class="navbar-brand-box">
+            <!-- Dark Logo-->
+            <a href="/trangchuadmin" class="logo logo-dark">
+                    <span class="logo-sm">
+                        <img src="../images/shoes.png" alt="" height="22">
+                    </span>
+                <span class="logo-lg">
+                       <h1 class="mt-3" style="color: #abb9e8">Sneaker Beehouse</h1>
+                    </span>
+            </a>
+            <!-- Light Logo-->
+            <a href="/trangchuadmin" class="logo logo-light">
+                    <span class="logo-sm">
+                        <img src="../images/shoes.png" alt="" height="22">
+                    </span>
+                <span class="logo-lg">
+                        <h1 class="mt-3" style="color: #abb9e8">Sneaker Beehouse</h1>
+                    </span>
+            </a>
+            <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover"
+                    id="vertical-hover">
+                <i class="ri-record-circle-line"></i>
+            </button>
+        </div>
+
+        <div id="scrollbar">
+            <div class="container-fluid">
+
+
+                <div id="two-column-menu">
+                </div>
+                <ul class="navbar-nav" id="navbar-nav">
+                    <li class="menu-title"><span data-key="t-menu">Menu</span></li>
+                    <li class="nav-item" sec:authorize="hasRole('MANAGER')">
+                        <a class="nav-link menu-link" href="#sidebarDashboards" data-bs-toggle="collapse" role="button"
+                           aria-expanded="false" aria-controls="sidebarDashboards">
+                            <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Thống kê</span>
+                        </a>
+                        <div class="collapse menu-dropdown" id="sidebarDashboards">
+                            <ul class="nav nav-sm flex-column">
+
+
+                                <li class="nav-item">
+                                    <a href="/trangchuadmin" class="nav-link" data-key="t-ecommerce"> Doanh thu </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li> <!-- end Dashboard Menu -->
+                    <li class="nav-item" sec:authorize="hasRole('MANAGER')">
+                        <a class="nav-link menu-link" href="#sidebarApps" data-bs-toggle="collapse" role="button"
+                           aria-expanded="false" aria-controls="sidebarApps">
+                            <i class="ri-apps-2-line"></i> <span data-key="t-apps">Quản lý</span>
+                        </a>
+                        <div class="collapse menu-dropdown" id="sidebarApps">
+                            <ul class="nav nav-sm flex-column">
+                                <li class="nav-item">
+                                    <a href="#sidebarCalendar" class="nav-link" data-bs-toggle="collapse" role="button"
+                                       aria-expanded="false" aria-controls="sidebarCalendar" data-key="t-calender">
+                                        Quản lý thuộc tính
+                                    </a>
+                                    <div class="collapse menu-dropdown" id="sidebarCalendar">
+                                        <ul class="nav nav-sm flex-column">
+                                            <li class="nav-item">
+                                                <a href="/qlkichthuoc" class="nav-link" data-key="t-main-calender"> Kích
+                                                    thước</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="/qlmausac" class="nav-link" data-key="t-month-grid"> Màu
+                                                    sắc </a>
+                                            </li>
+                                            <li class="nav-item">
+
+                                                <a href="/qlthuonghieu" class="nav-link"> Thương hiệu </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="/qlxuatxu" class="nav-link"> Xuất xứ</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/qlsanpham" class="nav-link" data-key="t-sanpham">Quản lý sản phẩm</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/qlvoucher" class="nav-link" data-key="t-voucher"> Quản lý voucher </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/qlkhuyenmai" class="nav-link" data-key="t-khuyenmai"> Quản lý chương trình
+                                        khuyến mãi </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <li class="nav-item" sec:authorize="hasAnyRole('MANAGER','STAFF')">
+                        <a class="nav-link menu-link" href="/don-hang/hien-thi">
+                            <i class="ri-store-line"></i> <span data-key="t-layouts">Bán hàng</span>
+                        </a>
+
+                    </li> <!-- end Dashboard Menu -->
+                    <li class="nav-item" sec:authorize="hasAnyRole('MANAGER','STAFF')">
+                        <a class="nav-link menu-link" href="/donhangadmin">
+                            <i class="ri-file-text-line"></i> <span data-key="t-layouts">Đơn hàng</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-link" href="#sidebarAuth" data-bs-toggle="collapse" role="button"
+                           aria-expanded="false" aria-controls="sidebarAuth">
+                            <i class="ri-account-circle-line"></i> <span data-key="t-auth">Tài khoản</span>
+                        </a>
+                        <div class="collapse menu-dropdown" id="sidebarAuth">
+                            <ul class="nav nav-sm flex-column">
+                                <li class="nav-item" sec:authorize="hasAnyRole('ADMIN','MANAGER')">
+                                    <a href="/qlnhanvien" class="nav-link" data-key="t-nhanvien"> Nhân viên </a>
+                                </li>
+                                <li class="nav-item" sec:authorize="hasAnyRole('MANAGER','STAFF')">
+                                    <a href="/qlkhachhang" class="nav-link" data-key="t-khachang"> Khách hàng </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item" hidden="true">
+                        <a class="nav-link menu-link" href="#sidebarIcons" data-bs-toggle="collapse" role="button"
+                           aria-expanded="false" aria-controls="sidebarIcons">
+                            <i class="ri-compasses-2-line"></i> <span data-key="t-icons">Icons</span>
+                        </a>
+                        <div class="collapse menu-dropdown" id="sidebarIcons">
+                            <ul class="nav nav-sm flex-column">
+                                <li class="nav-item">
+                                    <a href="icons-remix.html" class="nav-link"><span data-key="t-remix">Remix</span>
+                                        <span class="badge badge-pill bg-info">v3.6</span></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="icons-boxicons.html" class="nav-link"><span
+                                            data-key="t-boxicons">Boxicons</span> <span
+                                            class="badge badge-pill bg-info">v2.1.4</span></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="icons-materialdesign.html" class="nav-link"><span
+                                            data-key="t-material-design">Material Design</span> <span
+                                            class="badge badge-pill bg-info">v7.2.96</span></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="icons-lineawesome.html" class="nav-link" data-key="t-line-awesome">Line
+                                        Awesome</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="icons-feather.html" class="nav-link"><span
+                                            data-key="t-feather">Feather</span> <span class="badge badge-pill bg-info">v4.29.1</span></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="icons-crypto.html" class="nav-link"> <span data-key="t-crypto-svg">Crypto SVG</span></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+
+                </ul>
+            </div>
+            <!-- Sidebar -->
+        </div>
+
+        <div class="sidebar-background"></div>
+    </div>
+    <!-- Left Sidebar End -->
+    <!-- Vertical Overlay-->
+    <div class="vertical-overlay"></div>
+
+    <!-- ============================================================== -->
+    <!-- Start right Content here -->
+    <!-- ============================================================== -->
+    <div class="main-content">
+
+        <div class="page-content">
+            <div class="container-fluid">
+                <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1055;">
+                    <!-- Toast for Success -->
+                    <div th:if="${message}" id="toastSuccess" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div class="d-flex">
+                            <div class="toast-body">
+                                <p th:text="${message}">Thông báo thành công!</p>
+                            </div>
+                            <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end">
+                    <a style="margin-bottom: 5px" th:href="@{/donhang/view-inphieugiao/{id}(id=${dataDHCT[0].donHang.id})}"
+                       th:if="${dataDHCT != null and dataDHCT.size() > 0 and dataDHCT[0].donHang != null and dataDHCT[0].donHang.trangThai != 'Đã hủy' and dataDHCT[0].donHang.trangThai != 'Đã thanh toán' and dataDHCT[0].donHang.trangThai != 'Hoàn thành' and dataDHCT[0].donHang.trangThai != 'Đang giao' and dataDHCT[0].donHang.loaiDonHang != 'Bán hàng tại quầy'}"target="_blank" class="btn btn-primary me-2">
+                        <i class="bi bi-printer"></i> In phiếu giao
+                    </a>
+                    <a style="margin-bottom: 5px" th:href="@{/donhang/view-inhoadon/{id}(id=${dataDHCT[0].donHang.id})}"
+                       th:if="${dataDHCT != null and dataDHCT.size() > 0 and dataDHCT[0].donHang != null }" target="_blank" class="btn btn-primary">
+                        <i class="bi bi-printer-fill"></i> In hoá đơn
+                    </a>
+                </div>
+                <div class="card">
+                    <h4 style="padding: 10px" class="text-muted mb-3">Danh sách hóa đơn / Hóa đơn <span
+                            class="text-primary"
+                            th:text="${dataDHCT != null && dataDHCT.size() > 0 && dataDHCT[0].donHang != null && dataDHCT[0].donHang.maDonHang != null ? dataDHCT[0].donHang.maDonHang : '...'}"></span>
+                    </h4>
+                    <div class="container mt-5">
+                        <!--                        <div class="d-flex justify-content-center align-items-center position-relative">-->
+                        <!--                            &lt;!&ndash; Trường hợp 1: dataLSDH rỗng hoặc null &ndash;&gt;-->
+                        <!--                            <div th:if="${dataLSDH == null or dataLSDH.isEmpty()}">-->
+                        <!--                                &lt;!&ndash; Nếu loại đơn hàng là 'Bán hàng tại quầy' &ndash;&gt;-->
+                        <!--                                <div th:if="${dataDHCT != null and !dataDHCT.isEmpty() and dataDHCT[0].donHang != null and dataDHCT[0].donHang.loaiDonHang == 'Bán hàng tại quầy' and dataDHCT[0].donHang.trangThai == 'Đã thanh toán'}" class="step text-center">-->
+                        <!--                                    <div class="circle mx-auto bg-success text-white">-->
+                        <!--                                        <img src="/images/iconsucess.png" alt="Hoàn thành" class="circle-img">-->
+                        <!--                                    </div>-->
+                        <!--                                    <p class="mb-0 fw-bold fs-6 text-success">Hoàn thành</p>-->
+                        <!--                                    <small th:text="${dataDHCT != null && dataDHCT.size() > 0 && dataDHCT[0].donHang != null && dataDHCT[0].donHang.ngayTao != null ? dataDHCT[0].donHang.ngayTao : 'Chưa có thông tin'}"></small>-->
+                        <!--                                </div>-->
+
+                        <!--&lt;!&ndash;                                 Nếu loại đơn hàng là 'Bán hàng tại quầy'  và đã huỷ&ndash;&gt;-->
+                        <!--                                <div th:if="${dataDHCT != null and !dataDHCT.isEmpty() and dataDHCT[0].donHang != null and dataDHCT[0].donHang.loaiDonHang == 'Bán hàng tại quầy' and dataDHCT[0].donHang.trangThai == 'Đã hủy'}" class="step text-center">-->
+                        <!--                                    <div class="circle mx-auto bg-danger text-white">-->
+                        <!--                                        <img src="/images/ionhuy.png" alt="Hoàn thành" class="circle-img">-->
+                        <!--                                    </div>-->
+                        <!--                                    <p class="mb-0 fw-bold fs-6 text-danger">Đã huỷ</p>-->
+                        <!--                                    <small th:text="${dataDHCT != null && dataDHCT.size() > 0 && dataDHCT[0].donHang != null && dataDHCT[0].donHang.ngayTao != null ? dataDHCT[0].donHang.ngayTao : 'Chưa có thông tin'}">Giao dịch tại quầy</small>-->
+                        <!--                                </div>-->
+
+                        <!--                                &lt;!&ndash; Nếu không phải 'Bán hàng tại quầy', hiển thị 'Chờ xác nhận' &ndash;&gt;-->
+                        <!--                                <div th:if="${dataDHCT == null or dataDHCT.isEmpty() or dataDHCT[0].donHang == null or dataDHCT[0].donHang.loaiDonHang != 'Bán hàng tại quầy'}" class="step text-center">-->
+                        <!--                                    <div class="circle mx-auto bg-success text-white">-->
+                        <!--                                        <img src="/images/icon!.png" alt="Chờ xác nhận" class="circle-img">-->
+                        <!--                                    </div>-->
+                        <!--                                    <p class="mb-0 fw-bold fs-6 text-success">Chờ xác nhận</p>-->
+                        <!--                                    <small th:text="${dataDHCT != null && dataDHCT.size() > 0 && dataDHCT[0].donHang != null && dataDHCT[0].donHang.ngayTao != null ? dataDHCT[0].donHang.ngayTao : 'Chưa có thông tin'}">Chưa có thông tin</small>-->
+                        <!--                                </div>-->
+                        <!--                            </div>-->
+
+                        <!--                            &lt;!&ndash; Trường hợp 2: dataLSDH không rỗng &ndash;&gt;-->
+                        <!--                            <div th:if="${dataLSDH != null and !dataLSDH.isEmpty()}" th:each="step, iterStat : ${dataLSDH}">-->
+                        <!--                                &lt;!&ndash; Hiển thị trạng thái cuối cùng trong dataLSDH &ndash;&gt;-->
+                        <!--                                <div class="step text-center" th:if="${iterStat.last}">-->
+                        <!--                                    <div class="circle mx-auto"-->
+                        <!--                                         th:classappend="${step.trangThaiMoi == 'Đã hủy'} ? 'bg-danger text-white' : 'bg-success text-white'">-->
+                        <!--                                        <img th:src="${step.trangThaiMoi == 'Đã hủy' ? '/images/ionhuy.png' : (step.trangThaiMoi == 'Đã thanh toán' ? '/images/iconsucess.png' : '/images/icon!.png')}"-->
+                        <!--                                             alt="Trạng thái" class="circle-img">-->
+                        <!--                                    </div>-->
+                        <!--                                    <p class="mb-0 fw-bold fs-6"-->
+                        <!--                                       th:text="${#strings.isEmpty(step.trangThaiMoi) ? 'Chờ xác nhận' : step.trangThaiMoi}"-->
+                        <!--                                       th:classappend="${step.trangThaiMoi == 'Đã hủy'} ? 'text-danger' : 'text-success'">-->
+                        <!--                                    </p>-->
+                        <!--                                    <small th:text="${#strings.isEmpty(step.ngaySua) ? 'Chưa có thông tin' : #temporals.format(step.ngaySua, 'dd-MM-yyyy HH:mm:ss') }"></small>-->
+                        <!--                                </div>-->
+                        <!--                            </div>-->
+                        <!--                        </div>-->
+
+                        <!--                        //////-->
+                        <div class="timeline-container">
+
+                            <!-- Trường hợp 1: dataLSDH rỗng hoặc null -->
+                            <div class="timeline" th:if="${dataLSDH == null or dataLSDH.isEmpty()}">
+                                <!-- Nếu loại đơn hàng là 'Bán hàng tại quầy' -->
+                                <div th:if="${dataDHCT != null and !dataDHCT.isEmpty() and dataDHCT[0].donHang != null and dataDHCT[0].donHang.loaiDonHang == 'Bán hàng tại quầy' and dataDHCT[0].donHang.trangThai == 'Đã thanh toán'}"
+                                     class="timeline-step">
+                                    <div class="timeline-icon">
+                                        <i class="fas fa-credit-card"></i>
+                                    </div>
+                                    <div class="timeline-content">
+                                        <p>Hoàn thành</p>
+                                        <span th:text="${dataDHCT != null && dataDHCT.size() > 0 && dataDHCT[0].donHang != null && dataDHCT[0].donHang.ngayTao != null ? #temporals.format(dataDHCT[0].donHang.ngayTao, 'dd-MM-yyyy HH:mm:ss') : 'Chưa có thông tin'}"></span>
+                                    </div>
+                                </div>
+
+                                <!--                                 Nếu loại đơn hàng là 'Bán hàng tại quầy'  và đã huỷ-->
+                                <div th:if="${dataDHCT != null and !dataDHCT.isEmpty() and dataDHCT[0].donHang != null and dataDHCT[0].donHang.loaiDonHang == 'Bán hàng tại quầy' and dataDHCT[0].donHang.trangThai == 'Đã hủy'}"
+                                     class="timeline-step">
+                                    <div class="timeline-icon">
+                                        <i class="fas fa-times"></i>
+                                    </div>
+                                    <div class="timeline-content">
+                                        <p>Đã huỷ</p>
+                                        <span th:text="${dataDHCT != null && dataDHCT.size() > 0 && dataDHCT[0].donHang != null && dataDHCT[0].donHang.ngayTao != null ? dataDHCT[0].donHang.ngayTao : 'Chưa có thông tin'}"></span>
+                                    </div>
+                                </div>
+
+                                <!-- Nếu không phải 'Bán hàng tại quầy', hiển thị 'Chờ xác nhận' -->
+                                <div th:if="${dataDHCT == null or dataDHCT.isEmpty() or dataDHCT[0].donHang == null or dataDHCT[0].donHang.loaiDonHang != 'Bán hàng tại quầy'}"
+                                     class="timeline-step">
+                                    <div class="timeline-icon">
+                                        <i class="fas fa-exclamation"></i>
+                                    </div>
+                                    <div class="timeline-content">
+                                        <p>Chờ xác nhận</p>
+                                        <span th:text="${dataDHCT != null && dataDHCT.size() > 0 && dataDHCT[0].donHang != null && dataDHCT[0].donHang.ngayTao != null ? #temporals.format(dataDHCT[0].donHang.ngayTao, 'dd-MM-yyyy HH:mm:ss') : 'Chưa có thông tin'}"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--                            <div class="timeline" th:if="${dataLSDH == null or dataLSDH.isEmpty()}">-->
+                            <!--                                &lt;!&ndash; Default trạng thái khi dataLSDH là null &ndash;&gt;-->
+                            <!--                                <div class="timeline-step">-->
+                            <!--                                    <div class="timeline-icon">-->
+                            <!--                                        <i class="fas fa-exclamation"></i>-->
+                            <!--                                    </div>-->
+                            <!--                                    <div class="timeline-content">-->
+                            <!--                                        <p>Chờ xác nhận</p>-->
+                            <!--                                        <span th:text="${#dates.format(#dates.createNow(), 'dd-MM-yyyy HH:mm:ss')}"></span>-->
+                            <!--                                    </div>-->
+                            <!--                                </div>-->
+                            <!--                            </div>-->
+
+                            <!-- Trường hợp dataLSDH có dữ liệu -->
+                            <div class="timeline" th:if="${dataLSDH != null and !dataLSDH.isEmpty()}">
+                                <!-- Thêm bước "Chờ xác nhận" -->
+                                <div class="timeline-step">
+                                    <div class="timeline-icon">
+                                        <i class="fas fa-exclamation"></i>
+                                    </div>
+                                    <div class="timeline-content">
+                                        <p>Chờ xác nhận</p>
+                                        <span th:if="${dataDHCT != null and dataDHCT.size() > 0 and dataDHCT[0].donHang != null }"
+                                              th:text="${#temporals.format(dataDHCT[0].donHang.ngayTao, 'dd-MM-yyyy HH:mm:ss')}"></span>
+                                    </div>
+                                </div>
+
+                                <!-- Hiển thị các bước trong dataLSDH -->
+                                <div class="timeline-step" th:each="lsdh : ${dataLSDH}">
+                                    <div class="timeline-icon">
+                                        <i class="fas"
+                                           th:classappend="${lsdh.trangThaiMoi == 'Chờ giao' ? 'fa-truck' :
+                                            (lsdh.trangThaiMoi == 'Đang giao' ? 'fa-shipping-fast' :
+                                            (lsdh.trangThaiMoi == 'Đã thanh toán' ? 'fa-credit-card' :
+                                            (lsdh.trangThaiMoi == 'Hoàn thành' ? 'bi bi-check-circle-fill' : 'fa-times')))}">
+                                        </i>
+                                    </div>
+                                    <div class="timeline-content">
+                                        <p th:text="${lsdh.trangThaiMoi == 'Đã thanh toán' ? 'Đã giao hàng' : lsdh.trangThaiMoi}"></p>
+                                        <span th:text="${#temporals.format(lsdh.ngaySua, 'dd-MM-yyyy HH:mm:ss')}"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <br><br><br>
+                        <!--                        //-->
+                        <div class="col">
+                            <div class="d-flex justify-content-between align-items-center"
+                                 th:if="${dataDHCT != null and dataDHCT.size() > 0}">
+                                <div class="d-flex">
+                                    <!-- Nút Xác nhận -->
+                                    <!-- Form chính -->
+                                    <form id="confirmForm" th:action="@{/donhangadmin-detail/{orderId}/confirm(orderId=${dataDHCT[0].donHang.id})}" method="post">
+                                        <button class="btn btn-primary" type="button"
+                                                th:if="${dataDHCT[0].donHang.trangThai == 'Đang chờ' || dataDHCT[0].donHang.trangThai == 'Đang xử lý' || dataDHCT[0].donHang.trangThai == 'Chờ xác nhận'}"
+                                                onclick="openConfirmDialog()">
+                                            Xác nhận
+                                        </button>
+                                    </form>
+
+                                    <!-- Dialog tùy chỉnh -->
+                                    <div id="confirmDialog" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; background-color: #fff; border-radius: 8px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3); padding: 20px; text-align: center; width: 40%; height: 35%;">
+                                        <h4>Xác nhận đơn hàng</h4>
+                                        <label for="confirmReason">Nhập ghi chú:</label>
+                                        <input class="form-control" type="text" id="confirmReason" placeholder="Nhập ghi chú..." style="width: 80%; padding: 5px; margin-top: 10px;">
+                                        <br><br>
+                                        <button onclick="submitForm()" class="btn btn-success">Xác nhận</button>
+                                        <button onclick="closeConfirmDialog()" style="margin-left: 10px;" class="btn btn-danger">Hủy</button>
+                                    </div>
+
+                                    <!-- Overlay để làm mờ nền -->
+                                    <div id="overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 999;"></div>
+
+                                    <!-- Nút Vận chuyển -->
+                                    <form id="confirmForm1" th:action="@{/donhangadmin-detail/{orderId}/ship(orderId=${dataDHCT[0].donHang.id})}"
+                                          method="post">
+                                        <button class="btn btn-primary" type="button"
+                                                th:if="${dataDHCT[0].donHang.trangThai == 'Chờ giao'}" onclick="openConfirmDialog1()">Vận chuyển
+                                        </button>
+                                    </form>
+
+                                    <!-- Dialog tùy chỉnh -->
+                                    <div id="confirmDialog1" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; background-color: #fff; border-radius: 8px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3); padding: 20px; text-align: center; width: 40%; height: 35%;">
+                                        <h4>Xác nhận vận chuyển đơn hàng</h4>
+                                        <label for="confirmReason">Nhập ghi chú:</label>
+                                        <input class="form-control" type="text" id="confirmReason1" placeholder="Nhập ghi chú..." style="width: 80%; padding: 5px; margin-top: 10px;">
+                                        <br><br>
+                                        <button onclick="submitForm1()" class="btn btn-success">Xác nhận</button>
+                                        <button onclick="closeConfirmDialog1()" style="margin-left: 10px;" class="btn btn-danger">Hủy</button>
+                                    </div>
+
+                                    <!-- Overlay để làm mờ nền -->
+                                    <div id="overlay1" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 999;"></div>
+
+                                    <!-- Nút Thanh toán -->
+                                    <form id="confirmForm2" th:action="@{/donhangadmin-detail/{orderId}/pay(orderId=${dataDHCT[0].donHang.id})}"
+                                          method="post">
+                                        <button class="btn btn-primary" type="button"
+                                                th:if="${dataDHCT[0].donHang.trangThai == 'Đang giao'}" onclick="openConfirmDialog2()">Đã giao hàng
+                                        </button>
+                                    </form>
+
+                                    <!-- Dialog tùy chỉnh -->
+                                    <div id="confirmDialog2" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; background-color: #fff; border-radius: 8px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3); padding: 20px; text-align: center; width: 40%; height: 35%;">
+                                        <h4>Xác nhận thanh toán đơn hàng</h4>
+                                        <label for="confirmReason">Nhập ghi chú:</label>
+                                        <input class="form-control" type="text" id="confirmReason2" placeholder="Nhập ghi chú..." style="width: 80%; padding: 5px; margin-top: 10px;">
+                                        <br><br>
+                                        <button onclick="submitForm2()" class="btn btn-success">Xác nhận</button>
+                                        <button onclick="closeConfirmDialog2()" style="margin-left: 10px;" class="btn btn-danger">Hủy</button>
+                                    </div>
+
+                                    <!-- Overlay để làm mờ nền -->
+                                    <div id="overlay2" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 999;"></div>
+
+                                    <!-- Nút Hoàn thành -->
+                                    <form id="confirmForm4" th:action="@{/donhangadmin-detail/{orderId}/hoanThanh(orderId=${dataDHCT[0].donHang.id})}"
+                                          method="post">
+                                        <button class="btn btn-primary" type="button"
+                                                th:if="${dataDHCT[0].donHang.trangThai == 'Đã thanh toán'}" onclick="openConfirmDialog4()">Hoàn thành
+                                        </button>
+                                    </form>
+
+                                    <!-- Dialog tùy chỉnh -->
+                                    <div id="confirmDialog4" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; background-color: #fff; border-radius: 8px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3); padding: 20px; text-align: center; width: 40%; height: 35%;">
+                                        <h4>Xác nhận hoàn thành đơn hàng</h4>
+                                        <label for="confirmReason">Nhập ghi chú:</label>
+                                        <input class="form-control" type="text" id="confirmReason4" placeholder="Nhập ghi chú..." style="width: 80%; padding: 5px; margin-top: 10px;">
+                                        <br><br>
+                                        <button onclick="submitForm4()" class="btn btn-success">Xác nhận</button>
+                                        <button onclick="closeConfirmDialog4()" style="margin-left: 10px;" class="btn btn-danger">Hủy</button>
+                                    </div>
+
+                                    <!-- Overlay để làm mờ nền -->
+                                    <div id="overlay4" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 999;"></div>
+
+
+                                    <!-- Nút Hủy -->
+                                    <form id="confirmForm3" th:action="@{/donhangadmin-detail/{orderId}/huy(orderId=${dataDHCT[0].donHang.id})}"
+                                          method="post">
+                                        <button style="margin-left: 50px" class="btn btn-danger" type="button" onclick="openConfirmDialog3()"
+                                                th:if="${dataDHCT[0].donHang.trangThai == 'Đang chờ' || dataDHCT[0].donHang.trangThai == 'Chờ giao' || dataDHCT[0].donHang.trangThai == 'Đang xử lý' || dataDHCT[0].donHang.trangThai == 'Chờ xác nhận'}">
+                                            Huỷ
+                                        </button>
+                                    </form>
+
+                                    <!-- Dialog tùy chỉnh -->
+                                    <div id="confirmDialog3" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; background-color: #fff; border-radius: 8px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3); padding: 20px; text-align: center; width: 40%; height: 35%;">
+                                        <h4>Xác nhận huỷ đơn hàng</h4>
+                                        <label for="confirmReason">Nhập ghi chú:</label>
+                                        <input class="form-control" type="text" id="confirmReason3" placeholder="Nhập ghi chú..." style="width: 80%; padding: 5px; margin-top: 10px;">
+                                        <br><br>
+                                        <button onclick="submitForm3()" class="btn btn-success">Xác nhận</button>
+                                        <button onclick="closeConfirmDialog3()" style="margin-left: 10px;" class="btn btn-danger">Hủy</button>
+                                    </div>
+
+                                    <!-- Overlay để làm mờ nền -->
+                                    <div id="overlay3" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 999;"></div>
+
+                                </div>
+                                <div>
+                                    <!-- Nút Chi tiết -->
+                                    <button class="btn btn-warning" data-bs-toggle="modal"
+                                            data-bs-target="#historyModal">
+                                        Chi tiết
+                                    </button>
+
+                                    <!-- Modal Lịch Sử -->
+                                    <div class="modal fade" id="historyModal" tabindex="-1"
+                                         aria-labelledby="historyModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="historyModalLabel">Lịch Sử Đơn Hàng</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <!-- Hiển thị danh sách lịch sử -->
+                                                    <table class="table table-striped">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th>Mã đơn hàng</th>
+                                                            <th>Trạng thái</th>
+<!--                                                            <th>Trạng thái mới</th>-->
+                                                            <th>Ngày sửa</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        <tr th:if="${#lists.isEmpty(dataLSDH) }">
+                                                            <td>1</td>
+                                                            <td th:text="${dataDHCT[0].donHang.maDonHang}"></td>
+                                                            <td th:text="${dataDHCT[0].donHang.trangThai}"></td>
+<!--                                                            <td>#</td>-->
+                                                            <td th:text="${#temporals.format(dataDHCT[0].donHang.ngayTao, 'dd-MM-yyyy HH:mm:ss')}"></td>
+                                                        </tr>
+                                                        <tr th:each="lsdh, stat : ${dataLSDH}">
+                                                            <td th:text="${stat.index + 1}"></td>
+                                                            <td th:text="${lsdh.donHang.maDonHang}"></td>
+                                                            <td th:text="${lsdh.trangThaiMoi}"></td>
+<!--                                                            <td th:text="${lsdh.trangThaiMoi}"></td>-->
+                                                            <td th:text="${#temporals.format(lsdh.ngaySua, 'dd-MM-yyyy HH:mm:ss')}"></td>
+                                                        </tr>
+
+                                                        </tbody>
+                                                    </table>
+                                                    <!--                                                    <div th:if="${#lists.isEmpty(dataLSDH)}">-->
+                                                    <!--                                                        <p>Không có lịch sử đơn hàng nào!</p>-->
+                                                    <!--                                                    </div>-->
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">Đóng
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p th:if="${dataDHCT == null or dataDHCT.size() == 0}">
+                                Không có dữ liệu chi tiết đơn hàng.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="container mt-4">
+                        <!-- Thông tin đơn hàng -->
+                        <hr>
+                        <div class="row mb-4">
+                            <h5 class="text-danger">THÔNG TIN ĐƠN HÀNG</h5>
+                            <br><br>
+                            <div class="col-4">
+                                <table class="table table-borderless text-end">
+                                    <tbody >
+                                    <tr>
+                                        <td class="text-start">Trạng thái:</td>
+                                        <td class="text-danger" th:text="${dataDHCT != null && dataDHCT.size() > 0 && dataDHCT[0].donHang != null && dataDHCT[0].donHang.trangThai != null ? dataDHCT[0].donHang.trangThai : '...'}"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-start">Mã đơn hàng: </td>
+                                        <td class="text-danger" th:text="${dataDHCT != null && dataDHCT.size() > 0 && dataDHCT[0].donHang != null && dataDHCT[0].donHang.maDonHang != null ? dataDHCT[0].donHang.maDonHang : '...'}"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-start">Loại đơn hàng:</td>
+                                        <td class="text-danger" th:text="${dataDHCT != null && dataDHCT.size() > 0 && dataDHCT[0].donHang != null && dataDHCT[0].donHang.loaiDonHang != null ? dataDHCT[0].donHang.loaiDonHang : '...'}"></td>
+                                    </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-3">
+                            </div>
+                            <div class="col-4">
+
+                                <table class="table table-borderless text-end">
+                                    <tbody >
+                                    <tr>
+                                        <td class="text-start">Tổng tiền hàng: </td>
+                                        <td class="text-danger"  th:text="${dataDHCT != null && dataDHCT.size() > 0 && dataDHCT[0].donHang != null && dataDHCT[0].donHang.tongTien != null ?  #numbers.formatDecimal(dataDHCT[0].donHang.tongTien,0,'POINT',0,'POINT') + ' đ' : '...'}"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-start">Phí vận chuyển: </td>
+                                        <td class="text-danger" th:text = "${dataDHCT != null && dataDHCT.size() > 0 && dataDHCT[0].donHang != null && dataDHCT[0].donHang.loaiDonHang == 'Online' ? #numbers.formatDecimal(phiShip, 0, 'POINT', 0, 'POINT') : '0'} + ' đ'"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-start">Phải thanh toán: </td>
+                                        <td class="text-danger" th:text="${dataDHCT != null && dataDHCT.size() > 0 && dataDHCT[0].donHang != null ?
+                                     (dataDHCT[0].donHang.loaiDonHang == 'Online' ?
+                                         (dataDHCT[0].donHang.tongTienGiamGia != null ?
+                                             #numbers.formatDecimal(dataDHCT[0].donHang.tongTienGiamGia + phiShip,0,'POINT',0,'POINT') + ' đ' :
+                                             (dataDHCT[0].donHang.tongTien != null ?
+                                                 #numbers.formatDecimal(dataDHCT[0].donHang.tongTien + phiShip,0,'POINT',0,'POINT') + ' đ' : '0')) :
+                                         (dataDHCT[0].donHang.tongTienGiamGia != null ?
+                                             #numbers.formatDecimal(dataDHCT[0].donHang.tongTienGiamGia,0,'POINT',0,'POINT') + ' đ' :
+                                             (dataDHCT[0].donHang.tongTien != null ?
+                                                 #numbers.formatDecimal(dataDHCT[0].donHang.tongTien,0,'POINT',0,'POINT')  + ' đ' : '0'))) :
+                                     '0'}">
+                                        </td>
+
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <hr>
+                        <!-- Thông tin khách hàng -->
+
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <h5 class="text-danger">THÔNG TIN KHÁCH ĐẶT</h5>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row mb-4">
+                            <div class="col-4">
+                                <table class="table table-borderless text-end">
+                                    <tbody >
+                                    <tr>
+                                        <td class="text-start">Tên khách hàng: </td>
+                                        <td class="text-danger" th:text="${dataDHCT != null && dataDHCT.size() > 0 && dataDHCT[0].donHang != null && dataDHCT[0].donHang.khachHang != null && dataDHCT[0].donHang.khachHang.tenKhachHang != null ? dataDHCT[0].donHang.khachHang.tenKhachHang : 'Khách hàng lẻ'}"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-start">Số điện thoại: </td>
+                                        <td class="text-danger" th:text="${dataDHCT != null && dataDHCT.size() > 0 && dataDHCT[0].donHang != null && dataDHCT[0].donHang.khachHang != null && dataDHCT[0].donHang.khachHang.soDienThoai != null ? dataDHCT[0].donHang.khachHang.soDienThoai : '...'}"></td>
+                                    </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-3">
+                            </div>
+                            <div class="col-4">
+
+                                <table class="table table-borderless text-end">
+                                    <tbody >
+                                    <tr>
+                                        <td class="text-start">Email: </td>
+                                        <td class="text-danger" th:text="${dataDHCT != null && dataDHCT.size() > 0 && dataDHCT[0].donHang != null && dataDHCT[0].donHang.khachHang != null && dataDHCT[0].donHang.khachHang.email != null ? dataDHCT[0].donHang.khachHang.email : '...'}"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-start">Địa chỉ: </td>
+                                        <td class="text-danger" th:text="${dataDHCT != null && dataDHCT.size() > 0 && dataDHCT[0].donHang != null && dataDHCT[0].donHang.khachHang != null && dataDHCT[0].donHang.khachHang.diaChi != null ? dataDHCT[0].donHang.khachHang.diaChi : '...'}"></td>
+                                    </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <hr>
+                        <!-- Thông tin khách hàng nhân hàng-->
+
+                        <div th:if="${dataDHCT != null and dataDHCT.size() > 0 and dataDHCT[0].donHang != null and dataDHCT[0].donHang.loaiDonHang == 'Online' }">
+                            <div class="row align-items-center">
+                                <div class="col">
+                                    <h5 class="text-danger">THÔNG TIN NGƯỜI NHẬN</h5>
+                                </div>
+                                <div class="col-auto">
+                                    <button
+                                            th:if="${dataDHCT != null and dataDHCT.size() > 0 and dataDHCT[0].donHang != null and dataDHCT[0].donHang.trangThai == 'Chờ xác nhận'}"
+                                            class="btn btn-warning"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#editCustomerModal">
+                                        Thay đổi thông tin
+                                    </button>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row mb-4">
+                                <div class="col-4">
+                                    <table class="table table-borderless text-end">
+                                        <tbody >
+                                        <tr>
+                                            <td class="text-start">Tên người nhận: </td>
+                                            <td class="text-danger" th:text="${dataDHCT != null && dataDHCT.size() > 0 && dataDHCT[0].donHang != null  && dataDHCT[0].donHang.tenNguoiNhan == null ?
+                                        (dataDHCT != null && dataDHCT.size() > 0 && dataDHCT[0].donHang != null && dataDHCT[0].donHang.khachHang != null && dataDHCT[0].donHang.khachHang.tenKhachHang != null ? dataDHCT[0].donHang.khachHang.tenKhachHang : 'Khách hàng lẻ') : (dataDHCT != null && dataDHCT.size() > 0 && dataDHCT[0].donHang != null ? dataDHCT[0].donHang.tenNguoiNhan : '...')}"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-start">Số điện thoại: </td>
+                                            <td class="text-danger" th:text="${ dataDHCT != null && dataDHCT.size() > 0 && dataDHCT[0].donHang != null  && dataDHCT[0].donHang.soDienThoaiGiaoHang == null ?
+                                        (dataDHCT != null && dataDHCT.size() > 0 && dataDHCT[0].donHang != null && dataDHCT[0].donHang.khachHang != null && dataDHCT[0].donHang.khachHang.soDienThoai != null ? dataDHCT[0].donHang.khachHang.soDienThoai : '...') : (dataDHCT != null && dataDHCT.size() > 0 && dataDHCT[0].donHang != null ? dataDHCT[0].donHang.soDienThoaiGiaoHang : '...')}"></td>
+                                        </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-3">
+                                </div>
+                                <div class="col-4">
+
+                                    <table class="table table-borderless text-end">
+                                        <tbody >
+                                        <tr>
+                                            <td class="text-start">Email: </td>
+                                            <td class="text-danger" th:text="${ dataDHCT != null && dataDHCT.size() > 0 && dataDHCT[0].donHang != null  && dataDHCT[0].donHang.emailGiaoHang == null ?
+                                        (dataDHCT != null && dataDHCT.size() > 0 && dataDHCT[0].donHang != null && dataDHCT[0].donHang.khachHang != null && dataDHCT[0].donHang.khachHang.email != null ? dataDHCT[0].donHang.khachHang.email : '...') : (dataDHCT != null && dataDHCT.size() > 0 && dataDHCT[0].donHang != null ? dataDHCT[0].donHang.emailGiaoHang : '...')}"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-start">Địa chỉ: </td>
+                                            <td class="text-danger" th:text="${dataDHCT != null && dataDHCT.size() > 0 && dataDHCT[0].donHang != null  && dataDHCT[0].donHang.diaChiGiaoHang == null ?
+                                        (dataDHCT != null && dataDHCT.size() > 0 && dataDHCT[0].donHang != null && dataDHCT[0].donHang.khachHang != null && dataDHCT[0].donHang.khachHang.diaChi != null ? dataDHCT[0].donHang.khachHang.diaChi : '...') : (dataDHCT != null && dataDHCT.size() > 0 && dataDHCT[0].donHang != null ? dataDHCT[0].donHang.diaChiGiaoHang : '...')}"></td>
+                                        </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Modal Sua khach hàng-->
+                        <div th:if="${dataDHCT != null and dataDHCT.size() > 0 and dataDHCT[0].donHang != null and dataDHCT[0].donHang.tenNguoiNhan == null and dataDHCT[0].donHang.diaChiGiaoHang == null}">
+                        <div class="modal fade" id="editCustomerModal" tabindex="-1"
+                             aria-labelledby="editCustomerModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <form th:if="${dataDHCT != null and dataDHCT.size() > 0 and dataDHCT[0].donHang != null and dataDHCT[0].donHang.khachHang != null}"
+                                          th:action="@{'/update-customer/' + ${dataDHCT[0].donHang.id}}"
+                                          method="post"
+                                          onsubmit="return confirmAction('Bạn có chắc chắn muốn thay đổi thông tin khách hàng này?')">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title text-danger" id="editCustomerModalLabel">Thay đổi
+                                                thông tin khách hàng</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="mb-3">
+                                                <label for="tenKhachHang" class="form-label">Tên khách hàng</label>
+                                                <input type="text" class="form-control" id="tenKhachHang"
+                                                       name="tenKhachHang"
+                                                       th:value="${dataDHCT[0].donHang.khachHang.tenKhachHang}"
+                                                       required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="soDienThoai" class="form-label">Số điện thoại</label>
+                                                <input type="text" class="form-control" id="soDienThoai"
+                                                       name="soDienThoai"
+                                                       th:value="${dataDHCT[0].donHang.khachHang.soDienThoai}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="email" class="form-label">Email</label>
+                                                <input type="email" class="form-control" id="email" name="email"
+                                                       th:value="${dataDHCT[0].donHang.khachHang.email}">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="diaChi" class="form-label">Địa chỉ</label>
+                                                <input type="text" class="form-control" id="diaChi" name="diaChi"
+                                                       th:value="${dataDHCT[0].donHang.khachHang.diaChi}">
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                Hủy
+                                            </button>
+                                            <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                        <!-- Modal Sua khach hàng Giao hang-->
+                        <div th:if="${dataDHCT != null and dataDHCT.size() > 0 and dataDHCT[0].donHang != null and dataDHCT[0].donHang.tenNguoiNhan != null and dataDHCT[0].donHang.diaChiGiaoHang != null}">
+                            <div class="modal fade" id="editCustomerModal" tabindex="-1"
+                                 aria-labelledby="editCustomerModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <form th:if="${dataDHCT != null and dataDHCT.size() > 0 and dataDHCT[0].donHang != null and dataDHCT[0].donHang.khachHang != null}"
+                                              th:action="@{'/update-customer/' + ${dataDHCT[0].donHang.id}}"
+                                              method="post"
+                                              onsubmit="return confirmAction('Bạn có chắc chắn muốn thay đổi thông tin khách hàng này?')">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title text-danger" id="editCustomerModalLabel">Thay đổi
+                                                    thông tin khách hàng</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="mb-3">
+                                                    <label for="tenKhachHang" class="form-label">Tên khách hàng</label>
+                                                    <input type="text" class="form-control" id="tenKhachHang"
+                                                           name="tenKhachHang"
+                                                           th:value="${dataDHCT[0].donHang.tenNguoiNhan}"
+                                                           required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="soDienThoai" class="form-label">Số điện thoại</label>
+                                                    <input type="text" class="form-control" id="soDienThoai"
+                                                           name="soDienThoai"
+                                                           th:value="${dataDHCT[0].donHang.soDienThoaiGiaoHang}" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="email" class="form-label">Email</label>
+                                                    <input type="email" class="form-control" id="email" name="email"
+                                                           th:value="${dataDHCT[0].donHang.emailGiaoHang}">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="diaChi" class="form-label">Địa chỉ</label>
+                                                    <input type="text" class="form-control" id="diaChi" name="diaChi"
+                                                           th:value="${dataDHCT[0].donHang.diaChiGiaoHang}">
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                    Hủy
+                                                </button>
+                                                <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Sản phẩm -->
+                        <hr>
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <h5 class="text-danger">THÔNG TIN SẢN PHẨM</h5>
+                            </div>
+                            <div class="col-auto">
+                                <a
+                                        th:href="@{/edit-sanpham-donhang/{id}(id=${dataDHCT[0].donHang.id})}"
+                                        th:if="${dataDHCT != null and dataDHCT.size() > 0 and dataDHCT[0].donHang != null and dataDHCT[0].donHang.trangThai == 'Chờ xác nhận'}">
+                                    <button class="btn btn-warning">Thêm sản phẩm</button>
+                                </a>
+                            </div>
+                        </div>
+
+                        <br>
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Ảnh</th>
+                                <th>Sản phẩm</th>
+                                <th>Số lượng</th>
+                                <th>Đơn giá</th>
+                                <th>Thành tiền</th>
+                                <!--                                <th>Hành động</th>-->
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="i, stat : ${dataDHCT}">
+                                <td th:text="${stat.index + 1}"></td>
+                                <td><img
+                                        th:src="@{'/repository/' + ${#strings.arraySplit(i.sanPhamChiTiet.imanges, ',')[0]}}"
+                                        width="100"
+                                        height="100"/></td>
+                                <td th:text="${i.sanPhamChiTiet.sanPham.tenSanPham + ' - (' + i.sanPhamChiTiet.mauSac.tenMauSac + ', ' + i.sanPhamChiTiet.kichThuoc.tenKichThuoc + ')'} ">
+                                </td>
+
+                                <td>
+                                    <form th:action="@{/donhangadmin-detail/{orderId}/update-product-quantity/{chiTietId}(orderId=${i.donHang.id}, chiTietId=${i.id})}"
+                                          method="post"
+                                          onsubmit="return confirmAction('Bạn có chắc chắn muốn cập nhật số lượng sản phẩm này?')"
+                                          th:if="${dataDHCT != null and dataDHCT.size() > 0 and dataDHCT[0].donHang != null and dataDHCT[0].donHang.trangThai == 'Chờ xác nhận'}">
+                                        <input type="number" name="newQuantity" th:value="${i.soLuong}" min="1"
+                                               th:max="${i.sanPhamChiTiet.soLuong}" required>
+                                        <button type="submit" class="btn btn-success btn-sm"><i class="bi bi-arrow-repeat"></i></button>
+                                    </form>
+                                    <span th:if="${dataDHCT != null and dataDHCT.size() > 0 and dataDHCT[0].donHang != null and dataDHCT[0].donHang.trangThai != 'Chờ xác nhận'}"
+                                          th:text="${i.soLuong}"></span>
+                                </td>
+                                <td th:text="${#numbers.formatDecimal(i.gia,0,'POINT',0,'POINT') + ' đ' }"></td>
+                                <td th:text="${#numbers.formatDecimal(i.thanhTien,0,'POINT',0,'POINT') + ' đ' }"></td>
+                                <td>
+                                    <form th:action="@{/donhangadmin-detail/{orderId}/remove-product/{chiTietId}(orderId=${i.donHang.id}, chiTietId=${i.id})}"
+                                          method="post"
+                                          onsubmit="return confirmAction('Bạn có chắc chắn muốn xoá sản phẩm này?')"
+                                          th:if="${dataDHCT != null and dataDHCT.size() > 0 and dataDHCT[0].donHang != null and dataDHCT[0].donHang.trangThai == 'Chờ xác nhận'}">
+                                        <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-trash3"></i></button>
+                                    </form>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <br>
+                        <hr>
+                        <div class="container mt-4">
+                            <div class="row">
+                                <!-- Column 1: Discount Details -->
+
+                                <div class="col-md-4">
+                                    <table class="table table-borderless">
+                                        <tbody >
+                                        <tr >
+                                            <td>Phiếu giảm giá:</td>
+                                            <td><strong th:text="${dataDHCT != null && dataDHCT.size() > 0 && dataDHCT[0].donHang != null && dataDHCT[0].donHang.giamGia != null ? dataDHCT[0].donHang.giamGia.tenVoucher : 'Không áp dụng'}"></strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Giá trị:</td>
+                                            <td><strong th:text="${dataDHCT != null && dataDHCT.size() > 0 && dataDHCT[0].donHang != null && dataDHCT[0].donHang.giamGia != null ?
+                                                                (dataDHCT[0].donHang.giamGia.loaiVoucher == 'Giảm giá %' ? #numbers.formatDecimal(dataDHCT[0].donHang.giamGia.giaTri, 0, 0) + '%' :
+                                                                 #numbers.formatDecimal(dataDHCT[0].donHang.giamGia.giaTri,0,'POINT',0,'POINT') + ' đ') : '0'}"></strong></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <hr>
+                                </div>
+                                <div class="col-md-3">
+
+                                </div>
+                                <!-- Column 2: Payment Summary -->
+                                <div class="col-md-4">
+                                    <table class="table table-borderless text-end">
+                                        <tbody >
+                                        <tr>
+                                            <td class="text-start">Tổng tiền hàng:</td>
+                                            <td ><strong th:text="${dataDHCT != null && dataDHCT.size() > 0 && dataDHCT[0].donHang != null && dataDHCT[0].donHang.tongTien != null ? #numbers.formatDecimal(dataDHCT[0].donHang.tongTien,0,'POINT',0,'POINT') + ' đ' : '0'}"></strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-start">Giảm giá:</td>
+                                            <td>
+                                                <strong th:text="${dataDHCT != null && dataDHCT.size() > 0 && dataDHCT[0].donHang != null && dataDHCT[0].donHang.giamGia != null ?
+                                                                (dataDHCT[0].donHang.giamGia.loaiVoucher == 'Giảm giá %' ? #numbers.formatDecimal(soTienGiam,0,'POINT',0,'POINT') + ' đ' :
+                                                                 #numbers.formatDecimal(dataDHCT[0].donHang.giamGia.giaTri,0,'POINT',0,'POINT') + ' đ' ) : '0'}">
+                                                </strong>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-start">Phí vận chuyển:</td>
+                                            <td ><strong th:text = "${dataDHCT != null && dataDHCT.size() > 0 && dataDHCT[0].donHang != null && dataDHCT[0].donHang.loaiDonHang == 'Online' ? #numbers.formatDecimal(phiShip,0,'POINT',0,'POINT') : '0'} + ' đ'"></strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-start"><strong>Tổng tiền:</strong></td>
+                                            <td><strong class="text-danger"  th:text="${dataDHCT != null && dataDHCT.size() > 0 && dataDHCT[0].donHang != null ?
+                                     (dataDHCT[0].donHang.loaiDonHang == 'Online' ?
+                                         (dataDHCT[0].donHang.tongTienGiamGia != null ?
+                                             #numbers.formatDecimal(dataDHCT[0].donHang.tongTienGiamGia + phiShip,0,'POINT',0,'POINT') + ' đ' :
+                                             (dataDHCT[0].donHang.tongTien != null ?
+                                                 #numbers.formatDecimal(dataDHCT[0].donHang.tongTien + phiShip,0,'POINT',0,'POINT') + ' đ' : '0')) :
+                                         (dataDHCT[0].donHang.tongTienGiamGia != null ?
+                                             #numbers.formatDecimal(dataDHCT[0].donHang.tongTienGiamGia,0,'POINT',0,'POINT') + ' đ' :
+                                             (dataDHCT[0].donHang.tongTien != null ?
+                                                 #numbers.formatDecimal(dataDHCT[0].donHang.tongTien,0,'POINT',0,'POINT') + ' đ' : '0'))) :
+                                     '0'}"></strong></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <hr>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- container-fluid -->
+    </div>
+    <!-- End Page-content -->
+
+    <footer class="footer">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-6">
+                    <script>document.write(new Date().getFullYear())</script>
+                    © Velzon.
+                </div>
+                <div class="col-sm-6">
+                    <div class="text-sm-end d-none d-sm-block">
+                        Design & Develop by Themesbrand
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+<!-- end main content-->
+
+</div>
+<!-- END layout-wrapper -->
+
+<script>
+    function changeStatus(id) {
+        fetch(`/donhang/change-status?id=${id}`, {
+            method: 'POST',
+        })
+            .then(response => response.text())
+            .then(data => {
+                alert(`Trạng thái mới: ${data}`);
+                location.reload(); // Tải lại trang để cập nhật giao diện
+            })
+            .catch(error => console.error('Error:', error));
+    }
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const toastSuccessElement = document.getElementById('toastSuccess');
+        if (toastSuccessElement) {
+            const toastSuccess = new bootstrap.Toast(toastSuccessElement, {
+                autohide: true,
+                delay: 3000
+            });
+            toastSuccess.show();
+        }
+    });
+</script>
+<script>
+    /**
+     * Hiển thị hộp thoại xác nhận.
+     * @param {string} message - Nội dung thông báo.
+     * @returns {boolean} - Trả về `true` nếu người dùng chọn "OK", ngược lại `false`.
+     */
+    function confirmAction(message) {
+        return confirm(message);
+    }
+</script>
+<script>
+    document.getElementById('editCustomerModal').addEventListener('hidden.bs.modal', function () {
+        const form = this.querySelector('form');
+        form.reset(); // Reset form về trạng thái ban đầu
+    });
+</script>
+<script>
+    function openConfirmDialog() {
+        // Hiển thị hộp thoại và overlay
+        document.getElementById('confirmDialog').style.display = 'block';
+        document.getElementById('overlay').style.display = 'block';
+    }
+
+    function closeConfirmDialog() {
+        // Ẩn hộp thoại và overlay
+        document.getElementById('confirmDialog').style.display = 'none';
+        document.getElementById('overlay').style.display = 'none';
+    }
+
+    function submitForm() {
+        const reasonInput = document.getElementById('confirmReason').value.trim();
+
+
+        // Thêm lý do vào form dưới dạng input hidden
+        const form = document.getElementById('confirmForm');
+        const hiddenInput = document.createElement('input');
+        hiddenInput.type = 'hidden';
+        hiddenInput.name = 'reason';
+        hiddenInput.value = reasonInput;
+        form.appendChild(hiddenInput);
+
+        // Gửi form
+        form.submit();
+    }
+</script>
+<script>
+    function openConfirmDialog1() {
+        // Hiển thị hộp thoại và overlay
+        document.getElementById('confirmDialog1').style.display = 'block';
+        document.getElementById('overlay1').style.display = 'block';
+    }
+
+    function closeConfirmDialog1() {
+        // Ẩn hộp thoại và overlay
+        document.getElementById('confirmDialog1').style.display = 'none';
+        document.getElementById('overlay1').style.display = 'none';
+    }
+
+    function submitForm1() {
+        const reasonInput = document.getElementById('confirmReason1').value.trim();
+
+        // Thêm lý do vào form dưới dạng input hidden
+        const form = document.getElementById('confirmForm1');
+        const hiddenInput = document.createElement('input');
+        hiddenInput.type = 'hidden';
+        hiddenInput.name = 'reason';
+        hiddenInput.value = reasonInput;
+        form.appendChild(hiddenInput);
+
+        // Gửi form
+        form.submit();
+    }
+</script>
+<script>
+    function openConfirmDialog2() {
+        // Hiển thị hộp thoại và overlay
+        document.getElementById('confirmDialog2').style.display = 'block';
+        document.getElementById('overlay2').style.display = 'block';
+    }
+
+    function closeConfirmDialog2() {
+        // Ẩn hộp thoại và overlay
+        document.getElementById('confirmDialog2').style.display = 'none';
+        document.getElementById('overlay2').style.display = 'none';
+    }
+
+    function submitForm2() {
+        const reasonInput = document.getElementById('confirmReason2').value.trim();
+
+        // Thêm lý do vào form dưới dạng input hidden
+        const form = document.getElementById('confirmForm2');
+        const hiddenInput = document.createElement('input');
+        hiddenInput.type = 'hidden';
+        hiddenInput.name = 'reason';
+        hiddenInput.value = reasonInput;
+        form.appendChild(hiddenInput);
+
+        // Gửi form
+        form.submit();
+    }
+</script>
+<script>
+    function openConfirmDialog3() {
+        // Hiển thị hộp thoại và overlay
+        document.getElementById('confirmDialog3').style.display = 'block';
+        document.getElementById('overlay3').style.display = 'block';
+    }
+
+    function closeConfirmDialog3() {
+        // Ẩn hộp thoại và overlay
+        document.getElementById('confirmDialog3').style.display = 'none';
+        document.getElementById('overlay3').style.display = 'none';
+    }
+
+    function submitForm3() {
+        const reasonInput = document.getElementById('confirmReason3').value.trim();
+
+        if (!reasonInput) {
+            alert('Vui lòng nhập ghi chú trước khi xác nhận.');
+            return;
+        }
+
+        // Thêm lý do vào form dưới dạng input hidden
+        const form = document.getElementById('confirmForm3');
+        const hiddenInput = document.createElement('input');
+        hiddenInput.type = 'hidden';
+        hiddenInput.name = 'reason';
+        hiddenInput.value = reasonInput;
+        form.appendChild(hiddenInput);
+
+        // Gửi form
+        form.submit();
+    }
+</script>
+<script>
+    function openConfirmDialog4() {
+        // Hiển thị hộp thoại và overlay
+        document.getElementById('confirmDialog4').style.display = 'block';
+        document.getElementById('overlay4').style.display = 'block';
+    }
+
+    function closeConfirmDialog4() {
+        // Ẩn hộp thoại và overlay
+        document.getElementById('confirmDialog4').style.display = 'none';
+        document.getElementById('overlay4').style.display = 'none';
+    }
+
+    function submitForm4() {
+        const reasonInput = document.getElementById('confirmReason4').value.trim();
+
+        // Thêm lý do vào form dưới dạng input hidden
+        const form = document.getElementById('confirmForm4');
+        const hiddenInput = document.createElement('input');
+        hiddenInput.type = 'hidden';
+        hiddenInput.name = 'reason';
+        hiddenInput.value = reasonInput;
+        form.appendChild(hiddenInput);
+
+        // Gửi form
+        form.submit();
+    }
+</script>
+<script src="../js/bootstrap.bundle.min.js"></script>
+<script src="../js/simplebar.min.js"></script>
+<script src="../js/waves.min.js"></script>
+<script src="../js/feather.min.js"></script>
+<script src="../js/lord-icon-2.1.0.js"></script>
+<script src="../js/plugins.js"></script>
+
+<!-- apexcharts -->
+<script src="../js/apexcharts.min.js"></script>
+
+<!-- Vector map-->
+<script src="../js/jsvectormap.min.js"></script>
+<script src="../js/world-merc.js"></script>
+
+<!--Swiper slider js-->
+<script src="../js/swiper-bundle.min.js"></script>
+
+<!-- Dashboard init -->
+<script src="../js/dashboard-ecommerce.init.js"></script>
+
+<!-- App js -->
+<script src="../js/app.js"></script>
+</body>
+
+</html>

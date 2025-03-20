@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en"
+      data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-image="none" data-preloader="disable"
+      data-theme="default" data-theme-colors="default">
+<head>
+    <meta charset="UTF-8">
+    <title>Thêm sản phẩm vào hóa đơn</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description"/>
+    <meta content="Themesbrand" name="author"/>
+    <style>
+        .disabled {
+            pointer-events: none;
+            opacity: 0.5;
+        }
+    </style>
+    <!--    <meta name="_csrf" th:content="${_csrf.token}"/>-->
+    <link rel="shortcut icon" href="../../images/shoes.png">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <!-- Thêm Line Awesome CDN -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/line-awesome/1.3.0/line-awesome/css/line-awesome.min.css">
+    <!-- Thêm Material Design Icons CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font/css/materialdesignicons.min.css" rel="stylesheet">
+    <!-- Thêm Feather Icon CND -->
+    <script src="https://unpkg.com/feather-icons"></script>
+    <!-- Thêm Remix Icon -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+    <!-- Thêm link tới Boxicons CDN -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <!-- jsvectormap css -->
+    <link href="../../css/jsvectormap.min.css" rel="stylesheet" type="text/css"/>
+
+    <!--Swiper slider css-->
+    <link href="../../css/swiper-bundle.min.css" rel="stylesheet" type="text/css"/>
+
+    <!-- Layout config Js -->
+    <script src="../../js/layout.js"></script>
+    <!-- Bootstrap Css -->
+    <link href="../../css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    n<!-- Icons Css -->
+    <link href="../../css/icons.min.css" rel="stylesheet" type="text/css"/>
+    <!-- App Css-->
+    <link href="../../css/app.min.css" rel="stylesheet" type="text/css"/>
+    <!-- custom Css-->
+    <link href="../../css/custom.min.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="layout-wrapper">
+
+    <header id="page-topbar">
+        <div class="layout-width">
+            <div class="navbar-header">
+                <div class="d-flex">
+                    <!-- LOGO -->
+                    <div class="navbar-brand-box horizontal-logo">
+                        <a href="/trangchuadmin" class="logo logo-dark">
+                        <span class="logo-sm">
+                            <img src="../../images/shoes.png" alt="" height="22">
+                        </span>
+                            <span class="logo-lg">
+                            <h1 class="mt-3" style="color: #abb9e8">FSneaker</h1>
+                        </span>
+                        </a>
+
+                        <a href="/trangchuadmin" class="logo logo-light">
+                        <span class="logo-sm">
+                            <img src="../../images/shoes.png" alt="" height="22">
+                        </span>
+                            <span class="logo-lg">
+                            <h1 class="mt-3" style="color: #abb9e8">FSneaker</h1>
+                        </span>
+                        </a>
+                    </div>
+
+                    <button type="button"
+                            class="btn btn-sm px-3 fs-16 header-item vertical-menu-btn topnav-hamburger material-shadow-none"
+                            id="topnav-hamburger-icon">
+                    <span class="hamburger-icon">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </span>
+                    </button>
+
+                </div>
+
+                <div class="d-flex align-items-center">
+
+                    <div class="dropdown ms-sm-3 header-item topbar-user"
+                         th:if="${#authentication.name != 'anonymousUser'}">
+                        <button type="button" class="btn material-shadow-none" id="page-header-user-dropdown"
+                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="d-flex align-items-center">
+                            <img class="rounded-circle header-profile-user" src="images/users/avatar-1.jpg"
+                                 alt="Header Avatar">
+                            <span class="text-start ms-xl-2">
+                                <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text"
+                                      th:text="${#authentication.principal.displayName}"></span>
+                                <span class="d-none d-xl-block ms-1 fs-12 user-name-sub-text"
+                                      th:text="${#authentication.principal.role == 'ROLE_ADMIN' ? 'Admin' : 'Nhân viên'}">Trưởng nhóm</span>
+                            </span>
+                        </span>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-end" th:if="${#authentication.name != 'anonymousUser'}">
+                            <!-- item-->
+                            <h6 class="dropdown-header">Xin chào <span
+                                    th:text="${#authentication.principal.displayName}"></span></h6>
+                            <a class="dropdown-item" href="/thongtinadmin"><i
+                                    class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i> <span
+                                    class="align-middle">Thông tin cá nhân</span></a>
+                            <a class="dropdown-item" href="/tinnhanadmin"><i
+                                    class="mdi mdi-message-text-outline text-muted fs-16 align-middle me-1"></i> <span
+                                    class="align-middle">Tin nhắn</span></a>
+                            <a class="dropdown-item" href="/trogiupadmin"><i
+                                    class="mdi mdi-lifebuoy text-muted fs-16 align-middle me-1"></i> <span
+                                    class="align-middle">Trợ giúp</span></a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="/caidatadmin"><span
+                                    class="badge bg-success-subtle text-success mt-1 float-end">New</span><i
+                                    class="mdi mdi-cog-outline text-muted fs-16 align-middle me-1"></i> <span
+                                    class="align-middle">Cài đặt</span></a>
+                            <a class="dropdown-item" href="/khoamanhinhadmin"><i
+                                    class="mdi mdi-lock text-muted fs-16 align-middle me-1"></i> <span
+                                    class="align-middle">Khóa màn hình</span></a>
+                            <a class="dropdown-item" href="/logout"><i
+                                    class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> <span
+                                    class="align-middle" data-key="t-logout">Đăng xuất</span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- ========== App Menu ========== -->
+    <div class="app-menu navbar-menu">
+        <!-- LOGO -->
+        <div class="navbar-brand-box">
+            <!-- Dark Logo-->
+            <a href="/trangchuadmin" class="logo logo-dark">
+                    <span class="logo-sm">
+                        <img src="../../images/shoes.png" alt="" height="22">
+                    </span>
+                <span class="logo-lg">
+                        <h1 class="mt-3" style="color: #abb9e8">FSneaker</h1>
+                    </span>
+            </a>
+            <!-- Light Logo-->
+            <a href="/trangchuadmin" class="logo logo-light">
+                    <span class="logo-sm">
+                        <img src="../../images/shoes.png" alt="" height="22">
+                    </span>
+                <span class="logo-lg">
+                        <h1 class="mt-3" style="color: #abb9e8">FSneaker</h1>
+                    </span>
+            </a>
+            <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover"
+                    id="vertical-hover">
+                <i class="ri-record-circle-line"></i>
+            </button>
+        </div>
+
+        <!--        <div class="dropdown sidebar-user m-1 rounded">-->
+        <!--            <button type="button" class="btn material-shadow-none" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
+        <!--                    <span class="d-flex align-items-center gap-2">-->
+        <!--                        <img class="rounded header-profile-user" src="images/users/avatar-1.jpg" alt="Header Avatar">-->
+        <!--                        <span class="text-start">-->
+        <!--                            <span class="d-block fw-medium sidebar-user-name-text">Anna Adame</span>-->
+        <!--                            <span class="d-block fs-14 sidebar-user-name-sub-text"><i class="ri ri-circle-fill fs-10 text-success align-baseline"></i> <span class="align-middle">Online</span></span>-->
+        <!--                        </span>-->
+        <!--                    </span>-->
+        <!--            </button>-->
+        <!--            <div class="dropdown-menu dropdown-menu-end">-->
+        <!--                &lt;!&ndash; item&ndash;&gt;-->
+        <!--                <h6 class="dropdown-header">Welcome Anna!</h6>-->
+        <!--                <a class="dropdown-item" href="pages-profile.html"><i class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Profile</span></a>-->
+        <!--                <a class="dropdown-item" href="apps-chat.html"><i class="mdi mdi-message-text-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Messages</span></a>-->
+        <!--                <a class="dropdown-item" href="apps-tasks-kanban.html"><i class="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Taskboard</span></a>-->
+        <!--                <a class="dropdown-item" href="pages-faqs.html"><i class="mdi mdi-lifebuoy text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Help</span></a>-->
+        <!--                <div class="dropdown-divider"></div>-->
+        <!--                <a class="dropdown-item" href="pages-profile.html"><i class="mdi mdi-wallet text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Balance : <b>$5971.67</b></span></a>-->
+        <!--                <a class="dropdown-item" href="pages-profile-settings.html"><span class="badge bg-success-subtle text-success mt-1 float-end">New</span><i class="mdi mdi-cog-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Settings</span></a>-->
+        <!--                <a class="dropdown-item" href="auth-lockscreen-basic.html"><i class="mdi mdi-lock text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Lock screen</span></a>-->
+        <!--                <a class="dropdown-item" href="auth-logout-basic.html"><i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> <span class="align-middle" data-key="t-logout">Logout</span></a>-->
+        <!--            </div>-->
+        <!--        </div>-->
+        <div id="scrollbar">
+            <div class="container-fluid">
+                <div id="two-column-menu">
+                </div>
+                <ul class="navbar-nav" id="navbar-nav" data-simplebar="init">
+                    <li class="menu-title"><span data-key="t-menu">Menu</span></li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-link" href="#sidebarDashboards" data-bs-toggle="collapse" role="button"
+                           aria-expanded="false" aria-controls="sidebarDashboards">
+                            <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Thống kê</span>
+                        </a>
+                        <div class="collapse menu-dropdown" id="sidebarDashboards">
+                            <ul class="nav nav-sm flex-column">
+
+
+                                <li class="nav-item">
+                                    <a href="/trangchuadmin" class="nav-link" data-key="t-ecommerce"> Doanh thu </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li> <!-- end Dashboard Menu -->
+                    <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+                        <a class="nav-link menu-link" href="#sidebarApps" data-bs-toggle="collapse" role="button"
+                           aria-expanded="false" aria-controls="sidebarApps">
+                            <i class="ri-apps-2-line"></i> <span data-key="t-apps">Quản lý</span>
+                        </a>
+                        <div class="collapse menu-dropdown" id="sidebarApps">
+                            <ul class="nav nav-sm flex-column">
+                                <li class="nav-item">
+                                    <a href="#sidebarCalendar" class="nav-link" data-bs-toggle="collapse" role="button"
+                                       aria-expanded="false">
+                                        Quản lý thuộc tính
+                                    </a>
+                                    <div class="collapse menu-dropdown" id="sidebarCalendar">
+                                        <ul class="nav nav-sm flex-column">
+                                            <li class="nav-item">
+                                                <a href="/qlkichthuoc" class="nav-link" data-key="t-main-calender"> Kích
+                                                    thước</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="/qlmausac" class="nav-link" data-key="t-month-grid"> Màu
+                                                    sắc </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="/qlthuonghieu" class="nav-link"> Thương hiệu </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="/qlxuatxu" class="nav-link"> Xuất xứ</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/qlsanpham" class="nav-link"> Quản lý sản phẩm </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/qlvoucher" class="nav-link" data-key="t-voucher"> Quản lý voucher </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/qlkhuyenmai" class="nav-link" data-key="t-khuyenmai"> Quản lý chương trình
+                                        khuyến mãi </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link menu-link" href="/don-hang/hien-thi">
+                            <i class="ri-store-line"></i> <span data-key="t-layouts">Bán hàng</span>
+                        </a>
+                    </li> <!-- end Dashboard Menu -->
+                    <li class="nav-item">
+                        <a class="nav-link menu-link" href="/donhangadmin">
+                            <i class="ri-file-text-line"></i> <span data-key="t-layouts">Đơn hàng</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-link" href="#sidebarAuth" data-bs-toggle="collapse" role="button"
+                           aria-expanded="false" aria-controls="sidebarAuth">
+                            <i class="ri-account-circle-line"></i> <span data-key="t-auth">Tài khoản</span>
+                        </a>
+                        <div class="collapse menu-dropdown" id="sidebarAuth">
+                            <ul class="nav nav-sm flex-column">
+                                <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+                                    <a href="/qlnhanvien" class="nav-link" data-key="t-nhanvien"> Nhân viên </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/qlkhachhang" class="nav-link" data-key="t-khachang"> Khách hàng </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item" hidden="true">
+                        <a class="nav-link menu-link" href="#sidebarIcons" data-bs-toggle="collapse" role="button"
+                           aria-expanded="false" aria-controls="sidebarIcons">
+                            <i class="ri-compasses-2-line"></i> <span data-key="t-icons">Icons</span>
+                        </a>
+                        <div class="collapse menu-dropdown" id="sidebarIcons">
+                            <ul class="nav nav-sm flex-column">
+                                <li class="nav-item">
+                                    <a href="icons-remix.html" class="nav-link"><span data-key="t-remix">Remix</span>
+                                        <span class="badge badge-pill bg-info">v3.6</span></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="icons-boxicons.html" class="nav-link"><span
+                                            data-key="t-boxicons">Boxicons</span> <span
+                                            class="badge badge-pill bg-info">v2.1.4</span></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="icons-materialdesign.html" class="nav-link"><span
+                                            data-key="t-material-design">Material Design</span> <span
+                                            class="badge badge-pill bg-info">v7.2.96</span></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="icons-lineawesome.html" class="nav-link" data-key="t-line-awesome">Line
+                                        Awesome</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="icons-feather.html" class="nav-link"><span
+                                            data-key="t-feather">Feather</span> <span class="badge badge-pill bg-info">v4.29.1</span></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="icons-crypto.html" class="nav-link"> <span data-key="t-crypto-svg">Crypto SVG</span></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+
+                </ul>
+            </div>
+            <!-- Sidebar -->
+        </div>
+
+        <div class="sidebar-background"></div>
+    </div>
+    <!-- Left Sidebar End -->
+    <!-- Vertical Overlay-->
+    <div class="vertical-overlay"></div>
+    <div class="main-content">
+        <div class="page-content">
+            <div class="card">
+                <div class="container-fluid">
+                    <h3>thêm sản phẩm vào đơn hàng </h3>
+                    <br><br>
+                    <form th:action="@{/edit-sanpham-donhang/{id}(id=${orderId})}" method="get"
+                          class="form-inline mb-3">
+                        <div class="d-flex justify-content-end align-items-end gap-3">
+                            <div class="flex-grow-1">
+                                <label class="form-label">Tìm kiếm</label>
+                                <input type="text" name="keyword" class="form-control"
+                                       th:value="${param.keyword}"
+                                       placeholder="Nhập mã hoặc tên"/>
+                            </div>
+                            <div>
+                                <label class="form-label">Màu sắc</label>
+                                <select name="tenMauSac" class="form-control">
+                                    <option disabled selected value="">Chọn màu sắc</option>
+                                    <option th:each="ms : ${dataMS}" th:selected="${param.tenMauSac == ms.tenMauSac}"
+                                            th:value="${ms.tenMauSac}" th:text="${ms.tenMauSac}"></option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="form-label">Kích thước</label>
+                                <select name="tenKichThuoc" class="form-control">
+                                    <option disabled selected value="">Chọn kích thước</option>
+                                    <option th:each="kt : ${dataKT}"
+                                            th:selected="${param.tenKichThuoc == kt.tenKichThuoc}"
+                                            th:value="${kt.tenKichThuoc}" th:text="${kt.tenKichThuoc}"></option>
+                                </select>
+                            </div>
+                            <div>
+                                <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                            </div>
+                        </div>
+                    </form>
+                    <table class="table ">
+                        <thead>
+                        <tr>
+                            <th>Sản phẩm</th>
+                            <th>Thương hiệu</th>
+                            <th>Xuất xứ</th>
+                            <th>Màu sắc</th>
+                            <th>Kích thước</th>
+                            <th>Số lượng</th>
+                            <th>Giá</th>
+                            <th>Hành động</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="spct : ${dataSPCT}">
+                            <td th:text="${spct.sanPham.tenSanPham}"></td>
+                            <td th:text="${spct.sanPham.thuongHieu.tenThuongHieu}"></td>
+                            <td th:text="${spct.sanPham.xuatXu.tenXuatXu}"></td>
+                            <td th:text="${spct.mauSac.tenMauSac}"></td>
+                            <td th:text="${spct.kichThuoc.tenKichThuoc}"></td>
+                            <td th:text="${spct.soLuong}"></td>
+                            <td th:text="${#numbers.formatDecimal(spct.giaBan, 0, 'COMMA', 0, 'COMMA')}"></td>
+                            <td>
+                                <!-- Button mở modal -->
+                                <button
+                                        type="button"
+                                        class="btn btn-success"
+                                        th:onclick="openQuantityModal([[${spct.id}]] , [[${spct.soLuong}]] , [[${spct.sanPham.tenSanPham}]])"
+                                        data-toggle="modal"
+                                        data-target="#quantityModal">
+                                    Chọn
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <th:block th:if="${dataSPCT.totalPages > 1}">
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination justify-content-center">
+                                <!-- Previous button -->
+                                <li class="page-item" th:classappend="${!dataSPCT.hasPrevious()} ? 'disabled'">
+                                    <a class="page-link"
+                                       th:href="@{/edit-sanpham-donhang/{id}(id=${orderId}, page=${dataSPCT.number - 1})}">
+                                        Previous
+                                    </a>
+                                </li>
+
+                                <!-- Page numbers -->
+                                <li class="page-item" th:each="page : ${#numbers.sequence(0, dataSPCT.totalPages - 1)}"
+                                    th:classappend="${page == dataSPCT.number} ? 'active'">
+                                    <a class="page-link"
+                                       th:href="@{/edit-sanpham-donhang/{id}(id=${orderId}, page=${page}, keyword=${param.keyword})}">
+                                        <span th:text="${page + 1}"></span>
+                                    </a>
+                                </li>
+
+                                <!-- Next button -->
+                                <li class="page-item" th:classappend="${!dataSPCT.hasNext()} ? 'disabled'">
+                                    <a class="page-link"
+                                       th:href="@{/edit-sanpham-donhang/{id}(id=${orderId}, page=${dataSPCT.number + 1})}">
+                                        Next
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </th:block>
+
+                    <!-- Modal để nhập số lượng -->
+                    <div class="modal fade" id="quantityModal" tabindex="-1" role="dialog"
+                         aria-labelledby="quantityModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="quantityModalLabel">Chọn số lượng cho sản phẩm</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form th:action="@{/donhangadmin-detail/{orderId}/add-product(orderId=${orderId})}"
+                                          method="post">
+                                        <input type="hidden" name="productId" th:each="dh : ${dataSPCT}"
+                                               th:value="${dh.id}" id="modalProductId">
+                                        <div class="form-group">
+                                            <label for="modalProductName">Tên sản phẩm</label>
+                                            <input type="text" id="modalProductName" class="form-control" readonly>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="modalProductQuantity">Số lượng</label>
+                                            <input type="number" id="modalProductQuantity" name="soLuong"
+                                                   class="form-control" min="1" required>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Thêm sản phẩm</button>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <script>
+                        function openQuantityModal(productId, maxQuantity, productName) {
+                            document.getElementById('modalProductId').value = productId; // Set the productId
+                            document.getElementById('modalProductName').value = productName; // Set the product name for display
+                            document.getElementById('modalProductQuantity').setAttribute('max', maxQuantity); // Set max quantity
+                        }
+                    </script>
+                </div>
+            </div>
+            <footer class="footer">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <script>document.write(new Date().getFullYear())</script>
+                            © Velzon.
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="text-sm-end d-none d-sm-block">
+                                Design & Develop by Themesbrand
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+    <!-- end main content-->
+
+</div>
+<script src="../../js/bootstrap.bundle.min.js"></script>
+<script src="../../js/simplebar.min.js"></script>
+<script src="../../js/waves.min.js"></script>
+<script src="../../js/feather.min.js"></script>
+<script src="../../js/lord-icon-2.1.0.js"></script>
+<script src="../../js/plugins.js"></script>
+
+<!-- apexcharts -->
+<script src="../../js/apexcharts.min.js"></script>
+
+<!-- Vector map-->
+<script src="../../js/jsvectormap.min.js"></script>
+<script src="../../js/world-merc.js"></script>
+
+<!--Swiper slider js-->
+<script src="../../js/swiper-bundle.min.js"></script>
+
+<!-- Dashboard init -->
+<script src="../../js/dashboard-ecommerce.init.js"></script>
+
+<!-- App js -->
+<script src="../../js/app.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+
+</body>
+</html>

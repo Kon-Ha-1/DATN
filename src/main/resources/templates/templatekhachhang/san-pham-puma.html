@@ -1,0 +1,1182 @@
+
+<!doctype html>
+<html class="no-js" lang="en">
+
+
+<!-- Mirrored from htmldemo.net/presiden/presiden/shop.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 22 Oct 2024 03:04:40 GMT -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Sản phẩm Puma</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="images/shoes.png">
+
+    <!-- CSS
+    ========================= -->
+    <!--bootstrap min css-->
+    <link rel="stylesheet" href="css/templateuse/bootstrap.min.css">
+    <!--owl carousel min css-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+
+    <!--slick min css-->
+    <link rel="stylesheet" href="css/templateuse/slick.css">
+    <!--magnific popup min css-->
+    <link rel="stylesheet" href="css/templateuse/magnific-popup.css">
+    <!--font awesome css-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!--    <link rel="stylesheet" href="../css/templateuse/font.awesome.css">-->
+    <!--ionicons min css-->
+    <link rel="stylesheet" href="css/templateuse/ionicons.min.css">
+    <!--material design min css-->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="css/templateuse/material.design.min.css">
+    <!--animate css-->
+    <link rel="stylesheet" href="css/templateuse/animate.css">
+    <!--jquery ui min css-->
+    <link rel="stylesheet" href="css/templateuse/jquery-ui.min.css">
+    <!--slinky menu css-->
+    <link rel="stylesheet" href="css/templateuse/slinky.menu.css">
+    <!--plugins css-->
+    <link rel="stylesheet" href="css/templateuse/plugins.css">
+
+    <!-- Main Style CSS -->
+    <link rel="stylesheet" href="css/templateuse/style.css">
+
+    <!--modernizr min js here-->
+    <script src="js/templateuse/vendor/modernizr-3.7.1.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.7.0/nouislider.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.7.0/nouislider.min.js"></script>
+</head>
+
+<body>
+
+<!--offcanvas menu area start-->
+<div class="off_canvars_overlay">
+
+</div>
+<div class="offcanvas_menu">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="canvas_open">
+                    <a href="javascript:void(0)"><i class="bx bx-menu"></i></a>
+                </div>
+                <div class="offcanvas_menu_wrapper">
+                    <div class="canvas_close">
+                        <a href="javascript:void(0)"><i class="bx bx-x"></i></a>
+                    </div>
+                    <div class="header_right_info">
+                        <ul>
+                            <li class="search_box"><a href="javascript:void(0)"><img src="images/icon/icon-search.png" alt=""></a>
+                                <div class="search_widget">
+                                    <form action="#">
+                                        <input id="searchInput1" placeholder="Tìm kiếm ..." type="text">
+                                        <ul id="suggestions1" style="text-align: start; display: none; list-style: none; padding: 0;background-color: #FFFFFF">
+
+                                        </ul>
+                                    </form>
+                                </div>
+                            </li>
+                            <script>
+                                const searchInput1 = document.getElementById('searchInput1');
+                                const suggestions1 = document.getElementById('suggestions1');
+                                searchInput1.addEventListener('input', () => {
+                                    const keyword = searchInput.value;
+
+                                    if (keyword.length > 2) {
+                                        fetch(`/searchProduct?keyword=${keyword}`)
+                                            .then(response => response.text())
+                                            .then(html => {
+                                                suggestions1.innerHTML = html;
+                                                suggestions1.style.display = 'block';
+                                            })
+                                            .catch(error => console.error('Error fetching suggestions:', error));
+                                    } else {
+                                        suggestions1.style.display = 'none';
+                                    }
+                                });
+                            </script>
+                            <li th:if="${#authentication.name != 'anonymousUser'}" class="header_account"><a href="javascript:void(0)"><img src="images/icon/icon-account.png" alt=""></a>
+                                <div class="dropdown_account">
+                                    <span th:text="${#authentication.principal.displayName}" style="color: white"></span>
+                                    <div class="dropdown_account-list">
+                                        <ul>
+                                            <li><a href="/thong-tin-ca-nhan">Thông tin cá nhân</a></li>
+                                            <li><a href="/gio-hang">Giỏ hàng</a></li>
+                                            <li><a href="/lich-su-mua-hang">Lịch sử mua hàng</a></li>
+                                            <li><a href="/logout">Đăng xuất</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </li>
+                            <li th:if="${#authentication.name == 'anonymousUser'}" class="header_account"><a href="javascript:void(0)"><i class="bx bx-user"></i></a>
+                                <div class="dropdown_account">
+                                    <div class="dropdown_account-list">
+                                        <ul>
+                                            <li><a href="/login">Đăng nhập</a></li>
+                                            <li><a href="/dang-ky">Đăng ký</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="mini_cart_wrapper"><a href="javascript:void(0)"><img src="images/icon/icon-cart.png" alt=""> <span class="item_count" th:text="${tongSoLuongTrongGioHang}">2</span></a>
+                                <!--mini cart-->
+                                <div class="mini_cart">
+                                    <div class="cart_gallery">
+                                        <div th:if="${#lists.isEmpty(danhSachChiTiet)}" style="color: white">
+                                            <td colspan="7" class="text-center">Không có sản phẩm nào trong giỏ hàng!</td>
+                                        </div>
+                                        <div class="cart_item" th:each="item : ${danhSachChiTiet}">
+                                            <div class="cart_img" th:each="image, iterStat : ${#strings.arraySplit(item.sanPhamChiTiet.imanges, ',')}">
+                                                <a th:href="@{/xem-chi-tiet/{id}(id=${item.sanPhamChiTiet.id})}" th:if="${iterStat.index == 0}"><img th:src="@{'/repository/'+${image}}" alt="" style="height: 60px"></a>
+                                            </div>
+                                            <div class="cart_info">
+                                                <a th:href="@{/xem-chi-tiet/{id}(id=${item.sanPhamChiTiet.id})}" th:text="${item.sanPhamChiTiet.sanPham.tenSanPham}">Primis In Faucibus</a>
+                                                <p th:text="${item.soLuong} + ' x ' + ${#numbers.formatDecimal((item.sanPhamChiTiet.sanPham.khuyenMai != null ? item.sanPhamChiTiet.giaBanGiamGia : item.sanPhamChiTiet.giaBan),0,'POINT',0,'POINT') + ' đ'}">1 </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mini_cart_table">
+                                        <div class="cart_table_border">
+                                            <!--                                                    <div class="cart_total">-->
+                                            <!--                                                        <span>Sub total:</span>-->
+                                            <!--                                                        <span class="price">$125.00</span>-->
+                                            <!--                                                    </div>-->
+                                            <div class="cart_total mt-10">
+                                                <span>Tổng tiền:</span>
+                                                <span class="price" th:text="${#numbers.formatDecimal(tongTien,0,'POINT',0,'POINT') + ' đ'}">$125.00</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mini_cart_footer">
+                                        <div class="cart_button">
+                                            <a href="/gio-hang"><i class="fa fa-shopping-cart"></i> Giỏ hàng</a>
+                                        </div>
+                                        <div class="cart_button">
+                                            <form th:action="@{/thanh-toan/{idGioHang}(idGioHang=${gioHang.id})}" method="get">
+                                                <input th:if="${#authentication.name != 'anonymousUser'}" type="hidden" name="idKhachHang" th:value="${#authentication.principal.id}">
+                                                <button type="submit" class="btn btn-success"><i class="fa fa-sign-in"></i> Thanh toán</button>
+                                            </form>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <!--mini cart end-->
+                            </li>
+                        </ul>
+                    </div>
+                    <div id="menu" class="text-left ">
+                        <ul class="offcanvas_main_menu">
+                            <li class="menu-item-has-children active">
+                                <a th:href="@{/san-pham-nike}">Nike</a>
+                                <ul class="sub-menu">
+                                    <li class="menu-item-has-children" th:each="nike : ${tenSanPhamVoiSanPham}"><a th:href="@{/san-pham-nike(tenSanPham=${nike[1]})}" th:text="${nike[1]}">Nike Air Max</a></li>
+                                </ul>
+                            </li>
+                            <li class="menu-item-has-children active">
+                                <a href="/san-pham-adidas">Adidas</a>
+                                <ul class="sub-menu" >
+                                    <li class="menu-item-has-children" th:each="adidas : ${tenSanPhamAdidasVoiSanPham}"><a th:href="@{/san-pham-adidas(tenSanPham=${adidas[1]})}" th:text="${adidas[1]}">Adidas Ultraboost</a></li>
+                                </ul>
+                            </li>
+                            <li class="menu-item-has-children active"><a href="/san-pham-asics">Asics</a>
+                                <ul class="sub-menu">
+                                    <li class="menu-item-has-children" th:each="asics : ${tenSanPhamAsicsVoiSanPham}"><a th:href="@{/san-pham-asics(tenSanPham=${asics[1]})}" th:text="${asics[1]}">Asics Gel-Kayano</a></li>
+                                </ul>
+                            </li>
+                            <li class="menu-item-has-children active"><a href="/san-pham-puma">Puma</a>
+                                <ul class="sub-menu">
+                                    <li class="menu-item-has-children" th:each="puma : ${tenSanPhamPumaVoiSanPham}"><a th:href="@{/san-pham-puma(tenSanPham=${puma[1]})}" th:text="${puma[1]}">Puma RS-X</a></li>
+                                </ul>
+                            </li>
+                            <li class="menu-item-has-children active"><a href="/san-pham-newbalance">New Balance</a>
+                                <ul class="sub-menu">
+                                    <li class="menu-item-has-children" th:each="newbalance : ${tenSanPhamNewBalanceVoiSanPham}"><a th:href="@{/san-pham-newbalance(tenSanPham=${newbalance[1]})}" th:text="${newbalance[1]}">New Balance 990</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="/gioi-thieu">Giới thiệu</a></li>
+                            <li><a href="/lien-he"> Liên hệ</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--offcanvas menu area end-->
+
+<!-- Hiển thị header -->
+<header>
+    <div class="main_header">
+        <div class="header_container sticky-header">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-3">
+                        <div class="logo">
+                            <a href="/trang-chu"><h1>FSneaker</h1></a>
+                        </div>
+                    </div>
+                    <div class="col-lg-9">
+                        <div class="header_container_right">
+                            <!--main menu start-->
+                            <div class="main_menu menu_position">
+                                <nav>
+                                    <ul>
+                                        <li><a href="/san-pham-nike">Nike<i class="fa fa-angle-down"></i></a>
+                                            <ul class="sub_menu pages" >
+                                                <li th:each="nike : ${tenSanPhamVoiSanPham}"><a th:href="@{/san-pham-nike(tenSanPham=${nike[1]})}" th:text="${nike[1]}">Nike Air Max</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="/san-pham-adidas">Adidas<i class="fa fa-angle-down"></i></a>
+                                            <ul class="sub_menu pages" >
+                                                <li th:each="adidas : ${tenSanPhamAdidasVoiSanPham}"><a th:href="@{/san-pham-adidas(tenSanPham=${adidas[1]})}" th:text="${adidas[1]}">Adidas Ultraboost</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="/san-pham-asics">Asics <i class="fa fa-angle-down"></i></a>
+                                            <ul class="sub_menu pages">
+                                                <li th:each="asics : ${tenSanPhamAsicsVoiSanPham}"><a th:href="@{/san-pham-asics(tenSanPham=${asics[1]})}" th:text="${asics[1]}">Asics Gel-Kayano</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="/san-pham-puma">Puma <i class="fa fa-angle-down"></i></a>
+                                            <ul class="sub_menu pages">
+                                                <li th:each="puma : ${tenSanPhamPumaVoiSanPham}"><a th:href="@{/san-pham-puma(tenSanPham=${puma[1]})}" th:text="${puma[1]}">Puma RS-X</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="/san-pham-newbalance">New Balance <i class="fa fa-angle-down"></i></a>
+                                            <ul class="sub_menu pages">
+                                                <li th:each="newbalance : ${tenSanPhamNewBalanceVoiSanPham}"><a th:href="@{/san-pham-newbalance(tenSanPham=${newbalance[1]})}" th:text="${newbalance[1]}">New Balance 990</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="/gioi-thieu">Giới thiệu</a></li>
+                                        <li><a href="/lien-he"> Liên hệ</a></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                            <!--main menu end-->
+                            <div class="header_right_info">
+                                <ul>
+                                    <li class="search_box"><a href="javascript:void(0)"><img src="images/icon/icon-search.png" alt=""></a>
+                                        <div class="search_widget">
+                                            <form action="#">
+                                                <input id="searchInput" placeholder="Tìm kiếm ..." type="text">
+                                                <ul id="suggestions" style="text-align: start; display: none; list-style: none; padding: 0;background-color: #FFFFFF">
+
+                                                </ul>
+                                            </form>
+                                        </div>
+                                    </li>
+                                    <script>
+                                        const searchInput = document.getElementById('searchInput');
+                                        const suggestions = document.getElementById('suggestions');
+                                        searchInput.addEventListener('input', () => {
+                                            const keyword = searchInput.value;
+
+                                            if (keyword.length > 2) {
+                                                fetch(`/searchProduct?keyword=${keyword}`)
+                                                    .then(response => response.text())
+                                                    .then(html => {
+                                                        suggestions.innerHTML = html;
+                                                        suggestions.style.display = 'block';
+                                                    })
+                                                    .catch(error => console.error('Error fetching suggestions:', error));
+                                            } else {
+                                                suggestions.style.display = 'none';
+                                            }
+                                        });
+                                    </script>
+                                    <li th:if="${#authentication.name != 'anonymousUser'}" class="header_account"><a href="javascript:void(0)"><img src="images/icon/icon-account.png" alt=""></a>
+                                        <div class="dropdown_account">
+                                            <span th:text="${#authentication.principal.displayName}" style="color: white"></span>
+                                            <div class="dropdown_account-list">
+                                                <ul>
+                                                    <li><a href="/thong-tin-ca-nhan">Thông tin cá nhân</a></li>
+                                                    <li><a href="/gio-hang">Giỏ hàng</a></li>
+                                                    <li><a href="/lich-su-mua-hang">Lịch sử mua hàng</a></li>
+                                                    <li><a href="/logout">Đăng xuất</a> </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li th:if="${#authentication.name == 'anonymousUser'}" class="header_account"><a href="javascript:void(0)"><i class="bx bx-user"></i></a>
+                                        <div class="dropdown_account">
+                                            <div class="dropdown_account-list">
+                                                <ul>
+                                                    <li><a href="/login">Đăng nhập</a></li>
+                                                    <li><a href="/dang-ky">Đăng ký</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="mini_cart_wrapper"><a href="javascript:void(0)"><img
+                                            src="images/icon/icon-cart.png" alt=""> <span
+                                            class="item_count" th:text="${tongSoLuongTrongGioHang}">2</span></a>
+                                        <!--mini cart-->
+                                        <div class="mini_cart">
+                                            <div class="cart_gallery">
+                                                <div th:if="${#lists.isEmpty(danhSachChiTiet)}" style="color: white">
+                                                    <td colspan="7" class="text-center">Không có sản phẩm nào trong giỏ hàng!</td>
+                                                </div>
+                                                <div class="cart_item" th:each="item : ${danhSachChiTiet}">
+                                                    <div class="cart_img" th:each="image, iterStat : ${#strings.arraySplit(item.sanPhamChiTiet.imanges, ',')}">
+                                                        <a th:href="@{/xem-chi-tiet/{id}(id=${item.sanPhamChiTiet.id})}" th:if="${iterStat.index == 0}"><img th:src="@{'/repository/'+${image}}" alt="" style="height: 60px"></a>
+                                                    </div>
+                                                    <div class="cart_info">
+                                                        <a th:href="@{/xem-chi-tiet/{id}(id=${item.sanPhamChiTiet.id})}" th:text="${item.sanPhamChiTiet.sanPham.tenSanPham}">Primis In Faucibus</a>
+                                                        <p th:text="${item.soLuong} + ' x ' + ${#numbers.formatDecimal((item.sanPhamChiTiet.sanPham.khuyenMai != null ? item.sanPhamChiTiet.giaBanGiamGia : item.sanPhamChiTiet.giaBan),0,'POINT',0,'POINT') + ' đ'}">1 </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="mini_cart_table">
+                                                <div class="cart_table_border">
+                                                    <!--                                                    <div class="cart_total">-->
+                                                    <!--                                                        <span>Sub total:</span>-->
+                                                    <!--                                                        <span class="price">$125.00</span>-->
+                                                    <!--                                                    </div>-->
+                                                    <div class="cart_total mt-10">
+                                                        <span>Tổng tiền:</span>
+                                                        <span class="price" th:text="${#numbers.formatDecimal(tongTien,0,'POINT',0,'POINT') + ' đ'}">$125.00</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="mini_cart_footer">
+                                                <div class="cart_button">
+                                                    <a href="/gio-hang"><i class="fa fa-shopping-cart"></i>Giỏ hàng</a>
+                                                </div>
+                                                <div class="cart_button">
+                                                    <form th:action="@{/thanh-toan/{idGioHang}(idGioHang=${gioHang.id})}" method="get">
+                                                        <input th:if="${#authentication.name != 'anonymousUser'}" type="hidden" name="idKhachHang" th:value="${#authentication.principal.id}">
+                                                        <button type="submit" class="btn btn-success"><i class="fa fa-sign-in"></i> Thanh toán</button>
+                                                    </form>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <!--mini cart end-->
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<!--header area end-->
+
+<!--shop  area start-->
+<div class="shop_area shop_reverse mt-60 mb-60">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-12">
+                <!--sidebar widget start-->
+                <aside class="sidebar_widget">
+                    <div class="widget_inner">
+                        <div class="widget_list widget_categories">
+                            <h3>Thương hiệu</h3>
+                            <ul>
+                                <li class="sub_categories1"><a href="/san-pham-nike">Nike</a></li>
+                                <li class="sub_categories2"><a href="/san-pham-adidas">Adidas</a></li>
+                                <li class="sub_categories3"><a href="/san-pham-asics">Asics</a></li>
+                                <li class=""><a href="/san-pham-puma">Puma</a></li>
+                                <li class=""><a href="/san-pham-newbalance">New Balance</a></li>
+                            </ul>
+                        </div>
+                        <div class="widget_list widget_filter filter-price">
+                            <h3>Lọc theo giá</h3>
+                            <div id="priceSlider" style="margin: 20px"></div>
+                            <span id="fromGiaBan">0</span> - <span id="toGiaBan">2,000,000</span>
+                            <button class="btn btn-success" onclick="filterProducts()">Lọc</button>
+                        </div>
+                        <script>
+                            // Initialize the range slider with noUiSlider
+                            var priceSlider = document.getElementById('priceSlider');
+
+                            noUiSlider.create(priceSlider, {
+                                start: [0, 2000000], // Starting range
+                                connect: true,
+                                range: {
+                                    'min': 0,
+                                    'max': 2000000
+                                },
+                                step: 10000,
+                                tooltips: [true, true], // Show tooltips with values
+                                format: {
+                                    to: function (value) {
+                                        return Math.round(value).toLocaleString(); // Format as currency
+                                    },
+                                    from: function (value) {
+                                        return Number(value.replace(/,/g, ''));
+                                    }
+                                }
+                            });
+
+                            // Update displayed min and max values when slider is changed
+                            priceSlider.noUiSlider.on('update', function (values, handle) {
+                                document.getElementById('fromGiaBan').innerText = values[0];
+                                document.getElementById('toGiaBan').innerText = values[1];
+                            });
+
+                            // Function to handle filter button click
+                            function filterProducts() {
+                                const range = priceSlider.noUiSlider.get();
+                                const minGia = parseInt(range[0].replace(/[^\d]/g, ''));
+                                const maxGia = parseInt(range[1].replace(/[^\d]/g, ''));
+                                window.location.href = `/san-pham-puma?fromGiaBan=${minGia}&toGiaBan=${maxGia}`;
+                            }
+                        </script>
+                        <div class="widget_list widget_color">
+                            <h3>Chọn theo màu sắc</h3>
+                            <ul th:each="mauSac : ${mauSacVoiSanPham}">
+                                <li>
+                                    <a th:href="@{/san-pham-puma(tenMauSac=${mauSac[0]})}"
+                                       th:text="${mauSac[0] + ' ('+ mauSac[1]+')'}">Black </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="widget_list widget_color">
+                            <h3>Chọn theo kích thước</h3>
+                            <ul th:each="kt : ${kichThuocVoiSanPham}">
+                                <li>
+                                    <a th:href="@{/san-pham-puma(tenKichThuoc=${kt[0]})}"
+                                       th:text="${kt[0] +' ('+kt[1] +')'}">S</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </aside>
+                <!--sidebar widget end-->
+            </div>
+            <div class="col-lg-9 col-md-12">
+                <!--shop wrapper start-->
+                <!--shop toolbar start-->
+                <div class="shop_toolbar_wrapper">
+                    <div class="shop_toolbar_btn">
+
+                        <button data-role="grid_3" type="button" class="active btn-grid-3" data-bs-toggle="tooltip"
+                                title="3"></button>
+
+                        <button data-role="grid_4" type="button" class=" btn-grid-4" data-bs-toggle="tooltip"
+                                title="4"></button>
+
+                        <button data-role="grid_list" type="button" class="btn-list" data-bs-toggle="tooltip"
+                                title="List"></button>
+                    </div>
+                    <div>
+                        <form th:action="@{/san-pham-puma}" method="get">
+                            <select name="sortBy" id="short" onchange="this.form.submit()" style="height: 30px">
+                                <option value="0" th:selected="${sortBy == '0'}"> Sắp xếp theo mặc định</option>
+                                <option value="1" th:selected="${sortBy == '1'}">Sắp xếp theo độ phổ biến</option>
+                                <option value="2" th:selected="${sortBy == '2'}">Sắp xếp theo sản phẩm mới</option>
+                                <option value="3" th:selected="${sortBy == '3'}">Sắp xếp theo giá: từ thấp đến cao
+                                </option>
+                                <option value="4" th:selected="${sortBy == '4'}">Sắp xếp theo giá: từ cao xuống thấp
+                                </option>
+                                <option value="5" th:selected="${sortBy == '5'}">Sắp xếp theo tên</option>
+                            </select>
+                        </form>
+                    </div>
+                    <!--                    <div class="page_amount">-->
+                    <!--                        <p>Showing 1–9 of 21 results</p>-->
+                    <!--                    </div>-->
+                </div>
+                <!--shop toolbar end-->
+                <!-- hiển thị sản phẩm theo màu sắc -->
+                <div th:if="${sanPhamTheoMauSac}">
+                    <div class="row shop_wrapper">
+                        <div class="col-lg-4 col-md-4 col-12 " th:each="puma : ${sanPhamTheoMauSac}">
+                            <article class="single_product">
+                                <figure>
+                                    <div class="product_thumb">
+                                        <div class="discount-badge" th:if="${puma[3] != null}">
+                                            <span th:if="${puma[6] == 'Giảm giá %'}" th:text="${#numbers.formatDecimal(puma[7],0,'POINT',0,'POINT') + '%'}"></span>
+                                            <span th:if="${puma[6] == 'Giảm giá số tiền'}" th:text="${#numbers.formatDecimal(((puma[2] - puma[3]) * 100/  puma[2]), 0,'POINT', 0,'POINT') + '%'}"></span>
+                                        </div>
+                                        <div th:if="${#strings.contains(puma[5], ',')}">
+                                            <div th:each="image, iterStat : ${#strings.arraySplit(puma[5],',')}">
+                                                <div th:if="${iterStat.index == 0}">
+                                                    <a class="primary_img" th:href="@{/xem-chi-tiet/{id}(id=${puma[0]})}"><img th:src="@{'/repository/'+${image}}" alt=""></a>
+                                                </div>
+                                                <div th:if="${iterStat.index == 1}">
+                                                    <a class="secondary_img" th:href="@{/xem-chi-tiet/{id}(id=${puma[0]})}"><img th:src="@{'/repository/'+${image}}" alt=""></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div th:if="${#strings.contains(puma[5],',') == false}">
+                                            <img th:src="@{'/repository/'+${puma[5]}}" alt="Ảnh sản phẩm" />
+                                        </div>
+                                        <div class="action_links">
+                                            <ul>
+                                                <li class="quick_button"><a th:href="@{/xem-chi-tiet/{id}(id=${puma[0]})}" title="Xem chi tiết"> <i class="bx bx-show"></i></a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="product_content grid_content">
+                                        <div class="product_content-header">
+                                            <h4 class="product_name"><a th:href="@{/xem-chi-tiet/{id}(id=${puma[0]})}" th:text="${puma[1]}">Lorem Ipsum</a> (<span th:text="${puma[4]}"></span>)</h4>
+                                            <div class="wishlist-btn">
+                                                <a href="#"><i class="bx bx-heart"></i></a>
+                                            </div>
+                                        </div>
+                                        <div class="product_price_rating">
+                                            <div class="modal_price">
+                                                <span class="new_price" th:text="${#numbers.formatDecimal((puma[3] != null ? puma[3] : puma[2]), 0,'POINT',0,'POINT')}">$64.99</span>
+                                                <span class="old_price" th:text="${#numbers.formatDecimal((puma[3] != null ? puma[2] : ''), 0, 'POINT', 0 ,'POINT')}">$78.99</span>
+                                            </div>
+                                            <div class="product_rating">
+                                                <ul>
+                                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="product_content list_content">
+                                        <h4 class="product_name"><a th:href="@{/xem-chi-tiet/{id}(id=${puma[0]})}" th:text="${puma[1]}">Aliquam Consequat</a> (<span th:text="${puma[4]}"></span>)</h4>
+                                        <div class="product_desc">
+                                            <p>Sẵn sàng nâng cấp phong cách của bạn với <span th:text="${puma[1]}"></span>  – sự kết hợp hoàn hảo giữa sự thoải mái và thời trang. Được thiết kế hoàn toàn bằng màu hồng, đôi giày này mang đến vẻ ngoài nổi bật, độc đáo, chắc chắn sẽ thu hút mọi ánh nhìn. Không chỉ là một món đồ thời trang, còn được biết đến với sự hỗ trợ tuyệt vời cho bàn chân và hiệu suất cao.</p>
+                                        </div>
+                                        <div class="product_price_rating">
+                                            <div class="modal_price">
+                                                <span class="new_price" th:text="${#numbers.formatDecimal((puma[3] != null ? puma[3] : puma[2]), 0,'POINT',0,'POINT')}">$64.99</span>
+                                                <span class="old_price" th:text="${#numbers.formatDecimal((puma[3] != null ? puma[2] : ''), 0, 'POINT', 0 ,'POINT')}">$78.99</span>
+                                            </div>
+                                            <div class="product_rating">
+                                                <ul>
+                                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </figure>
+                            </article>
+                        </div>
+                    </div>
+                    <div th:if="${sanPhamTheoMauSac != null}">
+                        <div th:if="${sanPhamTheoMauSac.totalPages > 0}">
+                            <!-- Nút về trang đầu -->
+                            <a th:href="@{/san-pham-puma(page=0, tenMauSac=${tenMauSac})}"
+                               th:classappend="${sanPhamTheoMauSac.number == 0} ? 'disabled' : ''">&laquo;</a>
+
+                            <!-- Nút Previous -->
+                            <a th:href="@{/san-pham-puma(page=${sanPhamTheoMauSac.number - 1}, tenMauSac=${tenMauSac})}"
+                               th:classappend="${!sanPhamTheoMauSac.hasPrevious()} ? 'disabled' : ''">&lt;</a>
+
+                            <!-- Hiển thị số trang -->
+                            <span th:each="i : ${#numbers.sequence(0, sanPhamTheoMauSac.totalPages - 1)}">
+                                                            <a th:href="@{/san-pham-puma(page=${i}, tenMauSac=${tenMauSac})}"
+                                                               th:classappend="${sanPhamTheoMauSac.number == i} ? 'active' : ''"
+                                                               th:text="${i + 1}">1</a>
+                                                        </span>
+
+                            <!-- Nút Next -->
+                            <a th:href="@{/san-pham-puma(page=${sanPhamTheoMauSac.number + 1}, tenMauSac=${tenMauSac})}"
+                               th:classappend="${!sanPhamTheoMauSac.hasNext()} ? 'disabled' : ''">&gt;</a>
+
+                            <!-- Nút về trang cuối -->
+                            <a th:href="@{/san-pham-puma(page=${sanPhamTheoMauSac.totalPages - 1}, tenMauSac=${tenMauSac})}"
+                               th:classappend="${sanPhamTheoMauSac.number + 1 >= sanPhamTheoMauSac.totalPages} ? 'disabled' : ''">&raquo;</a>
+                        </div>
+                        <!-- Thông báo nếu không có trang -->
+                        <p th:if="${sanPhamTheoMauSac.totalPages == 0}">Không có sản phẩm nào để hiển thị.</p>
+                    </div>
+                </div>
+                <!-- Hiển thị sản phầm theo kích thước -->
+                <div th:if="${sanPhamTheoKichThuoc} and ${sanPhamTheoMauSac == null}">
+                    <div class="row shop_wrapper">
+                        <div class="col-lg-4 col-md-4 col-12 " th:each="puma : ${sanPhamTheoKichThuoc}">
+                            <article class="single_product">
+                                <figure>
+                                    <div class="product_thumb">
+                                        <div class="discount-badge" th:if="${puma[3] != null}">
+                                            <span th:if="${puma[6] == 'Giảm giá %'}" th:text="${#numbers.formatDecimal(puma[7],0,'POINT',0,'POINT') + '%'}"></span>
+                                            <span th:if="${puma[6] == 'Giảm giá số tiền'}" th:text="${#numbers.formatDecimal(((puma[2] - puma[3]) * 100 / puma[2]), 0,'POINT', 0,'POINT') + '%'}"></span>
+                                        </div>
+                                        <div th:if="${#strings.contains(puma[5], ',')}">
+                                            <div th:each="image, iterStat : ${#strings.arraySplit(puma[5],',')}">
+                                                <div th:if="${iterStat.index == 0}">
+                                                    <a class="primary_img" th:href="@{/xem-chi-tiet/{id}(id=${puma[0]})}"><img th:src="@{'/repository/'+${image}}" alt=""></a>
+                                                </div>
+                                                <div th:if="${iterStat.index == 1}">
+                                                    <a class="secondary_img" th:href="@{/xem-chi-tiet/{id}(id=${puma[0]})}"><img th:src="@{'/repository/'+${image}}" alt=""></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div th:if="${#strings.contains(puma[5],',') == false}">
+                                            <img th:src="@{'/repository/'+${puma[5]}}" alt="Ảnh sản phẩm" />
+                                        </div>
+                                        <div class="action_links">
+                                            <ul>
+                                                <li class="quick_button"><a th:href="@{/xem-chi-tiet/{id}(id=${puma[0]})}" title="Xem chi tiết"> <i class="bx bx-show"></i></a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="product_content grid_content">
+                                        <div class="product_content-header">
+                                            <h4 class="product_name"><a th:href="@{/xem-chi-tiet/{id}(id=${puma[0]})}" th:text="${puma[1]}">Lorem Ipsum</a> (<span th:text="${puma[4]}"></span>)</h4>
+                                            <div class="wishlist-btn">
+                                                <a href="#"><i class="bx bx-heart"></i></a>
+                                            </div>
+                                        </div>
+                                        <div class="product_price_rating">
+                                            <div class="modal_price">
+                                                <span class="new_price" th:text="${#numbers.formatDecimal((puma[3] != null ? puma[3] : puma[2]), 0,'POINT',0,'POINT')}">$64.99</span>
+                                                <span class="old_price" th:text="${#numbers.formatDecimal((puma[3] != null ? puma[2] : ''), 0, 'POINT', 0 ,'POINT')}">$78.99</span>
+                                            </div>
+                                            <div class="product_rating">
+                                                <ul>
+                                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="product_content list_content">
+                                        <h4 class="product_name"><a th:href="@{/xem-chi-tiet/{id}(id=${puma[0]})}" th:text="${puma[1]}">Aliquam Consequat</a> (<span th:text="${puma[4]}"></span>)</h4>
+                                        <div class="product_desc">
+                                            <p>Sẵn sàng nâng cấp phong cách của bạn với <span th:text="${puma[1]}"></span>  – sự kết hợp hoàn hảo giữa sự thoải mái và thời trang. Được thiết kế hoàn toàn bằng màu hồng, đôi giày này mang đến vẻ ngoài nổi bật, độc đáo, chắc chắn sẽ thu hút mọi ánh nhìn. Không chỉ là một món đồ thời trang, Air còn được biết đến với sự hỗ trợ tuyệt vời cho bàn chân và hiệu suất cao.</p>
+                                        </div>
+                                        <div class="product_price_rating">
+                                            <div class="modal_price">
+                                                <span class="new_price" th:text="${#numbers.formatDecimal((puma[3] != null ? puma[3] : puma[2]), 0,'POINT',0,'POINT')}">$64.99</span>
+                                                <span class="old_price" th:text="${#numbers.formatDecimal((puma[3] != null ? puma[2] : ''), 0, 'POINT', 0 ,'POINT')}">$78.99</span>
+                                            </div>
+                                            <div class="product_rating">
+                                                <ul>
+                                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </figure>
+                            </article>
+                        </div>
+                    </div>
+                    <div th:if="${sanPhamTheoKichThuoc != null}">
+                        <div th:if="${sanPhamTheoKichThuoc.totalPages > 0}">
+                            <!-- Nút về trang đầu -->
+                            <a th:href="@{/san-pham-puma(page=0, tenKichThuoc=${tenKichThuoc})}"
+                               th:classappend="${sanPhamTheoKichThuoc.number == 0} ? 'disabled' : ''">&laquo;</a>
+
+                            <!-- Nút Previous -->
+                            <a th:href="@{/san-pham-puma(page=${sanPhamTheoKichThuoc.number - 1}, tenKichThuoc=${tenKichThuoc})}"
+                               th:classappend="${!sanPhamTheoKichThuoc.hasPrevious()} ? 'disabled' : ''">&lt;</a>
+
+                            <!-- Hiển thị số trang -->
+                            <span th:each="i : ${#numbers.sequence(0, sanPhamTheoKichThuoc.totalPages - 1)}">
+                                                            <a th:href="@{/san-pham-puma(page=${i}, tenKichThuoc=${tenKichThuoc})}"
+                                                               th:classappend="${sanPhamTheoKichThuoc.number == i} ? 'active' : ''"
+                                                               th:text="${i + 1}">1</a>
+                                                        </span>
+
+                            <!-- Nút Next -->
+                            <a th:href="@{/san-pham-puma(page=${sanPhamTheoKichThuoc.number + 1}, tenKichThuoc=${tenKichThuoc})}"
+                               th:classappend="${!sanPhamTheoKichThuoc.hasNext()} ? 'disabled' : ''">&gt;</a>
+
+                            <!-- Nút về trang cuối -->
+                            <a th:href="@{/san-pham-puma(page=${sanPhamTheoKichThuoc.totalPages - 1}, tenKichThuoc=${tenKichThuoc})}"
+                               th:classappend="${sanPhamTheoKichThuoc.number + 1 >= sanPhamTheoKichThuoc.totalPages} ? 'disabled' : ''">&raquo;</a>
+                        </div>
+                        <!-- Thông báo nếu không có trang -->
+                        <p th:if="${sanPhamTheoKichThuoc.totalPages == 0}">Không có sản phẩm nào để hiển thị.</p>
+                    </div>
+                </div>
+                <!-- Hiển thị sản phẩm theo giá -->
+                <!-- hiển thị tất ca -->
+                <div th:if="${sanPhamTheoGia} and ${sanPhamTheoMauSac == null} and ${sanPhamTheoKichThuoc == null}">
+                    <div class="row shop_wrapper">
+                        <div class="col-lg-4 col-md-4 col-12 " th:each="puma : ${sanPhamTheoGia}">
+                            <article class="single_product">
+                                <figure>
+                                    <div class="product_thumb">
+                                        <div class="discount-badge" th:if="${puma[3] != null}">
+                                            <span th:if="${puma[6] == 'Giảm giá %'}" th:text="${#numbers.formatDecimal(puma[7],0,'POINT',0,'POINT') + '%'}"></span>
+                                            <span th:if="${puma[6] == 'Giảm giá số tiền'}" th:text="${#numbers.formatDecimal(((puma[2] - puma[3])* 100 / puma[2]), 0,'POINT', 0,'POINT') + '%'}"></span>
+                                        </div>
+                                        <div th:if="${#strings.contains(puma[5], ',')}">
+                                            <div th:each="image, iterStat : ${#strings.arraySplit(puma[5],',')}">
+                                                <div th:if="${iterStat.index == 0}">
+                                                    <a class="primary_img" th:href="@{/xem-chi-tiet/{id}(id=${puma[0]})}"><img th:src="@{'/repository/'+${image}}" alt=""></a>
+                                                </div>
+                                                <div th:if="${iterStat.index == 1}">
+                                                    <a class="secondary_img" th:href="@{/xem-chi-tiet/{id}(id=${puma[0]})}"><img th:src="@{'/repository/'+${image}}" alt=""></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div th:if="${#strings.contains(puma[5],',') == false}">
+                                            <img th:src="@{'/repository/'+${puma[5]}}" alt="Ảnh sản phẩm" />
+                                        </div>
+                                        <div class="action_links">
+                                            <ul>
+                                                <li class="quick_button"><a th:href="@{/xem-chi-tiet/{id}(id=${puma[0]})}" title="Xem chi tiết"> <i class="bx bx-show"></i></a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="product_content grid_content">
+                                        <div class="product_content-header">
+                                            <h4 class="product_name"><a th:href="@{/xem-chi-tiet/{id}(id=${puma[0]})}" th:text="${puma[1]}">Lorem Ipsum</a> (<span th:text="${puma[4]}"></span>)</h4>
+                                            <div class="wishlist-btn">
+                                                <a href="#"><i class="bx bx-heart"></i></a>
+                                            </div>
+                                        </div>
+                                        <div class="product_price_rating">
+                                            <div class="modal_price">
+                                                <span class="new_price" th:text="${#numbers.formatDecimal((puma[3] != null ? puma[3] : puma[2]), 0,'POINT',0,'POINT')}">$64.99</span>
+                                                <span class="old_price" th:text="${#numbers.formatDecimal((puma[3] != null ? puma[2] : ''), 0, 'POINT', 0 ,'POINT')}">$78.99</span>
+                                            </div>
+                                            <div class="product_rating">
+                                                <ul>
+                                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="product_content list_content">
+                                        <h4 class="product_name"><a th:href="@{/xem-chi-tiet/{id}(id=${puma[0]})}" th:text="${puma[1]}">Aliquam Consequat</a> (<span th:text="${puma[4]}"></span>)</h4>
+                                        <div class="product_desc">
+                                            <p>Sẵn sàng nâng cấp phong cách của bạn với <span th:text="${puma[1]}"></span>  – sự kết hợp hoàn hảo giữa sự thoải mái và thời trang. Được thiết kế hoàn toàn bằng màu hồng, đôi giày này mang đến vẻ ngoài nổi bật, độc đáo, chắc chắn sẽ thu hút mọi ánh nhìn. Không chỉ là một món đồ thời trang, Air còn được biết đến với sự hỗ trợ tuyệt vời cho bàn chân và hiệu suất cao.</p>
+                                        </div>
+                                        <div class="product_price_rating">
+                                            <div class="modal_price">
+                                                <span class="new_price" th:text="${#numbers.formatDecimal((puma[3] != null ? puma[3] : puma[2]), 0,'POINT',0,'POINT')}">$64.99</span>
+                                                <span class="old_price" th:text="${#numbers.formatDecimal((puma[3] != null ? puma[2] : ''), 0, 'POINT', 0 ,'POINT')}">$78.99</span>
+                                            </div>
+                                            <div class="product_rating">
+                                                <ul>
+                                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </figure>
+                            </article>
+                        </div>
+                    </div>
+                    <div th:if="${sanPhamTheoGia != null}">
+                        <div th:if="${sanPhamTheoGia.totalPages > 0}">
+                            <!-- Nút về trang đầu -->
+                            <a th:href="@{/san-pham-puma(page=0, fromGiaBan=${fromGiaBan}, toGiaBan=${toGiaBan})}"
+                               th:classappend="${sanPhamTheoGia.number == 0} ? 'disabled' : ''">&laquo;</a>
+
+                            <!-- Nút Previous -->
+                            <a th:href="@{/san-pham-puma(page=${sanPhamTheoGia.number - 1}, fromGiaBan=${fromGiaBan}, toGiaBan=${toGiaBan})}"
+                               th:classappend="${!sanPhamTheoGia.hasPrevious()} ? 'disabled' : ''">&lt;</a>
+
+                            <!-- Hiển thị số trang -->
+                            <span th:each="i : ${#numbers.sequence(0, sanPhamTheoGia.totalPages - 1)}">
+                                                            <a th:href="@{/san-pham-puma(page=${i}, fromGiaBan=${fromGiaBan}, toGiaBan=${toGiaBan})}"
+                                                               th:classappend="${sanPhamTheoGia.number == i} ? 'active' : ''"
+                                                               th:text="${i + 1}">1</a>
+                                                        </span>
+
+                            <!-- Nút Next -->
+                            <a th:href="@{/san-pham-puma(page=${sanPhamTheoGia.number + 1}, fromGiaBan=${fromGiaBan}, toGiaBan=${toGiaBan})}"
+                               th:classappend="${!sanPhamTheoGia.hasNext()} ? 'disabled' : ''">&gt;</a>
+
+                            <!-- Nút về trang cuối -->
+                            <a th:href="@{/san-pham-puma(page=${sanPhamTheoGia.totalPages - 1}, fromGiaBan=${fromGiaBan}, toGiaBan=${toGiaBan})}"
+                               th:classappend="${sanPhamTheoGia.number + 1 >= sanPhamTheoGia.totalPages} ? 'disabled' : ''">&raquo;</a>
+                        </div>
+                        <!-- Thông báo nếu không có trang -->
+                        <p th:if="${sanPhamTheoGia.totalPages == 0}">Không có sản phẩm nào để hiển thị.</p>
+                    </div>
+                </div>
+                <!-- sản phẩm theo tên sản phẩm -->
+                <div th:if="${sanPhamTheoTenSanPham} and ${sanPhamTheoMauSac == null} and ${sanPhamTheoKichThuoc == null} and ${sanPhamTheoGia == null}">
+                    <div class="row shop_wrapper">
+                        <div class="col-lg-4 col-md-4 col-12 " th:each="puma : ${sanPhamTheoTenSanPham}">
+                            <article class="single_product">
+                                <figure>
+                                    <div class="product_thumb">
+                                        <div class="discount-badge" th:if="${puma[3] != null}">
+                                            <span th:if="${puma[6] == 'Giảm giá %'}" th:text="${#numbers.formatDecimal(puma[7],0,'POINT',0,'POINT') + '%'}"></span>
+                                            <span th:if="${puma[6] == 'Giảm giá số tiền'}" th:text="${#numbers.formatDecimal(((puma[2] - puma[3])* 100 / puma[2]), 0,'POINT', 0,'POINT') + '%'}"></span>
+                                        </div>
+                                        <div th:if="${#strings.contains(puma[5], ',')}">
+                                            <div th:each="image, iterStat : ${#strings.arraySplit(puma[5],',')}">
+                                                <div th:if="${iterStat.index == 0}">
+                                                    <a class="primary_img" th:href="@{/xem-chi-tiet/{id}(id=${puma[0]})}"><img th:src="@{'/repository/'+${image}}" alt=""></a>
+                                                </div>
+                                                <div th:if="${iterStat.index == 1}">
+                                                    <a class="secondary_img" th:href="@{/xem-chi-tiet/{id}(id=${puma[0]})}"><img th:src="@{'/repository/'+${image}}" alt=""></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div th:if="${#strings.contains(puma[5],',') == false}">
+                                            <img th:src="@{'/repository/'+${puma[5]}}" alt="Ảnh sản phẩm" />
+                                        </div>
+                                        <div class="action_links">
+                                            <ul>
+                                                <li class="quick_button"><a th:href="@{/xem-chi-tiet/{id}(id=${puma[0]})}" title="Xem chi tiết"> <i class="bx bx-show"></i></a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="product_content grid_content">
+                                        <div class="product_content-header">
+                                            <h4 class="product_name"><a th:href="@{/xem-chi-tiet/{id}(id=${puma[0]})}" th:text="${puma[1]}">Lorem Ipsum</a> (<span th:text="${puma[4]}"></span>)</h4>
+                                            <div class="wishlist-btn">
+                                                <a href="#"><i class="bx bx-heart"></i></a>
+                                            </div>
+                                        </div>
+                                        <div class="product_price_rating">
+                                            <div class="modal_price">
+                                                <span class="new_price" th:text="${#numbers.formatDecimal((puma[3] != null ? puma[3] : puma[2]), 0,'POINT',0,'POINT')}">$64.99</span>
+                                                <span class="old_price" th:text="${#numbers.formatDecimal((puma[3] != null ? puma[2] : ''), 0, 'POINT', 0 ,'POINT')}">$78.99</span>
+                                            </div>
+                                            <div class="product_rating">
+                                                <ul>
+                                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="product_content list_content">
+                                        <h4 class="product_name"><a th:href="@{/xem-chi-tiet/{id}(id=${puma[0]})}" th:text="${puma[1]}">Aliquam Consequat</a> (<span th:text="${puma[4]}"></span>)</h4>
+                                        <div class="product_desc">
+                                            <p>Sẵn sàng nâng cấp phong cách của bạn với <span th:text="${puma[1]}"></span>  – sự kết hợp hoàn hảo giữa sự thoải mái và thời trang. Được thiết kế hoàn toàn bằng màu hồng, đôi giày này mang đến vẻ ngoài nổi bật, độc đáo, chắc chắn sẽ thu hút mọi ánh nhìn. Không chỉ là một món đồ thời trang, Air còn được biết đến với sự hỗ trợ tuyệt vời cho bàn chân và hiệu suất cao.</p>
+                                        </div>
+                                        <div class="product_price_rating">
+                                            <div class="modal_price">
+                                                <span class="new_price" th:text="${#numbers.formatDecimal((puma[3] != null ? puma[3] : puma[2]), 0,'POINT',0,'POINT')}">$64.99</span>
+                                                <span class="old_price" th:text="${#numbers.formatDecimal((puma[3] != null ? puma[2] : ''), 0, 'POINT', 0 ,'POINT')}">$78.99</span>
+                                            </div>
+                                            <div class="product_rating">
+                                                <ul>
+                                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </figure>
+                            </article>
+                        </div>
+                    </div>
+                    <div th:if="${sanPhamTheoTenSanPham != null}">
+                        <div th:if="${sanPhamTheoTenSanPham.totalPages > 0}">
+                            <!-- Nút về trang đầu -->
+                            <a th:href="@{/san-pham-puma(page=0, tenSanPham=${tenSanPham})}"
+                               th:classappend="${sanPhamTheoTenSanPham.number == 0} ? 'disabled' : ''">&laquo;</a>
+
+                            <!-- Nút Previous -->
+                            <a th:href="@{/san-pham-puma(page=${sanPhamTheoTenSanPham.number - 1}, tenSanPham=${tenSanPham})}"
+                               th:classappend="${!sanPhamTheoTenSanPham.hasPrevious()} ? 'disabled' : ''">&lt;</a>
+
+                            <!-- Hiển thị số trang -->
+                            <span th:each="i : ${#numbers.sequence(0, sanPhamTheoTenSanPham.totalPages - 1)}">
+                                                            <a th:href="@{/san-pham-puma(page=${i}, tenSanPham=${tenSanPham})}"
+                                                               th:classappend="${sanPhamTheoTenSanPham.number == i} ? 'active' : ''"
+                                                               th:text="${i + 1}">1</a>
+                                                        </span>
+
+                            <!-- Nút Next -->
+                            <a th:href="@{/san-pham-puma(page=${sanPhamTheoTenSanPham.number + 1}, tenSanPham=${tenSanPham})}"
+                               th:classappend="${!sanPhamTheoTenSanPham.hasNext()} ? 'disabled' : ''">&gt;</a>
+
+                            <!-- Nút về trang cuối -->
+                            <a th:href="@{/san-pham-puma(page=${sanPhamTheoTenSanPham.totalPages - 1},tenSanPham=${tenSanPham})}"
+                               th:classappend="${sanPhamTheoTenSanPham.number + 1 >= sanPhamTheoTenSanPham.totalPages} ? 'disabled' : ''">&raquo;</a>
+                        </div>
+                        <!-- Thông báo nếu không có trang -->
+                        <p th:if="${sanPhamTheoTenSanPham.totalPages == 0}">Không có sản phẩm nào để hiển thị.</p>
+                    </div>
+                </div>
+                <!-- hiển thị tất ca -->
+                <div th:if="${tatCaSanPhamPuma} and ${sanPhamTheoMauSac == null} and ${sanPhamTheoKichThuoc == null} and ${sanPhamTheoGia == null} and ${sanPhamTheoTenSanPham == null}">
+                    <div class="row shop_wrapper">
+                        <div class="col-lg-4 col-md-4 col-12 " th:each="puma : ${tatCaSanPhamPuma}">
+                            <article class="single_product">
+                                <figure>
+                                    <div class="product_thumb">
+                                        <div class="discount-badge" th:if="${puma[3] != null}">
+                                            <span th:if="${puma[6] == 'Giảm giá %'}" th:text="${#numbers.formatDecimal(puma[7],0,'POINT',0,'POINT') + '%'}"></span>
+                                            <span th:if="${puma[6] == 'Giảm giá số tiền'}" th:text="${#numbers.formatDecimal(((puma[2] - puma[3])*100 / puma[2]), 0,'POINT', 0,'POINT') + '%'}"></span>
+                                        </div>
+                                        <div th:if="${#strings.contains(puma[5], ',')}">
+                                            <div th:each="image, iterStat : ${#strings.arraySplit(puma[5],',')}">
+                                                <div th:if="${iterStat.index == 0}">
+                                                    <a class="primary_img" th:href="@{/xem-chi-tiet/{id}(id=${puma[0]})}"><img th:src="@{'/repository/'+${image}}" alt=""></a>
+                                                </div>
+                                                <div th:if="${iterStat.index == 1}">
+                                                    <a class="secondary_img" th:href="@{/xem-chi-tiet/{id}(id=${puma[0]})}"><img th:src="@{'/repository/'+${image}}" alt=""></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div th:if="${#strings.contains(puma[5],',') == false}">
+                                            <img th:src="@{'/repository/'+${puma[5]}}" alt="Ảnh sản phẩm" />
+                                        </div>
+                                        <div class="action_links">
+                                            <ul>
+                                                <li class="quick_button"><a th:href="@{/xem-chi-tiet/{id}(id=${puma[0]})}" title="Xem chi tiết"> <i class="bx bx-show"></i></a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="product_content grid_content">
+                                        <div class="product_content-header">
+                                            <h4 class="product_name"><a th:href="@{/xem-chi-tiet/{id}(id=${puma[0]})}" th:text="${puma[1]}">Lorem Ipsum</a> (<span th:text="${puma[4]}"></span>)</h4>
+                                            <div class="wishlist-btn">
+                                                <a href="#"><i class="bx bx-heart"></i></a>
+                                            </div>
+                                        </div>
+                                        <div class="product_price_rating">
+                                            <div class="modal_price">
+                                                <span class="new_price" th:text="${#numbers.formatDecimal((puma[3] != null ? puma[3] : puma[2]), 0,'POINT',0,'POINT')}">$64.99</span>
+                                                <span class="old_price" th:text="${#numbers.formatDecimal((puma[3] != null ? puma[2] : ''), 0, 'POINT', 0 ,'POINT')}">$78.99</span>
+                                            </div>
+                                            <div class="product_rating">
+                                                <ul>
+                                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="product_content list_content">
+                                        <h4 class="product_name"><a  th:href="@{/xem-chi-tiet/{id}(id=${puma[0]})}" th:text="${puma[1]}">Aliquam Consequat</a> (<span th:text="${puma[4]}"></span>)</h4>
+                                        <div class="product_desc">
+                                            <p>Sẵn sàng nâng cấp phong cách của bạn với <span th:text="${puma[1]}"></span>  – sự kết hợp hoàn hảo giữa sự thoải mái và thời trang. Được thiết kế hoàn toàn bằng màu hồng, đôi giày này mang đến vẻ ngoài nổi bật, độc đáo, chắc chắn sẽ thu hút mọi ánh nhìn. Không chỉ là một món đồ thời trang, Air còn được biết đến với sự hỗ trợ tuyệt vời cho bàn chân và hiệu suất cao.</p>
+                                        </div>
+                                        <div class="product_price_rating">
+                                            <div class="modal_price">
+                                                <span class="new_price" th:text="${#numbers.formatDecimal((puma[3] != null ? puma[3] : puma[2]), 0,'POINT',0,'POINT')}">$64.99</span>
+                                                <span class="old_price" th:text="${#numbers.formatDecimal((puma[3] != null ? puma[2] : ''), 0, 'POINT', 0 ,'POINT')}">$78.99</span>
+                                            </div>
+                                            <div class="product_rating">
+                                                <ul>
+                                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </figure>
+                            </article>
+                        </div>
+                    </div>
+                    <div th:if="${tatCaSanPhamPuma != null}">
+                        <div th:if="${tatCaSanPhamPuma.totalPages > 0}">
+                            <!-- Nút về trang đầu -->
+                            <a th:href="@{/san-pham-puma(page=0, sortBy=${sortBy})}"
+                               th:classappend="${tatCaSanPhamPuma.number == 0} ? 'disabled' : ''">&laquo;</a>
+
+                            <!-- Nút Previous -->
+                            <a th:href="@{/san-pham-puma(page=${tatCaSanPhamPuma.number - 1}, sortBy=${sortBy})}"
+                               th:classappend="${!tatCaSanPhamPuma.hasPrevious()} ? 'disabled' : ''">&lt;</a>
+
+                            <!-- Hiển thị số trang -->
+                            <span th:each="i : ${#numbers.sequence(0, tatCaSanPhamPuma.totalPages - 1)}">
+                                                            <a th:href="@{/san-pham-puma(page=${i}, sortBy=${sortBy})}"
+                                                               th:classappend="${tatCaSanPhamPuma.number == i} ? 'active' : ''"
+                                                               th:text="${i + 1}">1</a>
+                                                        </span>
+
+                            <!-- Nút Next -->
+                            <a th:href="@{/san-pham-puma(page=${tatCaSanPhamPuma.number + 1}, sortBy=${sortBy})}"
+                               th:classappend="${!tatCaSanPhamPuma.hasNext()} ? 'disabled' : ''">&gt;</a>
+
+                            <!-- Nút về trang cuối -->
+                            <a th:href="@{/san-pham-puma(page=${tatCaSanPhamPuma.totalPages - 1}, sortBy=${sortBy})}"
+                               th:classappend="${tatCaSanPhamPuma.number + 1 >= tatCaSanPhamPuma.totalPages} ? 'disabled' : ''">&raquo;</a>
+                        </div>
+                        <!-- Thông báo nếu không có trang -->
+                        <p th:if="${tatCaSanPhamPuma.totalPages == 0}">Không có sản phẩm nào để hiển thị.</p>
+                    </div>
+                </div>
+                <!--shop toolbar end-->
+                <!--shop wrapper end-->
+            </div>
+        </div>
+    </div>
+</div>
+<!--shop  area end-->
+
+<!--footer area start-->
+<footer class="footer_widgets">
+    <div class="footer_top">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="row">
+
+                        <div class="col-lg-7 col-md-7 col-sm-7">
+                            <div class="widgets_container contact_us">
+                                <div class="footer_logo">
+                                    <a href="/trang-chu"><h1 style="color: white">FSneaker</h1></a>
+                                </div>
+                                <div class="footer_desc">
+                                    <!--                                    <p>We are a team of designers and developers that create high quality HTML Template, Woocommerce, Shopify Theme.</p>-->
+                                </div>
+
+                                <p><span>Địa chỉ:</span> Trịnh Văn Bô, Nam Từ Liêm, Hà Nội</p>
+                                <p><span>Email:</span> <a target="_blank" href="#">FSneakerShop@gmail.com</a>
+                                </p>
+                                <p><span>Hotline:</span> <a href="#">+1 250 3678 64587</a></p>
+                            </div>
+                        </div>
+                        <div class="col-lg-5 col-md-5 col-sm-5">
+                            <div class="widgets_container widget_menu">
+                                <h3> Hỗ trợ khách hàng</h3>
+                                <div class="footer_menu">
+                                    <ul>
+                                        <li><a href="#">Hướng dẫn mua hàng</a></li>
+                                        <li><a href="#">Chính sách đối trả</a></li>
+                                        <li><a href="#">Chính sách bảo hành</a></li>
+                                        <li><a href="#">Khách hàng thân thiêt</a></li>
+                                        <li><a href="#">Chương trình khuyến mãi</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <div class="widgets_container widget_menu">
+                                <h3>Về chúng tôi</h3>
+                                <div class="footer_menu">
+                                    <ul>
+                                        <li><a href="#">Giới thiệu</a></li>
+                                        <li><a href="#">Điều khoản sử dụng</a></li>
+                                        <li><a href="#">Chính sách bảo mật</a></li>
+                                        <li><a href="#">Liên hệ</a></li>
+                                        <li><a href="#">Tin tức</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-8">
+                            <div class="widgets_container widget_menu">
+                                <!--                                <h3>Newsletter</h3>-->
+                                <!--                                <div class="subscribe_form">-->
+                                <!--                                    <form id="mc-form" class="mc-form footer-newsletter" >-->
+                                <!--                                        <input id="mc-email" type="email" autocomplete="off" placeholder="Enter you email address" />-->
+                                <!--                                        <button id="mc-submit"><i class="bx bx-mail-send"></i></button>-->
+                                <!--                                    </form>-->
+                                <!--                                    &lt;!&ndash; mailchimp-alerts Start &ndash;&gt;-->
+                                <!--                                    <div class="mailchimp-alerts text-centre">-->
+                                <!--                                        <div class="mailchimp-submitting"></div>&lt;!&ndash; mailchimp-submitting end &ndash;&gt;-->
+                                <!--                                        <div class="mailchimp-success"></div>&lt;!&ndash; mailchimp-success end &ndash;&gt;-->
+                                <!--                                        <div class="mailchimp-error"></div>&lt;!&ndash; mailchimp-error end &ndash;&gt;-->
+                                <!--                                    </div>&lt;!&ndash; mailchimp-alerts end &ndash;&gt;-->
+                                <!--                                </div>-->
+                                <div class="footer_social">
+                                    <h3>follow us on</h3>
+                                    <ul>
+                                        <li><a href="#"><i class="bx bxl-facebook"></i></a></li>
+                                        <li><a href="#"><i class="bx bxl-twitter"></i></a></li>
+                                        <li><a href="#"><i class="bx bx-rss"></i></a></li>
+                                        <li><a href="#"><i class="bx bxl-youtube"></i></a></li>
+                                        <li><a href="#"><i class="bx bxl-google"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer_bottom">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="footer_bottom_container">
+                        <div class="footer_link">
+                            <ul>
+                                <li><a href="#">Contact Us</a></li>
+                                <li><a href="#">Site Map</a></li>
+                                <li><a href="#">Specials</a></li>
+                                <li><a href="#">Returns</a></li>
+                            </ul>
+                        </div>
+                        <div class="copyright_area">
+                            <p>Copyright &copy; 2023 <a href="#">Presiden</a> All Right Reserved.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<!--footer area end-->
+
+
+<!-- JS
+============================================ -->
+<!--jquery min js-->
+<script src="js/templateuse/vendor/jquery-3.4.1.min.js"></script>
+<!--popper min js-->
+<script src="js/templateuse/popper.js"></script>
+<!--bootstrap min js-->
+<script src="js/templateuse/bootstrap.min.js"></script>
+<!--owl carousel min js-->
+<script src="js/templateuse/owl.carousel.min.js"></script>
+<!--slick min js-->
+<script src="js/templateuse/slick.min.js"></script>
+<!--magnific popup min js-->
+<script src="js/templateuse/jquery.magnific-popup.min.js"></script>
+<!--counterup min js-->
+<script src="js/templateuse/jquery.counterup.min.js"></script>
+<!--jquery countdown min js-->
+<script src="js/templateuse/jquery.countdown.js"></script>
+<!--jquery ui min js-->
+<script src="js/templateuse/jquery.ui.js"></script>
+<!--jquery elevatezoom min js-->
+<script src="js/templateuse/jquery.elevatezoom.js"></script>
+<!--isotope packaged min js-->
+<script src="js/templateuse/isotope.pkgd.min.js"></script>
+<!--slinky menu js-->
+<script src="js/templateuse/slinky.menu.js"></script>
+<!-- Plugins JS -->
+<script src="js/templateuse/plugins.js"></script>
+
+<!-- Main JS -->
+<script src="js/templateuse/main.js"></script>
+
+
+</body>
+
+
+<!-- Mirrored from htmldemo.net/presiden/presiden/shop.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 22 Oct 2024 03:04:40 GMT -->
+</html>

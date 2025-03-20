@@ -1,0 +1,27 @@
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--  <meta charset="UTF-8">-->
+<!--  <title>Title</title>-->
+<!--</head>-->
+<!--<body>-->
+<ul class="result_list_search" th:fragment="resultsList">
+    <li th:each="product : ${products}" style="display: flex; align-items: center;">
+        <div style="margin-right: 10px;">
+            <div th:each="image,iterStat : ${#strings.arraySplit(product[3], ',')}">
+                <a th:href="@{/xem-chi-tiet/{id}(id=${product[0]})}" th:if="${iterStat.index == 0}">
+                    <img th:src="@{'/repository/'+${image}}" alt="" style="height: 60px; width: auto;">
+                </a>
+            </div>
+        </div>
+        <div>
+            <a th:href="@{/xem-chi-tiet/{id}(id=${product[0]})}">
+                <span th:text="${product[1]}"></span>
+            </a>
+            (<span th:text="${product[2]}"></span>)
+        </div>
+    </li>
+</ul>
+<!--</body>-->
+<!--</html>-->

@@ -1,0 +1,855 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-image="none" data-preloader="disable" data-theme="default" data-theme-colors="default">
+<head>
+    <meta charset="UTF-8">
+    <title>Thống kê</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
+    <meta content="Themesbrand" name="author" />
+    <style>
+        .disabled {
+            pointer-events: none;
+            opacity: 0.5;
+        }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0;
+        }
+        .pagination span{
+            margin-top: 6px;
+        }
+
+        .pagination a {
+            padding: 5px 10px;
+            margin: 0 5px;
+            border: 1px solid #ddd;
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        .pagination a.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .pagination a.disabled {
+            pointer-events: none;
+            color: #ccc;
+        }
+        .card-header-dropdown .dropdown-btn {
+            cursor: pointer;
+        }
+
+        .dropdown-menu-end {
+            right: 0;
+            left: auto;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="shortcut icon" href="images/shoes.png">
+    <!-- Thêm Line Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/line-awesome/1.3.0/line-awesome/css/line-awesome.min.css">
+    <!-- Thêm Material Design Icons CDN -->
+    <!--    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">-->
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font/css/materialdesignicons.min.css" rel="stylesheet">
+    <!-- Thêm Feather Icon CND -->
+    <script src="https://unpkg.com/feather-icons"></script>
+    <!-- Thêm Remix Icon -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+    <!-- Thêm link tới Boxicons CDN -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <!-- jsvectormap css -->
+    <link href="css/jsvectormap.min.css" rel="stylesheet" type="text/css" />
+
+    <!--Swiper slider css-->
+    <link href="css/swiper-bundle.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- Layout config Js -->
+    <script src="js/layout.js"></script>
+    <!-- Bootstrap Css -->
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <!-- Icons Css -->
+    <link href="css/icons.min.css" rel="stylesheet" type="text/css" />
+    <!-- App Css-->
+    <link href="css/app.min.css" rel="stylesheet" type="text/css" />
+    <!-- custom Css-->
+    <link href="css/custom.min.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<!-- Begin page -->
+<div id="layout-wrapper">
+
+    <header id="page-topbar">
+        <div class="layout-width">
+            <div class="navbar-header">
+                <div class="d-flex">
+                    <!-- LOGO -->
+                    <div class="navbar-brand-box horizontal-logo">
+                        <a href="/trangchuadmin" class="logo logo-dark">
+                            <h1>FSneaker</h1>
+                            <!--                        <span class="logo-sm">-->
+                            <!--                            <img src="images/logo-sm.png" alt="" height="22">-->
+                            <!--                        </span>-->
+                            <!--                            <span class="logo-lg">-->
+                            <!--                            <img src="images/logo-dark.png" alt="" height="17">-->
+                            <!--                        </span>-->
+                        </a>
+
+                        <a href="/trangchuadmin" class="logo logo-light">
+                            <h1>FSneaker</h1>
+                            <!--                        <span class="logo-sm">-->
+                            <!--                            <img src="images/logo-sm.png" alt="" height="22">-->
+                            <!--                        </span>-->
+                            <!--                            <span class="logo-lg">-->
+                            <!--                            <img src="images/logo-light.png" alt="" height="17">-->
+                            <!--                        </span>-->
+                        </a>
+                    </div>
+
+                    <button type="button" class="btn btn-sm px-3 fs-16 header-item vertical-menu-btn topnav-hamburger material-shadow-none" id="topnav-hamburger-icon">
+                    <span class="hamburger-icon">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </span>
+                    </button>
+
+                </div>
+
+                <div class="d-flex align-items-center">
+
+                    <div class="dropdown ms-sm-3 header-item topbar-user" th:if="${#authentication.name != 'anonymousUser'}">
+                        <button type="button" class="btn material-shadow-none" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="d-flex align-items-center">
+                            <img class="rounded-circle header-profile-user" src="images/users/avatar-1.jpg" alt="Header Avatar">
+                            <span class="text-start ms-xl-2">
+                                <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text" th:text="${#authentication.principal.displayName}"></span>
+                                <span class="d-none d-xl-block ms-1 fs-12 user-name-sub-text" th:text="${#authentication.principal.role == 'ROLE_ADMIN' ? 'Admin' : (#authentication.principal.role == 'ROLE_MANAGER' ? 'Quản lý' : 'Nhân viên')}">Trưởng nhóm</span>
+                            </span>
+                        </span>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-end" th:if="${#authentication.name != 'anonymousUser'}">
+                            <!-- item-->
+                            <h6 class="dropdown-header" >Xin chào <span th:text="${#authentication.principal.displayName}"></span></h6>
+                            <a class="dropdown-item" href="/thongtinadmin"><i class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Thông tin cá nhân</span></a>
+                            <a class="dropdown-item" href="/tinnhanadmin"><i class="mdi mdi-message-text-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Tin nhắn</span></a>
+                            <a class="dropdown-item" href="/trogiupadmin"><i class="mdi mdi-lifebuoy text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Trợ giúp</span></a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="/caidatadmin"><span class="badge bg-success-subtle text-success mt-1 float-end">New</span><i class="mdi mdi-cog-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Cài đặt</span></a>
+                            <a class="dropdown-item" href="/khoamanhinhadmin"><i class="mdi mdi-lock text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Khóa màn hình</span></a>
+                            <a class="dropdown-item" href="/logout"><i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> <span class="align-middle" data-key="t-logout">Đăng xuất</span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ========== App Menu ========== -->
+    <div class="app-menu navbar-menu">
+        <!-- LOGO -->
+        <div class="navbar-brand-box">
+            <!-- Dark Logo-->
+            <a href="/trangchuadmin" class="logo logo-dark">
+                    <span class="logo-sm">
+                        <img src="images/shoes.png" alt="" height="22">
+                    </span>
+                <span class="logo-lg">
+                       <h1 class="mt-3">FSneaker</h1>
+                    </span>
+            </a>
+            <!-- Light Logo-->
+            <a href="/trangchuadmin" class="logo logo-light">
+                    <span class="logo-sm">
+                        <img src="images/shoes.png" alt="" height="22">
+                    </span>
+                <span class="logo-lg">
+                        <h1 class="mt-3" style="color: #abb9e8">FSneaker</h1>
+                    </span>
+            </a>
+            <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover" id="vertical-hover">
+                <i class="ri-record-circle-line"></i>
+            </button>
+        </div>
+
+        <div id="scrollbar">
+            <div class="container-fluid">
+                <div id="two-column-menu">
+                </div>
+                <ul class="navbar-nav" id="navbar-nav" data-simplebar="init">
+                    <li class="menu-title"><span data-key="t-menu">Menu</span></li>
+                    <li class="nav-item" sec:authorize="hasRole('MANAGER')">
+                        <a class="nav-link menu-link" href="#sidebarDashboards" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
+                            <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Thống kê</span>
+                        </a>
+                        <div class="collapse menu-dropdown" id="sidebarDashboards">
+                            <ul class="nav nav-sm flex-column">
+
+
+                                <li class="nav-item">
+                                    <a href="/trangchuadmin" class="nav-link" data-key="t-ecommerce"> Doanh thu </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li> <!-- end Dashboard Menu -->
+                    <li class="nav-item" sec:authorize="hasRole('MANAGER')">
+                        <a class="nav-link menu-link" href="#sidebarApps" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarApps">
+                            <i class="ri-apps-2-line"></i> <span data-key="t-apps">Quản lý</span>
+                        </a>
+                        <div class="collapse menu-dropdown" id="sidebarApps">
+                            <ul class="nav nav-sm flex-column">
+                                <li class="nav-item">
+                                    <a href="#sidebarCalendar" class="nav-link" data-bs-toggle="collapse" role="button" aria-expanded="false">
+                                        Quản lý thuộc tính
+                                    </a>
+                                    <div class="collapse menu-dropdown" id="sidebarCalendar">
+                                        <ul class="nav nav-sm flex-column">
+                                            <li class="nav-item">
+                                                <a href="/qlkichthuoc" class="nav-link" data-key="t-main-calender"> Kích thước</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="/qlmausac" class="nav-link" data-key="t-month-grid"> Màu sắc </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="/qlthuonghieu" class="nav-link" > Thương hiệu </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="/qlxuatxu" class="nav-link"> Xuất xứ</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/qlsanpham" class="nav-link" data-key="t-sanpham">Quản lý sản phẩm</a>
+                                    <!--                                    <a href="#sidebarSanPham" class="nav-link" data-bs-toggle="collapse" role="button" aria-expanded="false"> Quản lý sản phẩm </a>-->
+                                    <!--                                    <div class="collapse menu-dropdown" id="sidebarSanPham">-->
+                                    <!--                                        <ul class="nav nav-sm flex-column">-->
+                                    <!--                                            <li class="nav-item">-->
+                                    <!--                                                <a href="/qlsanpham" class="nav-link">Sản phẩm</a>-->
+                                    <!--                                            </li>-->
+                                    <!--                                            <li class="nav-item">-->
+                                    <!--                                                <a href="/qlsanphamchitiet" class="nav-link">Sản phẩm chi tiết</a>-->
+                                    <!--                                            </li>-->
+                                    <!--                                        </ul>-->
+                                    <!--                                    </div>-->
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/qlvoucher" class="nav-link" data-key="t-voucher"> Quản lý voucher </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/qlkhuyenmai" class="nav-link" data-key="t-khuyenmai"> Quản lý chương trình khuyến mãi </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <li class="nav-item" sec:authorize="hasAnyRole('MANAGER','STAFF')">
+                        <a class="nav-link menu-link" href="/don-hang/hien-thi">
+                            <i class="ri-store-line"></i> <span data-key="t-layouts">Bán hàng</span>
+                        </a>
+                    </li> <!-- end Dashboard Menu -->
+                    <li class="nav-item" sec:authorize="hasAnyRole('MANAGER','STAFF')">
+                        <a class="nav-link menu-link" href="/donhangadmin">
+                            <i class="ri-file-text-line"></i> <span data-key="t-layouts">Đơn hàng</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-link" href="#sidebarAuth" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAuth">
+                            <i class="ri-account-circle-line"></i> <span data-key="t-auth">Tài khoản</span>
+                        </a>
+                        <div class="collapse menu-dropdown" id="sidebarAuth">
+                            <ul class="nav nav-sm flex-column">
+                                <li class="nav-item" sec:authorize="hasAnyRole('ADMIN','MANAGER')">
+                                    <a href="/qlnhanvien" class="nav-link" data-key="t-nhanvien"> Nhân viên </a>
+                                </li>
+                                <li class="nav-item" sec:authorize="hasAnyRole('MANAGER','STAFF')">
+                                    <a href="/qlkhachhang" class="nav-link" data-key="t-khachang"> Khách hàng </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <!-- Sidebar -->
+        </div>
+
+        <div class="sidebar-background"></div>
+    </div>
+    <!-- Left Sidebar End -->
+    <!-- Vertical Overlay-->
+    <div class="vertical-overlay"></div>
+
+    <!-- ============================================================== -->
+    <!-- Start right Content here -->
+    <!-- ============================================================== -->
+    <div class="main-content">
+
+        <div class="page-content">
+            <div class="container-fluid">
+
+                <div class="row">
+                    <div class="col">
+
+                        <div class="h-100">
+                            <div class="row mb-3 pb-1">
+                                <div class="col-12">
+                                    <div class="d-flex align-items-lg-center flex-lg-row flex-column">
+                                        <div class="flex-grow-1">
+                                            <h1 class=" mb-1">Thống kê </h1>
+                                            <p class="text-muted mb-0">Hôm nay, như nào</p>
+                                            <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1055;">
+                                                <!-- Toast for Success -->
+                                                <div th:if="${message}" id="toastSuccess" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                                                    <div class="d-flex">
+                                                        <div class="toast-body">
+                                                            <p th:text="${message}">Thông báo thành công!</p>
+                                                        </div>
+                                                        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                                                    </div>
+                                                </div>
+                                                <!-- Toast for Error -->
+                                                <div th:if="${errorMessage}" id="toastError" class="toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                                                    <div class="d-flex">
+                                                        <div class="toast-body">
+                                                            <p th:text="${errorMessage}">Thông báo lỗi!</p>
+                                                        </div>
+                                                        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="mt-3 mt-lg-0">
+                                            <form action="/trangchuadmin" method="get">
+                                                <div class="row g-3 mb-0 align-items-center">
+                                                    <div class="col-sm-auto">
+                                                        <div class="input-group">
+                                                            <label for="startDate" style="margin-top: 5px; margin-right: 15px">Từ ngày:</label>
+                                                            <input type="date" id="startDate" name="startDate" th:value="${startDate != null ? startDate : ''}">
+
+                                                            <label for="endDate" style="margin-top: 5px;margin-right: 15px; margin-left: 15px"> đến ngày:</label>
+                                                            <input type="date" id="endDate" name="endDate" th:value="${endDate != null ? endDate : ''}">
+
+                                                            <button type="submit" class="btn btn-primary btn-animation waves-effect waves-light" style="margin-left: 15px">Lọc</button>
+                                                            <!-- Nút làm mới -->
+                                                            <button type="button" class="btn btn-secondary btn-animation waves-light waves-effect" onclick="resetForm()" style="margin-left: 10px">Làm mới</button>
+                                                            <script>
+                                                                function resetForm() {
+                                                                    // Reset các trường date bằng cách set lại value của chúng thành empty
+                                                                    document.getElementById('startDate').value = '';
+                                                                    document.getElementById('endDate').value = '';
+
+                                                                    // Nếu muốn reset lại form, có thể sử dụng:
+                                                                    // document.querySelector('form').reset();
+                                                                }
+                                                            </script>
+                                                        </div>
+                                                    </div>
+                                                    <!--end col-->
+                                                </div>
+                                                <!--end row-->
+                                            </form>
+                                        </div>
+                                    </div><!-- end card header -->
+                                </div>
+                                <!--end col-->
+                            </div>
+                            <!--end row-->
+
+                            <div class="row">
+                                <div class="col-xl-3 col-md-6">
+                                    <!-- card -->
+                                    <div class="card card-animate">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center">
+                                                <div class="flex-grow-1 overflow-hidden">
+                                                    <p class="text-uppercase fw-medium text-muted text-truncate mb-0"> Tổng thu nhập</p>
+                                                </div>
+                                                <!--                                                <div class="flex-shrink-0">-->
+                                                <!--                                                    <h5 class="text-success fs-14 mb-0">-->
+                                                <!--                                                        <i class="ri-arrow-right-up-line fs-13 align-middle"></i> +16.24 %-->
+                                                <!--                                                    </h5>-->
+                                                <!--                                                </div>-->
+                                            </div>
+                                            <div class="d-flex align-items-end justify-content-between mt-4">
+                                                <div>
+                                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span th:text="${#numbers.formatDecimal(tongThuNhap, 0, 'POINT',0, 'POINT') + ' đ'}"></span> </h4>
+                                                    <!--                                                    <a href="#" class="text-decoration-underline">View net earnings</a>-->
+                                                </div>
+                                                <div class="avatar-sm flex-shrink-0">
+                                                        <span class="avatar-title bg-success-subtle rounded fs-3">
+                                                            <i class="bx bx-dollar-circle text-success"></i>
+                                                        </span>
+                                                </div>
+                                            </div>
+                                        </div><!-- end card body -->
+                                    </div><!-- end card -->
+                                </div><!-- end col -->
+
+                                <div class="col-xl-3 col-md-6">
+                                    <!-- card -->
+                                    <div class="card card-animate">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center">
+                                                <div class="flex-grow-1 overflow-hidden">
+                                                    <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Tổng đơn hàng</p>
+                                                </div>
+                                                <!--                                                <div class="flex-shrink-0">-->
+                                                <!--                                                    <h5 class="text-danger fs-14 mb-0">-->
+                                                <!--                                                        <i class="ri-arrow-right-down-line fs-13 align-middle"></i> -3.57 %-->
+                                                <!--                                                    </h5>-->
+                                                <!--                                                </div>-->
+                                            </div>
+                                            <div class="d-flex align-items-end justify-content-between mt-4">
+                                                <div>
+                                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span th:text="${tongSoDonHang}">0</span></h4>
+                                                    <!--                                                    <a href="#" class="text-decoration-underline">View all orders</a>-->
+                                                </div>
+                                                <div class="avatar-sm flex-shrink-0">
+                                                        <span class="avatar-title bg-info-subtle rounded fs-3">
+                                                            <i class="bx bx-shopping-bag text-info"></i>
+                                                        </span>
+                                                </div>
+                                            </div>
+                                        </div><!-- end card body -->
+                                    </div><!-- end card -->
+                                </div><!-- end col -->
+
+                                <div class="col-xl-3 col-md-6">
+                                    <!-- card -->
+                                    <div class="card card-animate">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center">
+                                                <div class="flex-grow-1 overflow-hidden">
+                                                    <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Tổng khách hàng</p>
+                                                </div>
+                                                <!--                                                <div class="flex-shrink-0">-->
+                                                <!--                                                    <h5 class="text-success fs-14 mb-0">-->
+                                                <!--                                                        <i class="ri-arrow-right-up-line fs-13 align-middle"></i> +29.08 %-->
+                                                <!--                                                    </h5>-->
+                                                <!--                                                </div>-->
+                                            </div>
+                                            <div class="d-flex align-items-end justify-content-between mt-4">
+                                                <div>
+                                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span th:text="${tongSoKhachHang}">0</span></h4>
+                                                    <!--                                                    <a href="#" class="text-decoration-underline">See details</a>-->
+                                                </div>
+                                                <div class="avatar-sm flex-shrink-0">
+                                                        <span class="avatar-title bg-warning-subtle rounded fs-3">
+                                                            <i class="bx bx-user-circle text-warning"></i>
+                                                        </span>
+                                                </div>
+                                            </div>
+                                        </div><!-- end card body -->
+                                    </div><!-- end card -->
+                                </div><!-- end col -->
+
+                                <div class="col-xl-3 col-md-6">
+                                    <!-- card -->
+                                    <div class="card card-animate">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center">
+                                                <div class="flex-grow-1 overflow-hidden">
+                                                    <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Tổng sản phẩm đã bán</p>
+                                                </div>
+                                                <!--                                                <div class="flex-shrink-0">-->
+                                                <!--                                                     <h5 class="text-muted fs-14 mb-0">-->
+                                                <!--                                                        +0.00 %-->
+                                                <!--                                                    </h5>-->
+                                                <!--                                                </div>-->
+                                            </div>
+                                            <div class="d-flex align-items-end justify-content-between mt-4">
+                                                <div>
+                                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span th:text="${tongSanPham}"></span> </h4>
+                                                    <!--                                                    <a href="#" class="text-decoration-underline">Withdraw money</a>-->
+                                                </div>
+                                                <div class="avatar-sm flex-shrink-0">
+                                                        <span class="avatar-title bg-primary-subtle rounded fs-3">
+                                                            <i class="bx bx-package text-primary"></i>
+                                                        </span>
+                                                </div>
+                                            </div>
+                                        </div><!-- end card body -->
+                                    </div><!-- end card -->
+                                </div><!-- end col -->
+                            </div> <!-- end row-->
+
+                            <div class="row">
+                                <div class="col-xl-12">
+                                    <div class="card">
+                                        <div class="card-header border-0 align-items-center d-flex">
+                                            <h4 class="card-title mb-0 flex-grow-1">Doanh thu theo thời gian</h4>
+                                            <div class="flex-shrink-0">
+                                                <div class="dropdown card-header-dropdown">
+                                                    <a class="text-reset dropdown-btn" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            <span class="fw-semibold text-uppercase fs-12">Sắp xếp:
+                                                            </span><span class="text-muted">Chọn<i class="mdi mdi-chevron-down ms-1"></i></span>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-end">
+                                                        <a class="dropdown-item" href="#" onclick="submitSortFormBD('theoThang')">Thống kê doanh thu theo tháng</a>
+                                                        <a class="dropdown-item" href="#" onclick="submitSortFormBD('theoNam')">Thống kê doanh thu theo năm</a>
+                                                    </div>
+                                                </div>
+                                                <form id="sortFormBD" method="get" action="/trangchuadmin" style="display:none;">
+                                                    <input type="hidden" name="sortByBD" id="sortByBD" value="">
+                                                </form>
+                                                <script>
+                                                    function submitSortFormBD(sortByValue) {
+                                                        document.getElementById('sortByBD').value = sortByValue;
+                                                        document.getElementById('sortFormBD').submit();
+                                                    }
+                                                </script>
+                                            </div>
+                                        </div><!-- end card header -->
+                                        <div class="card-body p-0 pb-2">
+                                            <div class="" >
+                                                <img th:src="@{/charts/revenue_chart.png}" alt="Biểu đồ doanh thu và đơn hàng" style="width: 1200px"/>
+                                            </div>
+                                        </div><!-- end card body -->
+                                    </div><!-- end card -->
+                                </div><!-- end col -->
+
+                                <div class="col-xl-4">
+                                    <div class="card">
+                                        <!--                                        <div class="card-header">-->
+                                        <!--                                            <h4 class="card-title mb-0 flex-grow-1">Thông kê theo khoảng thời gian</h4>-->
+                                        <!--                                        </div>-->
+                                        <!--                                        <div class="card-body">-->
+                                        <!--                                            <div>-->
+                                        <!--                                                <h3>Kết quả thống kê</h3>-->
+                                        <!--                                                <p>Thu nhập: <span th:text="${#numbers.formatDecimal(tongThuNhap,1,'POINT',0,'POINT')}">0</span></p>-->
+                                        <!--                                                <p>Khách hàng: <span th:text="${tongSoKhachHang}">0</span></p>-->
+                                        <!--                                                <p>Đơn hàng: <span th:text="${tongSoDonHang}">0</span></p>-->
+                                        <!--                                                <p>Sản phẩm đã bán: <span th:text="${tongSanPham}">0</span></p>-->
+                                        <!--                                            </div>-->
+                                        <!--                                        </div>-->
+                                    </div>
+
+                                </div>
+                                <!-- end col -->
+                            </div>
+
+                            <div class="row">
+                                <div class="col-xl-12">
+                                    <div class="card">
+                                        <div class="card-header align-items-center d-flex">
+                                            <h4 class="card-title mb-0 flex-grow-1">Sản phẩm bán chạy nhất</h4>
+                                            <div class="flex-shrink-0">
+                                                <div class="dropdown card-header-dropdown">
+                                                    <a class="text-reset dropdown-btn" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            <span class="fw-semibold text-uppercase fs-12">Sắp xếp:
+                                                            </span><span class="text-muted">Chọn<i class="mdi mdi-chevron-down ms-1"></i></span>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-end">
+                                                        <a class="dropdown-item" href="#" onclick="submitSortFormSP('banChayNhat')">Sản phẩm bán chạy nhất</a>
+                                                        <a class="dropdown-item" href="#" onclick="submitSortFormSP('doanhThuCaoNhat')">Sản phẩm có doanh thu cao nhất</a>
+                                                    </div>
+                                                </div>
+                                                <form id="sortFormSP" method="get" action="/trangchuadmin" style="display:none;">
+                                                    <input type="hidden" name="sortBySP" id="sortBySP" value="">
+                                                </form>
+                                                <script>
+                                                    function submitSortFormSP(sortByValue) {
+                                                        document.getElementById('sortBySP').value = sortByValue;
+                                                        //Gán thêm các tham số tìm kiếm hiện tại vào form
+                                                        const urlParams = new URLSearchParams(window.location.search);
+                                                        const startDate = urlParams.get('startDate');
+                                                        const endDate = urlParams.get('endDate');
+
+                                                        if(startDate){
+                                                            const startDateInput = document.createElement('input');
+                                                            startDateInput.type = 'hidden';
+                                                            startDateInput.name = 'startDate';
+                                                            startDateInput.value = startDate;
+                                                            document.getElementById('sortFormSP').appendChild(startDateInput);
+                                                        }
+
+                                                        if (endDate) {
+                                                            const endDateInput = document.createElement('input');
+                                                            endDateInput.type = 'hidden';
+                                                            endDateInput.name = 'endDate';
+                                                            endDateInput.value = endDate;
+                                                            document.getElementById('sortFormSP').appendChild(endDateInput);
+                                                        }
+
+                                                        //Submit form
+                                                        document.getElementById('sortFormSP').submit();
+                                                    }
+                                                </script>
+                                            </div>
+                                        </div><!-- end card header -->
+
+                                        <div class="card-body">
+                                            <div class="table-responsive table-card">
+                                                <table class="table table-hover table-centered align-middle table-nowrap mb-0">
+                                                    <tbody>
+                                                    <tr th:each="dhtc: ${thongKeSanPham}">
+                                                        <td>
+                                                            <div class="d-flex align-items-center">
+                                                                <div class="bg-light rounded p-1 me-2">
+                                                                    <img th:src="@{'/repository/' + ${#strings.arraySplit(dhtc[8], ',')[0]}}" alt="" class="img-fluid d-block" width="50" height="50" style="height: 100%"/>
+                                                                </div>
+                                                                <div>
+                                                                    <h5 class="fs-14 my-1"><a href="apps-ecommerce-product-details.html" class="text-reset" th:text="${dhtc[1]}"></a> (<span th:text="${dhtc[3] + ' - ' + dhtc[4]}"></span>)</h5>
+                                                                    <span class="text-muted" th:text="${#dates.format(dhtc[2], 'dd/MM/yyyy')}"></span>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <h5 class="fs-14 my-1 fw-normal" th:text="${#numbers.formatDecimal(dhtc[5], 0, 'POINT', 0 ,'POINT') + ' đ'}"></h5>
+                                                            <span class="text-muted">Giá</span>
+                                                        </td>
+                                                        <td>
+                                                            <h5 class="fs-14 my-1 fw-normal" th:text="${dhtc[6]}"></h5>
+                                                            <span class="text-muted">Số lượng bán</span>
+                                                        </td>
+                                                        <td>
+                                                            <h5 class="fs-14 my-1 fw-normal" th:text="${dhtc[7]}"></h5>
+                                                            <span class="text-muted">Số lượng kho</span>
+                                                        </td>
+                                                        <td>
+                                                            <h5 class="fs-14 my-1 fw-normal" th:text="${#numbers.formatDecimal((dhtc[5] * dhtc[6]), 0, 'POINT', 0 ,'POINT') + ' đ'}"></h5>
+                                                            <span class="text-muted">Tổng tiền</span>
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                            <div class="align-items-center mt-4 pt-2 justify-content-between row text-center text-sm-start">
+                                                <div class="col-sm">
+                                                    <div th:if="${thongKeSanPham != null}" class="pagination">
+                                                        <!-- Kiểm tra thêm nếu không có trang (nếu cần) -->
+                                                        <div th:if="${thongKeSanPham.totalPages > 0}">
+                                                            <!-- Nút Previous -->
+                                                            <a th:href="@{/trangchuadmin(page1=${thongKeSanPham.number - 1}, sortBySP=${sortBySP}, startDate=${startDate}, endDate=${endDate})}"
+                                                               th:classappend="${!thongKeSanPham.hasPrevious()} ? 'disabled' : ''">&lt;</a>
+
+                                                            <!-- Hiển thị số trang -->
+                                                            <span th:each="i : ${#numbers.sequence(0, thongKeSanPham.totalPages - 1)}">
+                                                            <a th:href="@{/trangchuadmin(page1=${i}, sortBySP=${sortBySP}, startDate=${startDate}, endDate=${endDate})}"
+                                                               th:classappend="${thongKeSanPham.number == i} ? 'active' : ''"
+                                                               th:text="${i + 1}">1</a>
+                                                            </span>
+
+                                                            <!-- Nút Next -->
+                                                            <a th:href="@{/trangchuadmin(page1=${thongKeSanPham.number + 1}, sortBySP=${sortBySP}, startDate=${startDate}, endDate=${endDate})}"
+                                                               th:classappend="${!thongKeSanPham.hasNext()} ? 'disabled' : ''">&gt;</a>
+                                                        </div>
+                                                        <!-- Thông báo nếu không có trang -->
+                                                        <p th:if="${thongKeSanPham.totalPages == 0}">Không có sản phẩm nào để hiển thị.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> <!-- end row-->
+
+                            <div class="row">
+                                <div class="col-xl-5">
+                                    <div class="card cart-height-100">
+                                        <div class="card-header align-items-center d-flex">
+                                            <h4 class="card-title mb-0 flex-grow-1">Thống kê đơn hàng theo trạng thái</h4>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="w-100 text-center">
+                                                <img th:src="@{${pieChartFilename}}" alt="Thống kê đơn hàng theo trạng thái" width="450" height="300"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-7">
+                                    <div class="card">
+                                        <div class="card-header align-items-center d-flex">
+                                            <h4 class="card-title mb-0 flex-grow-1">Thống kê khách hàng</h4>
+                                            <div class="flex-shrink-0">
+                                                <div class="dropdown card-header-dropdown">
+                                                    <a class="text-reset dropdown-btn" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            <span class="fw-semibold text-uppercase fs-12">Sắp xếp:
+                                                            </span><span class="text-muted">Chọn<i class="mdi mdi-chevron-down ms-1"></i></span>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-end">
+                                                        <a class="dropdown-item" href="#" onclick="submitSortForm('soLanMua')">Số lần mua</a>
+                                                        <a class="dropdown-item" href="#" onclick="submitSortForm('tongTien')">Tổng tiền mua</a>
+                                                    </div>
+                                                </div>
+                                                <!-- Form ẩn để gửi giá trị chọn lọc -->
+                                                <form id="sortForm" method="get" action="/trangchuadmin" style="display:none;">
+                                                    <input type="hidden" name="sortBy" id="sortBy" value="">
+                                                </form>
+                                                <script>
+                                                    function submitSortForm(sortByValue) {
+                                                        document.getElementById('sortBy').value = sortByValue;
+                                                        //Gán thêm các tham số tìm kiếm hiện tại vào form
+                                                        const urlParams = new URLSearchParams(window.location.search);
+                                                        const startDate = urlParams.get('startDate');
+                                                        const endDate = urlParams.get('endDate');
+
+                                                        if(startDate){
+                                                            const startDateInput = document.createElement('input');
+                                                            startDateInput.type = 'hidden';
+                                                            startDateInput.name = 'startDate';
+                                                            startDateInput.value = startDate;
+                                                            document.getElementById('sortForm').appendChild(startDateInput);
+                                                        }
+
+                                                        if (endDate) {
+                                                            const endDateInput = document.createElement('input');
+                                                            endDateInput.type = 'hidden';
+                                                            endDateInput.name = 'endDate';
+                                                            endDateInput.value = endDate;
+                                                            document.getElementById('sortForm').appendChild(endDateInput);
+                                                        }
+                                                        document.getElementById('sortForm').submit();
+                                                    }
+                                                </script>
+                                            </div>
+                                        </div><!-- end card header -->
+
+                                        <div class="card-body">
+                                            <div class="table-responsive table-card">
+                                                <table class="table table-borderless table-centered align-middle table-nowrap mb-0">
+                                                    <thead class="text-muted table-light">
+                                                    <tr>
+                                                        <th scope="col">Tên khách hàng</th>
+                                                        <th scope="col">Email</th>
+                                                        <th scope="col">Số điện thoại</th>
+
+                                                        <th scope="col">Số lần mua</th>
+                                                        <th scope="col">Tổng tiền mua</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr th:each="stat : ${orderStarts}">
+                                                        <td th:text="${stat[0]}"></td>
+                                                        <td th:text="${stat[1]}"></td>
+                                                        <td th:text="${stat[2]}"></td>
+                                                        <td th:text="${stat[3]}"></td>
+                                                        <td th:text="${#numbers.formatDecimal(stat[4],0,'POINT',0,'POINT') + ' đ'}"></td>
+                                                    </tr>
+                                                    </tbody><!-- end tbody -->
+                                                </table><!-- end table -->
+                                            </div>
+                                            <div class="align-items-center mt-4 pt-2 justify-content-between row text-center text-sm-start">
+                                                <div class="col-sm">
+                                                    <div th:if="${orderStarts != null}">
+                                                        <div class="pagination" th:if="${orderStarts.totalPages > 0}">
+                                                            <!-- Nút Previous -->
+                                                            <a th:href="@{/trangchuadmin(page=${orderStarts.number - 1}, sortBy=${sortBy}, startDate=${startDate}, endDate=${endDate})}"
+                                                               th:classappend="${!orderStarts.hasPrevious()} ? 'disabled' : ''">&lt;</a>
+
+                                                            <!-- Hiển thị số trang -->
+                                                            <span th:each="i : ${#numbers.sequence(0, orderStarts.totalPages - 1)}">
+                                                            <a th:href="@{/trangchuadmin(page=${i}, sortBy=${sortBy}, startDate=${startDate}, endDate=${endDate})}"
+                                                               th:classappend="${orderStarts.number == i} ? 'active' : ''"
+                                                               th:text="${i + 1}">1</a>
+                                                            </span>
+
+                                                            <!-- Nút Next -->
+                                                            <a th:href="@{/trangchuadmin(page=${orderStarts.number + 1}, sortBy=${sortBy}, startDate=${startDate}, endDate=${endDate})}"
+                                                               th:classappend="${!orderStarts.hasNext()} ? 'disabled' : ''">&gt;</a>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> <!-- .card-->
+                                </div> <!-- .col-->
+                            </div> <!-- end row-->
+                            <div class="row">
+
+                            </div>
+
+                        </div> <!-- end .h-100-->
+
+                    </div> <!-- end col -->
+                </div>
+
+            </div>
+            <!-- container-fluid -->
+        </div>
+        <!-- End Page-content -->
+
+        <footer class="footer">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <script>document.write(new Date().getFullYear())</script> © Velzon.
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="text-sm-end d-none d-sm-block">
+                            Design & Develop by Themesbrand
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <!-- end main content-->
+
+</div>
+<!-- END layout-wrapper -->
+
+
+
+<!--start back-to-top-->
+<button onclick="topFunction()" class="btn btn-danger btn-icon" id="back-to-top">
+    <i class="ri-arrow-up-line"></i>
+</button>
+<!--end back-to-top-->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const toastSuccessElement = document.getElementById('toastSuccess');
+        const toastErrorElement = document.getElementById('toastError');
+
+        if (toastSuccessElement) {
+            const toastSuccess = new bootstrap.Toast(toastSuccessElement, {
+                autohide: true,
+                delay: 5000 // 5 seconds
+            });
+            toastSuccess.show();
+        }
+
+        if (toastErrorElement) {
+            const toastError = new bootstrap.Toast(toastErrorElement, {
+                autohide: true,
+                delay: 5000 // 5 seconds
+            });
+            toastError.show();
+        }
+    });
+</script>
+<!-- JAVASCRIPT -->
+<script src="js/bootstrap.bundle.min.js"></script>
+<script src="js/simplebar.min.js"></script>
+<script src="js/waves.min.js"></script>
+<script src="js/feather.min.js"></script>
+<script src="js/lord-icon-2.1.0.js"></script>
+<script src="js/plugins.js"></script>
+
+<!-- apexcharts -->
+<script src="js/apexcharts.min.js"></script>
+
+<!-- Vector map-->
+<script src="js/jsvectormap.min.js"></script>
+<script src="js/world-merc.js"></script>
+
+<!--Swiper slider js-->
+<script src="js/swiper-bundle.min.js"></script>
+
+<!-- Dashboard init -->
+<script src="js/dashboard-ecommerce.init.js"></script>
+
+<!-- App js -->
+<script src="js/app.js"></script>
+
+</body>
+
+</html>

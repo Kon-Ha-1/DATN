@@ -1,0 +1,400 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-image="none" data-preloader="disable" data-theme="default" data-theme-colors="default">
+<head>
+    <meta charset="UTF-8">
+    <title>Thêm mới nhân viên</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
+    <meta content="Themesbrand" name="author" />
+    <link rel="shortcut icon" href="images/shoes.png">
+    <!-- Thêm Line Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/line-awesome/1.3.0/line-awesome/css/line-awesome.min.css">
+    <!-- Thêm Material Design Icons CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font/css/materialdesignicons.min.css" rel="stylesheet">
+    <!-- Thêm Feather Icon CND -->
+    <script src="https://unpkg.com/feather-icons"></script>
+    <!-- Thêm Remix Icon -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+    <!-- Thêm link tới Boxicons CDN -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <!-- jsvectormap css -->
+    <link href="css/jsvectormap.min.css" rel="stylesheet" type="text/css" />
+
+    <!--Swiper slider css-->
+    <link href="css/swiper-bundle.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- Layout config Js -->
+    <script src="js/layout.js"></script>
+    <!-- Bootstrap Css -->
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    n<!-- Icons Css -->
+    <link href="css/icons.min.css" rel="stylesheet" type="text/css" />
+    <!-- App Css-->
+    <link href="css/app.min.css" rel="stylesheet" type="text/css" />
+    <!-- custom Css-->
+    <link href="css/custom.min.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<!-- Begin page -->
+<div id="layout-wrapper">
+    <header id="page-topbar">
+        <div class="layout-width">
+            <div class="navbar-header">
+                <div class="d-flex">
+                    <!-- LOGO -->
+                    <div class="navbar-brand-box horizontal-logo">
+                        <a href="/trangchuadmin" class="logo logo-dark">
+                        <span class="logo-sm">
+                            <img src="images/shoes.png" alt="" height="22">
+                        </span>
+                            <span class="logo-lg">
+                           <h1 class="mt-3" style="color: #abb9e8">FSneaker</h1>
+                        </span>
+                        </a>
+                        <a href="/trangchuadmin" class="logo logo-light">
+                        <span class="logo-sm">
+                            <img src="images/shoes.png" alt="" height="22">
+                        </span>
+                            <span class="logo-lg">
+                            <h1 class="mt-3" style="color: #abb9e8">FSneaker</h1>
+                        </span>
+                        </a>
+                    </div>
+
+                    <button type="button" class="btn btn-sm px-3 fs-16 header-item vertical-menu-btn topnav-hamburger material-shadow-none" id="topnav-hamburger-icon">
+                    <span class="hamburger-icon">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </span>
+                    </button>
+                </div>
+
+                <div class="d-flex align-items-center">
+                    <div class="dropdown ms-sm-3 header-item topbar-user" th:if="${#authentication.name != 'anonymousUser'}">
+                        <button type="button" class="btn material-shadow-none" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="d-flex align-items-center">
+                            <img class="rounded-circle header-profile-user" src="images/users/avatar-1.jpg" alt="Header Avatar">
+                            <span class="text-start ms-xl-2">
+                                <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text" th:text="${#authentication.principal.displayName}"></span>
+                                <span class="d-none d-xl-block ms-1 fs-12 user-name-sub-text" th:text="${#authentication.principal.role == 'ROLE_ADMIN' ? 'Admin' : (#authentication.principal.role == 'ROLE_MANAGER' ? 'Quản lý' : 'Nhân viên')}">Trưởng nhóm</span>
+                            </span>
+                        </span>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-end" th:if="${#authentication.name != 'anonymousUser'}">
+                            <!-- item-->
+                            <h6 class="dropdown-header" >Xin chào <span th:text="${#authentication.principal.displayName}"></span></h6>
+                            <a class="dropdown-item" href="/thongtinadmin"><i class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Thông tin cá nhân</span></a>
+                            <a class="dropdown-item" href="/tinnhanadmin"><i class="mdi mdi-message-text-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Tin nhắn</span></a>
+                            <a class="dropdown-item" href="/trogiupadmin"><i class="mdi mdi-lifebuoy text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Trợ giúp</span></a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="/caidatadmin"><span class="badge bg-success-subtle text-success mt-1 float-end">New</span><i class="mdi mdi-cog-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Cài đặt</span></a>
+                            <a class="dropdown-item" href="/khoamanhinhadmin"><i class="mdi mdi-lock text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Khóa màn hình</span></a>
+                            <a class="dropdown-item" href="/logout"><i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> <span class="align-middle" data-key="t-logout">Đăng xuất</span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- ========== App Menu ========== -->
+    <div class="app-menu navbar-menu">
+        <!-- LOGO -->
+        <div class="navbar-brand-box">
+            <!-- Dark Logo-->
+            <a href="/trangchuadmin" class="logo logo-dark">
+                    <span class="logo-sm">
+                        <img src="images/shoes.png" alt="" height="22">
+                    </span>
+                <span class="logo-lg">
+                        <h1 class="mt-3" style="color: #abb9e8">FSneaker</h1>
+                    </span>
+            </a>
+            <!-- Light Logo-->
+            <a href="/trangchuadmin" class="logo logo-light">
+                    <span class="logo-sm">
+                        <img src="images/shoes.png" alt="" height="22">
+                    </span>
+                <span class="logo-lg">
+                        <h1 class="mt-3" style="color: #abb9e8">FSneaker</h1>
+                    </span>
+            </a>
+            <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover" id="vertical-hover">
+                <i class="ri-record-circle-line"></i>
+            </button>
+        </div>
+        <div id="scrollbar">
+            <div class="container-fluid">
+
+
+                <div id="two-column-menu">
+                </div>
+                <ul class="navbar-nav" id="navbar-nav">
+                    <li class="menu-title"><span data-key="t-menu">Menu</span></li>
+                    <li class="nav-item" sec:authorize="hasRole('MANAGER')">
+                        <a class="nav-link menu-link" href="#sidebarDashboards" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
+                            <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Thống kê</span>
+                        </a>
+                        <div class="collapse menu-dropdown" id="sidebarDashboards">
+                            <ul class="nav nav-sm flex-column">
+
+
+                                <li class="nav-item">
+                                    <a href="/trangchuadmin" class="nav-link" data-key="t-ecommerce"> Ecommerce </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li> <!-- end Dashboard Menu -->
+                    <li class="nav-item" sec:authorize="hasRole('MANAGER')">
+                        <a class="nav-link menu-link" href="#sidebarApps" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarApps">
+                            <i class="ri-apps-2-line"></i> <span data-key="t-apps">Quản lý</span>
+                        </a>
+                        <div class="collapse menu-dropdown" id="sidebarApps">
+                            <ul class="nav nav-sm flex-column">
+                                <li class="nav-item">
+                                    <a href="#sidebarCalendar" class="nav-link" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarCalendar" data-key="t-calender">
+                                        Quản lý thuộc tính
+                                    </a>
+                                    <div class="collapse menu-dropdown" id="sidebarCalendar">
+                                        <ul class="nav nav-sm flex-column">
+                                            <li class="nav-item">
+                                                <a href="/qlkichthuoc" class="nav-link" data-key="t-main-calender"> Kích thước</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="/qlmausac" class="nav-link" data-key="t-month-grid"> Màu sắc </a>
+                                            </li>
+                                            <li class="nav-item">
+
+                                                <a href="/qlthuonghieu" class="nav-link" > Thương hiệu </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="/qlxuatxu" class="nav-link"> Xuất xứ</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/qlsanpham" class="nav-link" data-key="t-sanpham">Quản lý sản phẩm</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/qlvoucher" class="nav-link" data-key="t-voucher"> Quản lý voucher </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/qlkhuyenmai" class="nav-link" data-key="t-khuyenmai"> Quản lý chương trình khuyến mãi </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <li class="nav-item" sec:authorize="hasAnyRole('MANAGER','STAFF')">
+                        <a class="nav-link menu-link" href="/don-hang/hien-thi">
+                            <i class="ri-store-line"></i> <span data-key="t-layouts">Bán hàng</span>
+                        </a>
+
+                    </li> <!-- end Dashboard Menu -->
+                    <li class="nav-item" sec:authorize="hasAnyRole('MANAGER','STAFF')">
+                        <a class="nav-link menu-link" href="/donhangadmin">
+                            <i class="ri-file-text-line"></i> <span data-key="t-layouts">Đơn hàng</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-link" href="#sidebarAuth" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAuth">
+                            <i class="ri-account-circle-line"></i> <span data-key="t-auth">Tài khoản</span>
+                        </a>
+                        <div class="collapse menu-dropdown" id="sidebarAuth">
+                            <ul class="nav nav-sm flex-column">
+                                <li class="nav-item" sec:authorize="hasAnyRole('ADMIN','MANAGER')">
+                                    <a href="/qlnhanvien" class="nav-link" data-key="t-nhanvien"> Nhân viên </a>
+                                </li>
+                                <li class="nav-item" sec:authorize="hasAnyRole('MANAGER','STAFF')">
+                                    <a href="/qlkhachhang" class="nav-link" data-key="t-khachang"> Khách hàng </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <!-- Sidebar -->
+        </div>
+
+        <div class="sidebar-background"></div>
+    </div>
+    <!-- Left Sidebar End -->
+    <!-- Vertical Overlay-->
+    <div class="vertical-overlay"></div>
+
+    <!-- ============================================================== -->
+    <!-- Start right Content here -->
+    <!-- ============================================================== -->
+    <div class="main-content">
+        <div class="page-content">
+            <div class="container-fluid">
+                <div class="card shadow-lg p-4">
+                    <div class="card-header text-center">
+                        <h3>Thêm nhân viên</h3>
+                    </div>
+                    <form name="addNhanVienForm" th:action="@{/add-nhan-vien}" method="post" th:object="${nhanVien}">
+                        <div class="card-body row">
+                            <div class="mb-3 col-sm-6 col-lg-6">
+                                <label class="form-label">Mã nhân viên <span style="color: red">*</span></label>
+                                <input type="text" class="form-control" th:field="*{maNhanVien}">
+                                <span th:if="${errors != null and errors.containsKey('maNhanVien')}" class="text-danger">
+                        <small th:text="${errors['maNhanVien']}"></small></span>
+                                <div th:if="${errorMaNhanVien != null}" style="color: red" th:text="${errorMaNhanVien}"></div>
+                            </div>
+                            <div class="mb-3 col-sm-6 col-lg-6">
+                                <label class="form-label">Tên nhân viên <span style="color: red;">*</span></label>
+                                <input class="form-control" th:field="*{tenNhanVien}" >
+                                <span th:if="${errors != null and errors.containsKey('tenNhanVien')}" class="text-danger">
+                        <small th:text="${errors['tenNhanVien']}"></small></span>
+                            </div>
+                            <div class="mb-3 col-sm-6 col-lg-6">
+                                <label class="form-label">Email <span style="color: red;">*</span></label>
+                                <input class="form-control" th:field="*{email}">
+                                <span th:if="${errors != null and errors.containsKey('email')}" class="text-danger">
+                        <small th:text="${errors['email']}"></small></span>
+                                <div th:if="${errorEmail != null}" style="color: red" th:text="${errorEmail}"></div>
+                            </div>
+                            <div class="mb-3 col-sm-6 col-lg-6">
+                                <label class="form-label">Số điện thoại <span style="color: red;">*</span></label>
+                                <input class="form-control" th:field="*{soDienThoai}">
+                                <span th:if="${errors != null and errors.containsKey('soDienThoai')}" class="text-danger">
+                        <small th:text="${errors['soDienThoai']}"></small></span>
+                                <div th:if="${errorSoDienThoai != null}" style="color: red" th:text="${errorSoDienThoai}"></div>
+                            </div>
+                            <div class="mb-3 col-sm-6 col-lg-6">
+                                <label class="form-label">Ngày sinh </label>
+                                <input type="date" class="form-control" th:field="*{ngaySinh}">
+                    </span>
+                            </div>
+                            <div class="mb-3 col-sm-6 col-lg-6">
+                                <label class="form-label">Giới tính </label>
+                                <select class="form-select" th:field="*{gioiTinh}">
+                                    <option value="1">Nam</option>
+                                    <option value="0">Nữ</option>
+                                </select>
+                            </div>
+                            <div class="mb-3 col-sm-6 col-lg-6">
+                                <label class="form-label">Địa chỉ <span style="color: red;">*</span></label>
+                                <input class="form-control" th:field="*{diaChi}">
+                                <span th:if="${errors != null and errors.containsKey('diaChi')}" class="text-danger">
+                        <small th:text="${errors['diaChi']}"></small>
+                    </span>
+                            </div>
+                            <div class="mb-3 col-sm-6 col-lg-6" sec:authorize="hasRole('ADMIN')">
+                                <label class="form-label">Vai trò</label>
+                                <select class="form-select" th:field="*{vaiTro}">
+                                    <option value="2">Nhân viên</option>
+                                    <option value="0">Admin</option>
+                                    <option value="1">Quản lý</option>
+                                </select>
+                            </div>
+                            <div class="mb-3 col-sm-6 col-lg-6" sec:authorize="hasRole('MANAGER')">
+                                <label class="form-label">Vai trò</label>
+                                <select class="form-select" th:field="*{vaiTro}">
+                                    <option value="2">Nhân viên</option>
+                                </select>
+                            </div>
+                            <div class="mb-3 col-sm-6 col-lg-6">
+                                <label class="form-label">Mật khẩu <span style="color: red;">*</span></label>
+                                <input type="password" class="form-control" th:field="*{matKhau}">
+                                <span th:if="${errors != null and errors.containsKey('matKhau')}" class="text-danger">
+                        <small th:text="${errors['matKhau']}"></small>
+                    </span>
+                            </div>
+                            <div class="mb-3 col-sm-6 col-lg-6">
+                                <label class="form-label">Căn cước công dân <span style="color: red;">*</span></label>
+                                <input class="form-control" th:field="*{cccd}">
+                                <span th:if="${errors != null and errors.containsKey('cccd')}" class="text-danger">
+                        <small th:text="${errors['cccd']}"></small>
+                    </span>
+                            </div>
+                            <div class="mb-4 col-sm-6 col-lg-6">
+                                <label class="form-label">Trạng thái</label>
+                                <select class="form-select" th:field="*{trangThai}">
+                                    <option value="1">Hoạt động</option>
+                                    <option value="0">Không hoạt động</option>
+                                </select>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <button type="button" class="btn btn-add btn-sm" data-bs-toggle="modal" data-bs-target="#confirmModal"><i class="ri-add-line"></i> Thêm</button>
+                                <a href="/qlnhanvien" class="btn btn-sm btn-hover-effect"><i class="ri-arrow-go-back-line"></i> Trở về</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Modal Xác Nhận -->
+        <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmModalLabel">Xác nhận thêm nhân viên</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Bạn có chắc chắn muốn thêm nhân viên này không?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                        <button type="button" class="btn btn-primary" id="confirmAdd">Xác nhận</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            document.getElementById("confirmAdd").addEventListener("click", function () {
+                document.forms["addNhanVienForm"].submit();
+            });
+        </script>
+        <!-- End Page-content -->
+
+        <footer class="footer">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <script>document.write(new Date().getFullYear())</script> © Velzon.
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="text-sm-end d-none d-sm-block">
+                            Design & Develop by Themesbrand
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+
+    <!-- end main content-->
+
+</div>
+<!-- END layout-wrapper -->
+
+<script src="js/bootstrap.bundle.min.js"></script>
+<script src="js/simplebar.min.js"></script>
+<script src="js/waves.min.js"></script>
+<script src="js/feather.min.js"></script>
+<script src="js/lord-icon-2.1.0.js"></script>
+<script src="js/plugins.js"></script>
+
+<!-- apexcharts -->
+<script src="js/apexcharts.min.js"></script>
+
+<!-- Vector map-->
+<script src="js/jsvectormap.min.js"></script>
+<script src="js/world-merc.js"></script>
+
+<!--Swiper slider js-->
+<script src="js/swiper-bundle.min.js"></script>
+
+<!-- Dashboard init -->
+<script src="js/dashboard-ecommerce.init.js"></script>
+
+<!-- App js -->
+<script src="js/app.js"></script>
+</body>
+
+</html>
