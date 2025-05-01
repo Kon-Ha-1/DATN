@@ -319,4 +319,58 @@ public class ThanhToanController {
         gioHangService.savaGioHang(gioHang);
         return gioHang;
     }
+
+
+    //
+/*    @PostMapping("/dat-hang/{idDonHang}")
+    public String datHang(@PathVariable int idDonHang,
+                          @RequestParam(value = "idKhachHang",required = false) Integer idKhachHang,
+                          @RequestParam(value ="idGioHang",required = false)Integer idGioHang,
+                          RedirectAttributes redirectAttributes){
+        GioHang gioHang = gioHangService.getGioHangByUserId(idKhachHang);
+        //Cập nhật trạng thái đơn hàng thành "đang xử lý"
+        donHangService.capNhatTrangThaiDonHang(idDonHang, "Chờ xác nhận");
+        //Xóa các sản phẩm trong giỏ hàng
+        gioHangService.xoaSanPhamTrongGioHang(idGioHang);
+        //Thông báo đặt hàng thành công
+        redirectAttributes.addFlashAttribute("message", "Đặt hàng thành công!");
+        return "redirect:/lich-su-mua-hang";
+    }
+    @PostMapping("/thanh-toan/ap-voucher")
+    public String apDungVoucher(@RequestParam(value="idKhachHang",required = false)Integer idKhachHang,@RequestParam(value="idDonHang",required = false) Integer idDonHang, @RequestParam(value="idVoucher",required = false) Integer idVoucher, Model model,RedirectAttributes redirectAttributes){
+        GioHang gioHang = gioHangService.getGioHangByUserId(idKhachHang);
+        if(idDonHang == null){
+            model.addAttribute("errorMessage","Đơn hàng không tồn tại!");
+            return "redirect:/thanh-toan/"+ gioHang.getId()+"?idKhachHang="+idKhachHang;
+        }
+        //Lấy thông tin đơn hàng
+        DonHang donHang = donHangService.getDonHangById(idDonHang);
+        if(donHang == null) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Không tìm thấy đơn hàng!");
+            return "redirect:/thanh-toan/" + gioHang.getId()+"?idKhachHang="+idKhachHang;
+        }
+        //Kiểm tra và áp dụng voucher
+        Voucher voucher = voucherService.getVoucherById(idVoucher);
+        if(voucher == null){
+            redirectAttributes.addFlashAttribute("errorMessage","Mã voucher không tồn tại!");
+            return "redirect:/thanh-toan/"+gioHang.getId()+"?idKhachHang="+idKhachHang;
+        }
+        Date now = new Date();
+        if(voucher.getNgayKetThuc().before(now)){
+            redirectAttributes.addFlashAttribute("errorMessage","Mã voucher đã hết hạn!");
+            return "redirect:/thanh-toan/"+gioHang.getId()+"?idKhachHang="+idKhachHang;
+        }
+        //Áp dụng voucher và tính tiên sau khi giảm
+        BigDecimal tongTienGiamGia =voucherService.applyVoucher(donHang, voucher);
+        int slVoucher = voucher.getSoLuong();
+        //Cập nhật hóa đơn
+        donHang.setGiamGia(voucher);
+        voucher.setSoLuong(slVoucher - 1);
+        voucherService.themVoucher(voucher);
+        donHang.setTongTienGiamGia(tongTienGiamGia);
+        donHangService.capNhatDonHang(donHang);
+        redirectAttributes.addFlashAttribute("message","Voucher đã được áp dụng thành công!");
+        return "redirect:/thanh-toan/"+gioHang.getId() +"?idKhachHang="+idKhachHang;
+    }*/
+    //
 }
