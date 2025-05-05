@@ -27,6 +27,8 @@ public class NhanVienService {
         if(nhanVien.getId() == 0){
             nhanVien.setNgayTao(now);
             nhanVien.setNguoiTao(tenNguoiDung);
+        }if (nhanVien.getVaiTro() == null) {
+            nhanVien.setVaiTro(1); // default là nhân viên
         }
         nhanVien.setNgaySua(now);
         nhanVien.setNguoiSua(tenNguoiDung);
