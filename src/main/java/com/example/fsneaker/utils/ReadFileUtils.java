@@ -12,7 +12,7 @@ import java.io.IOException;
 
 public class ReadFileUtils extends HttpServlet{
 
-    public final String path = "C:/Users/ASUS/Documents/GitHub/Fsneaker/src/main/resources/static/images/product";
+    public final String path = "D:/DATN/Fsneaker/src/main/resources/static/images/product";
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)

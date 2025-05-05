@@ -91,7 +91,7 @@ public class SanPhamChiTietController {
         // Kiểm tra nếu có ảnh được upload
         List<String> imageNames = new ArrayList<>();
         if (images != null && images.length > 0) {
-            String uploadDir = "C:/Users/ASUS/Documents/GitHub/Fsneaker/src/main/resources/static/images/product/";
+            String uploadDir = "D:/DATN/Fsneaker/src/main/resources/static/images/product/";
             for (MultipartFile image : images) {
                 if (!image.isEmpty()) {
                     String imageName = image.getOriginalFilename();
@@ -197,7 +197,7 @@ public class SanPhamChiTietController {
         // Xử lý ảnh nếu có tải lên ảnh mới
         // Xử lý lưu trữ nhiều ảnh
         if (imagees != null && imagees.length > 0) {
-            String uploadDir = "C:/Users/ASUS/Documents/GitHub/Fsneaker/src/main/resources/static/images/product/";
+            String uploadDir = "D:/DATN/Fsneaker/src/main/resources/static/images/product/";
             List<String> imageNames = new ArrayList<>();
 
             for (MultipartFile image : imagees) {
