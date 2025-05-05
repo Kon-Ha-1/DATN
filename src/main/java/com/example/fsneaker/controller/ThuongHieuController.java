@@ -41,7 +41,7 @@ public class ThuongHieuController {
         return "/templateadmin/qlthuonghieu";
 
     }
-
+// day la quan ly thuong hieu
     @PostMapping("/qlthuonghieu/store")
     public String store(@ModelAttribute("thuongHieu") ThuongHieu thuongHieu, RedirectAttributes redirectAttributes, Authentication authentication){
         Map<String , String > errors = new HashMap<>();
