@@ -389,34 +389,5 @@ public class DonHangService {
         }
         return phiShip;
     }
-//    public BigDecimal tinhTongTrongLuong(List<DonHangChiTiet> donHangChiTiets){
-//        BigDecimal trongLuong= BigDecimal.valueOf(0.5); // 1 đôi giày là 0,5kg
-//        return donHangChiTiets.stream()
-//                .map(chiTiet -> trongLuong.multiply(BigDecimal.valueOf(chiTiet.getSoLuong())))
-//                .reduce(BigDecimal.ZERO, BigDecimal::add);
-//    }
-//    private BigDecimal tinhPhiShipHaNoi(BigDecimal tongTrongLuong, String khuVuc){
-//        BigDecimal phiCoBan = tongTrongLuong.compareTo(BigDecimal.ONE) <= 0
-//                ? BigDecimal.valueOf(15000) : BigDecimal.valueOf(18000);
-//        if(tongTrongLuong.compareTo(BigDecimal.valueOf(2)) > 0){
-//            BigDecimal trongLuongThem = tongTrongLuong.subtract(BigDecimal.valueOf(2));
-//            BigDecimal phiThem = trongLuongThem.divide(BigDecimal.valueOf(0.5), RoundingMode.CEILING)
-//                    .multiply(BigDecimal.valueOf(1000));
-//            phiCoBan = phiCoBan.add(phiThem);
-//        }
-//        return phiCoBan;
-//    }
-//    private BigDecimal tinhPhiShipTinhKhac(BigDecimal tongTrongLuong){
-//        BigDecimal phiCoBan = tongTrongLuong.compareTo(BigDecimal.ONE) <= 0
-//                ? BigDecimal.valueOf(21000)
-//                : BigDecimal.valueOf(25000);
-//        if(tongTrongLuong.compareTo(BigDecimal.valueOf(2)) > 0){
-//            BigDecimal trongLuongThem = tongTrongLuong.subtract(BigDecimal.valueOf(2));
-//            BigDecimal phiThem = trongLuongThem.divide(BigDecimal.valueOf(0.5),RoundingMode.CEILING)
-//                    .multiply(BigDecimal.valueOf(2500));
-//            phiCoBan = phiCoBan.add(phiThem);
-//        }
-//        return phiCoBan;
-//    }
 
 }
