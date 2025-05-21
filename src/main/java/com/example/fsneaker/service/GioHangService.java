@@ -15,6 +15,10 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+//Lấy giỏ hàng theo người dùng,
+// tạo giỏ hàng mới,
+// kiểm tra sự tồn tại của giỏ hàng
+
 @Service
 public class GioHangService {
     @Autowired

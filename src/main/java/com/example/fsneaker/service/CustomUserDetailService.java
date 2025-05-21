@@ -11,6 +11,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+//Tải thông tin người dùng (khách hàng hoặc nhân viên) để xác thực đăng nhập với Spring Security
+
 @Service
 public class CustomUserDetailService implements UserDetailsService {
     @Autowired

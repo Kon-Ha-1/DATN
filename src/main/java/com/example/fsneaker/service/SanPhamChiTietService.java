@@ -19,6 +19,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+//Xử lý các sản phẩm chi tiết như size, màu, tồn kho,
+// giá cho từng biến thể sản phẩm
+
 @Service
 public class SanPhamChiTietService {
     //Chỗ này là của trướng nhóm code cấm đụng

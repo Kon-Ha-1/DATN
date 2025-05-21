@@ -16,6 +16,13 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+
+//Tạo đơn hàng từ giỏ hàng,
+// lưu đơn hàng và chi tiết đơn hàng,
+// tính tổng tiền,
+// xóa giỏ hàng sau khi đặt
+
+
 @Service
 public class DonHangService {
     @Autowired
@@ -411,4 +418,5 @@ public class DonHangService {
 //        }
 //        return phiCoBan;
 //    }
+
 }

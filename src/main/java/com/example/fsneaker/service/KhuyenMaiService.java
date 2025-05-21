@@ -11,6 +11,11 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
+//Tạo và cập nhật mã khuyến mãi,
+// áp dụng giảm giá,
+// lọc khuyến mãi theo điều kiện,
+// phân trang khuyến mãi
+
 @Service
 public class KhuyenMaiService {
     @Autowired

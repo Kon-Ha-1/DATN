@@ -9,6 +9,9 @@ import javax.swing.text.html.Option;
 import java.util.Date;
 import java.util.Optional;
 
+//Tạo, cập nhật, xoá sản phẩm chính (tên, mô tả, trạng thái),
+// tìm kiếm sản phẩm theo tên, trạng thái
+
 @Service
 public class SanPhamService {
     @Autowired

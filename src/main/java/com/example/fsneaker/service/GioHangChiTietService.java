@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.List;
 
+//Thêm/sửa/xóa sản phẩm trong giỏ hàng của người dùng
+// (chi tiết như số lượng, sản phẩm nào)
+
 @Service
 public class GioHangChiTietService {
     @Autowired
